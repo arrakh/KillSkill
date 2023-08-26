@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace;
 using Skills;
 using StatusEffects;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Actors
     public class Character : MonoBehaviour
     {
         [SerializeField] private float hp, maxHp;
+        [SerializeField] private CharacterAnimator animator;
 
         public event Action<float, float> OnHealthChanged;
 
@@ -19,23 +21,62 @@ namespace Actors
 
         public float Hp => hp;
         public float MaxHp => maxHp;
+        public CharacterAnimator Animator => animator;
+        
+        public float CooldownMultiplier { get; private set; }
 
-        public void Damage(float damage)
+        public Timer GlobalCooldown => globalCd;
+
+        private Timer globalCd = new(0, false);
+
+        public void Initialize()
         {
-            if (HasStatusEffect<BlockStatusEffect>())
-            {
-                Debug.Log("BLOCKED!!");
-                return;
-            }
+            
+        }
+
+        public float VisualDistance(Character other) =>
+            Vector3.Distance(animator.Visual.position, other.Animator.Visual.position);
+
+        public void Damage(Character damager, float damage)
+        {
+            foreach (var statusEffect in statusEffects.Values)
+                if(statusEffect is IModifyDamageStatusEffect modifier)
+                    modifier.ModifyDamage(damager, ref damage);
             
             var oldHp = hp;
             hp -= damage;
             Debug.Log($"{name} Damaged for {damage}!");
             OnHealthChanged?.Invoke(oldHp, hp);
+
+            var intensityAlpha = damage / maxHp;
+            var remapped = Mathf.Lerp(0.5f, 3f, intensityAlpha);
+            if (damage > 0f) animator.Damage(remapped);
         }
 
-        public void Heal(float heal)
+        public bool CanCastAbility(Skill skill)
         {
+            bool canCast = !HasStatusEffect<IPreventAbilityCasting>();
+
+            if (skill is IGlobalCooldownSkill) return canCast && !globalCd.IsActive;
+
+            return canCast;
+        }
+
+        public void SetCooldownSpeed(float multiplier)
+        {
+            CooldownMultiplier = multiplier;
+            globalCd.SetSpeed(multiplier);
+            foreach (var skill in skills)
+                skill.Cooldown.SetSpeed(multiplier);
+        }
+
+
+        public void Heal(Character healer, float heal)
+        {
+            foreach (var statusEffect in statusEffects.Values)
+                if(statusEffect is IModifyHealStatusEffect modifier)
+                    modifier.ModifyDamage(healer, ref heal);
+            
             var oldHp = hp;
             hp += heal;
             Debug.Log($"{name} Healed for {heal}!");
@@ -44,6 +85,8 @@ namespace Actors
 
         private void Update()
         {
+            globalCd.Update(Time.deltaTime);
+            
             foreach (var statusEffect in statusEffects.Values.ToList())
             {
                 statusEffect.UpdateDuration(Time.deltaTime);
@@ -66,10 +109,17 @@ namespace Actors
         public void AddStatusEffect(StatusEffect statusEffect)
         {
             var type = statusEffect.GetType();
-            if (statusEffects.TryGetValue(type, out var effect)) effect.ResetDuration();
-            else statusEffects[type] = statusEffect;
+            if (statusEffects.TryGetValue(type, out var effect))
+            {
+                effect.OnDuplicateAdded(this);
+                return;
+            }
             
+            statusEffects[type] = statusEffect;
+            Debug.Log($"ADDING STATUS EFFECT {statusEffect.DisplayName}, has prevent? {HasStatusEffect<IPreventAbilityCasting>()}");
+
             statusEffects[type].OnAdded(this);
+            
         }
 
         public void RemoveStatusEffect<T>() where T : StatusEffect
@@ -90,15 +140,10 @@ namespace Actors
             }
         }
 
-        public bool HasStatusEffect<T>() where T : StatusEffect => statusEffects.ContainsKey(typeof(T));
-        
-        public bool HasAnyStatusEffect<T>()
+        public bool HasStatusEffect<T>()
         {
-            foreach (var stats in statusEffects.Keys)
-            {
-                foreach (var statusEffect in statusEffects)
-                    if (statusEffect.Key is T) return true;
-            }
+            foreach (var stats in statusEffects.Values)
+                if (stats is T) return true;
 
             return false;
         }
@@ -117,6 +162,8 @@ namespace Actors
             
             skill.Execute(this, target);
             skill.TriggerCooldown();
+            
+            if (skill is IGlobalCooldownSkill) globalCd.Set(skill.Cooldown.Duration);
         }
     }
 }

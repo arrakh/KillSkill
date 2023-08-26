@@ -12,15 +12,16 @@ namespace Actors
         
         private void Awake()
         {
+            Initialize();
             skills = new Skill[]
             {
-                new AttackSkill(3f, 10f),
+                new AttackSkill(0.3f, 3f, 10f),
                 new ChargeAttackSkill(10f, 3f, 120f, 5f)
             };
         }
 
         IEnumerator Start()
-        {
+        { 
             while (true)
             {
                 for (int i = 0; i < 3; i++)
