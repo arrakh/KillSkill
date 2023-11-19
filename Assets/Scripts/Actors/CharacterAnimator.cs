@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.Serialization;
 
 namespace Actors
@@ -10,7 +11,9 @@ namespace Actors
     {
         [FormerlySerializedAs("characterTransform")] [SerializeField] private Transform visualTransform;
         [SerializeField] private SpriteRenderer spriteRenderer;
-        
+        [SerializeField] private GameObject testPrefab;
+        private ObjectPool<GameObject> testPool;
+
         public Transform Visual => visualTransform;
         public SpriteRenderer Sprite => spriteRenderer;
 
@@ -20,6 +23,19 @@ namespace Actors
         private void Awake()
         {
             originalPosition = visualTransform.position;
+            testPool = new ObjectPool<GameObject>(TestCreateFunc, OnGet);
+        }
+
+        private void OnGet(GameObject obj)
+        {
+            obj.SetActive(false);
+        }
+
+        private GameObject TestCreateFunc()
+        {
+            var go = Instantiate(testPrefab);
+            go.SetActive(false);
+            return go;
         }
 
         public void Damage(float intensity)
@@ -28,6 +44,10 @@ namespace Actors
             Tween color = spriteRenderer.DOColor(Color.white, 0.33f);
             Tween shake = visualTransform.DOShakePosition(0.33f, Vector3.right * intensity);
             AddTweens(color, shake);
+
+            var effect = testPool.Get();
+            effect.SetActive(true);
+            effect.transform.position = Visual.position;
         }
 
         public void BackToPosition()

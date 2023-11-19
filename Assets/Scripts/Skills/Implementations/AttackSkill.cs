@@ -23,7 +23,7 @@ namespace Skills
         {
             casterChar = caster;
             targetChar = target;
-            caster.AddStatusEffect(new CastingStatusEffect(castTime, OnDone, OnInterrupted));
+            caster.StatusEffects.Add(new CastingStatusEffect(castTime, OnDone, OnInterrupted));
 
             var cPos = casterChar.Animator.Visual.position;
             var tPos = targetChar.Animator.Visual.position;
@@ -41,7 +41,7 @@ namespace Skills
 
         private void OnDone()
         {
-            targetChar.Damage(casterChar, damage);
+            targetChar.TryDamage(casterChar, damage);
             var tPos = targetChar.Animator.Visual.position.x;
             Tween move = casterChar.Animator.Visual.DOMoveX(tPos, 0.15f).OnComplete(casterChar.Animator.BackToPosition);
             casterChar.Animator.AddTweens(move);

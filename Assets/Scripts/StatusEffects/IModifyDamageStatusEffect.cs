@@ -4,6 +4,6 @@ namespace StatusEffects
 {
     public interface IModifyDamageStatusEffect
     {
-        public void ModifyDamage(Character damager, ref float damage);
+        public void ModifyDamage(Character damager, ref double damage);
     }
 }

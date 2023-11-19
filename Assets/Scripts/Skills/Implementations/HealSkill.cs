@@ -15,7 +15,7 @@ namespace Skills
 
         public override void Execute(Character caster, Character target)
         {
-            target.Heal(caster, heal);
+            target.TryHeal(caster, heal);
         }
     }
 }

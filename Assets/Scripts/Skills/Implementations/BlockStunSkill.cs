@@ -17,7 +17,7 @@ namespace Skills
 
         public override void Execute(Character caster, Character target)
         {
-            caster.AddStatusEffect(new BlockStunStatusEffect(blockDuration, stunDuration));
+            caster.StatusEffects.Add(new BlockStunStatusEffect(blockDuration, stunDuration));
         }
     }
 }

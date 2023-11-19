@@ -26,18 +26,18 @@ namespace Skills
         {
             casterChar = caster;
             targetChar = target;
-            caster.AddStatusEffect(new CastingStatusEffect(chargeDuration, OnDone, OnInterrupted));
+            caster.StatusEffects.Add(new CastingStatusEffect(chargeDuration, OnDone, OnInterrupted));
         }
 
         private void OnInterrupted()
         {
             Debug.Log("INTERRUPTED!");
-            casterChar.AddStatusEffect(new StunStatusEffect(interruptedStunDuration));
+            casterChar.StatusEffects.Add(new StunStatusEffect(interruptedStunDuration));
         }
 
         private void OnDone()
         {
-            targetChar.Damage(casterChar, damage);
+            targetChar.TryDamage(casterChar, damage);
         }
     }
 }

@@ -23,10 +23,10 @@ namespace StatusEffects
             anim.AddTweens(shake);
         }
 
-        public void ModifyDamage(Character damager, ref float damage)
+        public void ModifyDamage(Character damager, ref double damage)
         {
             damage = 0;
-            damager.AddStatusEffect(new StunStatusEffect(stunDuration));
+            damager.StatusEffects.Add(new StunStatusEffect(stunDuration));
         }
     }
 }

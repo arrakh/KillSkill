@@ -33,7 +33,7 @@ namespace UI
             usesGlobalCooldown = skill is IGlobalCooldownSkill;
             skillNameText.text = skill.DisplayName;
 
-            bool preventedCasting = character.HasStatusEffect<IPreventAbilityCasting>();
+            bool preventedCasting = character.StatusEffects.Has<IPreventAbilityCasting>();
             lockedGroup.SetActive(preventedCasting);
             
             if (usesGlobalCooldown) HandleGlobalCooldownSkill();

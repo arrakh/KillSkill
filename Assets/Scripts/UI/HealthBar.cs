@@ -1,5 +1,6 @@
 ﻿using System;
 using Actors;
+using CharacterResources.Implementations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,21 +10,23 @@ namespace UI
     {
         [SerializeField] private Character character;
         [SerializeField] private Slider healthSlider;
+
+        private Health health;
         
         private void OnEnable()
         {
-            healthSlider.value = character.Hp / character.MaxHp;
-            character.OnHealthChanged += OnHealthChanged;
+            character.Resources.ObserveAssigned<Health>(OnHealthAssigned);
         }
 
-        private void OnDisable()
+        private void OnHealthAssigned(Health assignedHealth)
         {
-            character.OnHealthChanged -= OnHealthChanged;
+            health = assignedHealth;
+            health.OnHealthChanged += OnHealthChanged;
         }
 
-        private void OnHealthChanged(float oldValue, float newValue)
+        private void OnHealthChanged(double oldValue, double newValue)
         {
-            healthSlider.value = newValue / character.MaxHp;
+            healthSlider.value = (float) (newValue / health.Max);
         }
     }
 }

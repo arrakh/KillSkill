@@ -23,7 +23,7 @@ namespace StatusEffects
             if (time < 1f) return;
 
             lastDamageTime = Time.time;
-            target.Damage(damager, dps);
+            target.TryDamage(damager, dps);
         }
     }
 }

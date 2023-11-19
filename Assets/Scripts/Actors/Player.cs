@@ -17,7 +17,7 @@ namespace Actors
                 new AttackSkill(0.3f, 2f, 10),
                 new BlockStunSkill(5f, 2f, 4f),
                 new HealSkill(12f, 35),
-                new FireballSkill(40f, 2f, 8f, 3f, 15f)
+                new SacrificeSkill(20f, 50f, 0.5f, 10f)
             };
         }
 
@@ -28,6 +28,7 @@ namespace Actors
             if (Input.GetKeyDown(KeyCode.Alpha3)) ExecuteSkill(2, this);
             if (Input.GetKeyDown(KeyCode.Alpha4)) ExecuteSkill(3, monsterTarget);
             if (Input.GetKeyDown(KeyCode.Space)) (skills[3], skills[1]) = (skills[1], skills[3]);
+
         }
     }
 }

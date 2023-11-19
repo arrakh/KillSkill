@@ -14,7 +14,7 @@ namespace UI
         {
             var status = string.Empty;
 
-            foreach (var statusEffect in character.GetStatusEffects())
+            foreach (var statusEffect in character.StatusEffects.GetAll())
             {
                 status += statusEffect.DisplayName + "... " + statusEffect.RemainingDuration.ToString("F1") + "\n";
             }

@@ -26,13 +26,13 @@ namespace Skills
         {
             lastCaster = caster;
             lastTarget = target;
-            caster.AddStatusEffect(new CastingStatusEffect(castingTime, OnDoneCharging, null));
+            caster.StatusEffects.Add(new CastingStatusEffect(castingTime, OnDoneCharging, null));
         }
 
         private void OnDoneCharging()
         {
-            lastTarget.Damage(lastCaster, damage);
-            lastTarget.AddStatusEffect(new BurningStatusEffect(burnDuration, burnDamage, lastCaster));
+            lastTarget.TryDamage(lastCaster, damage);
+            lastTarget.StatusEffects.Add(new BurningStatusEffect(burnDuration, burnDamage, lastCaster));
         }
     }
 }

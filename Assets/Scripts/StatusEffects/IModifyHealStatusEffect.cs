@@ -4,6 +4,6 @@ namespace StatusEffects
 {
     public interface IModifyHealStatusEffect
     {
-        public void ModifyDamage(Character healer, ref float heal);
+        public void ModifyHeal(Character healer, ref double heal);
     }
 }
