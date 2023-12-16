@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using FlipBooks;
 using UnityEngine;
-using UnityEngine.Pool;
-using UnityEngine.Serialization;
 
 namespace Actors
 {
     public class CharacterAnimator : MonoBehaviour
     {
-        [FormerlySerializedAs("characterTransform")] [SerializeField] private Transform visualTransform;
+        [SerializeField] private Transform visualTransform;
         [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private GameObject testPrefab;
-        private ObjectPool<GameObject> testPool;
+        [SerializeField] private FlipBookPlayer flipBookPlayer;
 
         public Transform Visual => visualTransform;
         public SpriteRenderer Sprite => spriteRenderer;
@@ -20,34 +18,22 @@ namespace Actors
         private List<Tween> tweens = new();
         private Vector3 originalPosition;
 
-        private void Awake()
+        public void Initialize()
         {
             originalPosition = visualTransform.position;
-            testPool = new ObjectPool<GameObject>(TestCreateFunc, OnGet);
+            flipBookPlayer.Initialize();
         }
 
-        private void OnGet(GameObject obj)
-        {
-            obj.SetActive(false);
-        }
+        public void PlayFlipBook(string id, float speed = 1f, Action onDone = null) => flipBookPlayer.Play(id, speed, onDone);
 
-        private GameObject TestCreateFunc()
-        {
-            var go = Instantiate(testPrefab);
-            go.SetActive(false);
-            return go;
-        }
-
+        //SHOULD BE AN ANIMATION ENTRY
         public void Damage(float intensity)
         {
             spriteRenderer.color = new Color(1f, 0.5f, 0.5f, 1f);
             Tween color = spriteRenderer.DOColor(Color.white, 0.33f);
             Tween shake = visualTransform.DOShakePosition(0.33f, Vector3.right * intensity);
             AddTweens(color, shake);
-
-            var effect = testPool.Get();
-            effect.SetActive(true);
-            effect.transform.position = Visual.position;
+            flipBookPlayer.Play("damaged");
         }
 
         public void BackToPosition()

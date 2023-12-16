@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d4fd924f12440f385ccd5d615ed4b06, type: 3}
+  m_Name: Damaged
+  m_EditorClassIdentifier: 
+  flipBook:
+    id: Damaged
+    frameRate: 16
+    loop: 0
+    frames:
+    - {fileID: 9138168, guid: 02331448d79c11e4c88a078af70653bb, type: 3}
+    - {fileID: 1387000908, guid: 02331448d79c11e4c88a078af70653bb, type: 3}
+    - {fileID: 1706098812, guid: 02331448d79c11e4c88a078af70653bb, type: 3}
+    - {fileID: -1243095151, guid: 02331448d79c11e4c88a078af70653bb, type: 3}

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Actors;
+using Arr;
+using UnityEngine;
+
 namespace CharacterResources
 {
     public class CharacterResourcesHandler : IDisposable
@@ -9,27 +12,29 @@ namespace CharacterResources
 
         public delegate void ResourceAssignedDelegate<T>(T resource) where T : ICharacterResource;
         
-        private Dictionary<Type, Action> onUnassignedObservers = new();
-        private Dictionary<Type, Delegate> onAssignedObservers = new();
+        private readonly Dictionary<Type, Action> onUnassignedObservers = new();
+        private readonly Dictionary<Type, Delegate> onAssignedObservers = new();
+
+        private PersistentEventTemplate<Type, ICharacterResource> onAnyResourceAssigned = new();
+        private PersistentEventTemplate<Type> onAnyResourceUnassigned = new();
 
         private Dictionary<Type, ICharacterResource> resources = new();
 
         private HashSet<Type> recentlyUnassigned = new();
 
-        public void Assign(ICharacterResource newResource, bool overrideExisting = false)
+        public void Assign<T>(T newResource, bool overrideExisting = false) where T : ICharacterResource
         {
-            var type = newResource.GetType();
+            var type = typeof(T);
             if (!overrideExisting && resources.ContainsKey(type))
                 throw new Exception($"Resource of type {type} already exist!");
 
             recentlyUnassigned.Remove(type);
 
             resources[type] = newResource;
-            if (onAssignedObservers.TryGetValue(type, out var delegateObj))
-            {
-                var action = delegateObj as ResourceAssignedDelegate<ICharacterResource>;
-                action?.Invoke(newResource);
-            }
+            onAnyResourceAssigned.Invoke(type, newResource);
+            if (!onAssignedObservers.TryGetValue(type, out var delegateObj)) return;
+            var action = delegateObj as ResourceAssignedDelegate<T>;
+            action?.Invoke(newResource);
         }
 
         public void Unassign<T>() where T : ICharacterResource
@@ -38,38 +43,26 @@ namespace CharacterResources
             bool success = resources.Remove(type);
             if (!success) return;
             recentlyUnassigned.Add(type);
+            onAnyResourceUnassigned.Invoke(type);
             if (onUnassignedObservers.TryGetValue(type, out var action)) action.Invoke();
         }
 
         public bool IsAssigned<T>() where T : ICharacterResource
-            => resources.ContainsKey(typeof(T)); 
+            => resources.ContainsKey(typeof(T));
 
-        public bool HasAny<T>() where T : ICharacterResource
+        public T Get<T>() where T : ICharacterResource
         {
-            if (!resources.TryGetValue(typeof(T), out var resource)) return false;
-            return resource.HasAny();
+            if (resources[typeof(T)] is T t) return t;
+            throw new Exception($"COULD NOT GET INSTANCE OF TYPE {typeof(T)}");
         }
         
-        public bool TryGet<T>(out double value) where T : ICharacterResource
+        public bool TryGet<T>(out T instance) where T : ICharacterResource
         {
-            value = default;
+            instance = default;
             if (!resources.TryGetValue(typeof(T), out var resource)) return false;
-            value = resource.Get();
+            if (resource is not T t) return false;
+            instance = t;
             return true;
-        }
-
-        public bool TrySet<T>(double newValue, Character instigator = null) where T : ICharacterResource
-        {
-            var type = typeof(T);
-            if (!resources.TryGetValue(type, out var resource)) return false;
-            return resource.TrySet(newValue, instigator);
-        }
-
-        public bool TryAdd<T>(double delta, Character instigator = null) where T : ICharacterResource
-        {
-            var type = typeof(T);
-            if (!resources.TryGetValue(typeof(T), out var resource)) return false;
-            return resource.TryAdd(delta, instigator);
         }
 
         public void ObserveUnassigned<T>(Action onUnassigned, bool persistent = true) where T : ICharacterResource
@@ -80,16 +73,21 @@ namespace CharacterResources
             onUnassignedObservers[type] += onUnassigned;
         }
 
-        public void ObserveAssigned<T>(Action<T> onAssigned, bool persistent = true) where T : ICharacterResource
+        public void ObserveAssigned<T>(ResourceAssignedDelegate<T> onAssigned, bool persistent = true) where T : ICharacterResource
         {
             var type = typeof(T);
             if (persistent && resources.TryGetValue(type, out var resource)) 
                 onAssigned.Invoke((T)resource);
 
-            if (!onAssignedObservers.ContainsKey(type))
-                onAssignedObservers[type] = null;
-            onAssignedObservers[type] = Delegate.Combine(onAssignedObservers[type], onAssigned);
+            if (!onAssignedObservers.ContainsKey(type)) onAssignedObservers[type] = onAssigned;
+            else onAssignedObservers[type] = Delegate.Combine(onAssignedObservers[type], onAssigned);
         }
+
+        public void ObserveAnyAssigned(EventTemplate<Type, ICharacterResource>.EventHandler onAnyAssigned)
+            => onAnyResourceAssigned.Subscribe(onAnyAssigned);
+
+        public void ObserveAnyUnassigned(EventTemplate<Type>.EventHandler onAnyUnassigned)
+            => onAnyResourceAssigned.Subscribe(onAnyUnassigned);
         
         private bool disposed;
         public void Dispose()
@@ -97,6 +95,8 @@ namespace CharacterResources
             if (disposed) return;
             onUnassignedObservers.Clear();
             onAssignedObservers.Clear();
+            onAnyResourceAssigned = new();
+            onAnyResourceUnassigned = new();
             disposed = true;
         }
     }

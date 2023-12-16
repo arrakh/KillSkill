@@ -18,6 +18,7 @@ namespace StatusEffects
             var color = sprite.DOColor(Color.white, RemainingDuration);
             var shake = visual.DOShakePosition(RemainingDuration, Vector3.right * 0.4f, 20);
             anim.AddTweens(shake, color);
+            anim.PlayFlipBook("damaged");
         }
 
         public StunStatusEffect(float duration) : base(duration)

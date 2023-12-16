@@ -6,7 +6,12 @@ namespace Skills
     {
         private float heal;
         
-        public override string DisplayName => "Heal";
+        public override SkillDescription Description => new()
+        {
+            name = "Heal",
+            description = $"Heals for {heal} hp",
+            icon = SkillIconDatabase.Get("heal").icon
+        };
 
         public HealSkill(float cooldown, float heal) : base(cooldown)
         {

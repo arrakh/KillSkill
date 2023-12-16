@@ -26,7 +26,7 @@ namespace StatusEffects
         public void ModifyDamage(Character damager, ref double damage)
         {
             damage = 0;
-            damager.StatusEffects.Add(new StunStatusEffect(stunDuration));
+            if (damager != null) damager.StatusEffects.Add(new StunStatusEffect(stunDuration));
         }
     }
 }

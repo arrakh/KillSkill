@@ -27,7 +27,6 @@ namespace Actors
             if (Input.GetKeyDown(KeyCode.Alpha2)) ExecuteSkill(1, monsterTarget);
             if (Input.GetKeyDown(KeyCode.Alpha3)) ExecuteSkill(2, this);
             if (Input.GetKeyDown(KeyCode.Alpha4)) ExecuteSkill(3, monsterTarget);
-            if (Input.GetKeyDown(KeyCode.Space)) (skills[3], skills[1]) = (skills[1], skills[3]);
 
         }
     }

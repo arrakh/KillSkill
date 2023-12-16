@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d4fd924f12440f385ccd5d615ed4b06, type: 3}
+  m_Name: Death
+  m_EditorClassIdentifier: 
+  flipBook:
+    id: Death
+    frameRate: 16
+    loop: 0
+    frames:
+    - {fileID: 1189924887, guid: f9e25932060276a479d6dd7c8d017251, type: 3}
+    - {fileID: -102841460, guid: f9e25932060276a479d6dd7c8d017251, type: 3}
+    - {fileID: -827264596, guid: f9e25932060276a479d6dd7c8d017251, type: 3}
+    - {fileID: 739975780, guid: f9e25932060276a479d6dd7c8d017251, type: 3}
+    - {fileID: -1469022702, guid: f9e25932060276a479d6dd7c8d017251, type: 3}
+    - {fileID: -925041766, guid: f9e25932060276a479d6dd7c8d017251, type: 3}

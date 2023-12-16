@@ -9,6 +9,13 @@ namespace Skills
         private float cooldownPercentReduction;
         private float statusEffectDuration;
         
+        public override SkillDescription Description => new()
+        {
+            name = "Sacrifice",
+            description = $"Takes away {healthSacrificeAmount} hp from caster, then lowers cooldown by {cooldownPercentReduction}% for {statusEffectDuration} seconds",
+            icon = SkillIconDatabase.Get("sacrifice").icon
+        };
+        
         public SacrificeSkill(float cooldown, float healthSacrificeAmount, float cooldownPercentReduction, float statusEffectDuration) : base(cooldown)
         {
             this.healthSacrificeAmount = healthSacrificeAmount;

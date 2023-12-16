@@ -10,6 +10,8 @@ namespace Skills
         private readonly Timer cd;
         
         public virtual string DisplayName => string.Empty;
+        public virtual SkillDescription Description => SkillDescription.Empty;
+        
         public Timer Cooldown => cd;
 
         protected Skill(float cooldown)

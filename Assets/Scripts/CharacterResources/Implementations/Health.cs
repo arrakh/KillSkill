@@ -1,17 +1,27 @@
 ﻿using System;
+using System.Linq;
 using Actors;
 using StatusEffects;
+using UI;
+using UnityEngine;
 
 namespace CharacterResources.Implementations
 {
-    public class Health : ICharacterResource
+    public class Health : ICharacterResource, IResourceBarDisplay
     {
-        public event Action<double, double> OnHealthChanged; 
+        public event Action<double, double> OnUpdated;
 
         private Character character;
         private double health, maxHealth;
 
         public double Max => maxHealth;
+
+        public ResourceBarDisplaySettings DisplaySettings => new()
+        {
+            min = 0,
+            max = Max,
+            barColor = new Color(165f/255f, 1f, 97f/255f)
+        };
 
         public Health(Character character, double health, double maxHealth)
         {
@@ -34,7 +44,7 @@ namespace CharacterResources.Implementations
             var oldHealth = health;
             health = value;
             Clamp();
-            OnHealthChanged?.Invoke(oldHealth, health);
+            OnUpdated?.Invoke(oldHealth, health);
             return true;
         }
 
@@ -45,34 +55,39 @@ namespace CharacterResources.Implementations
             if (delta < 0f) return TryHarm(-delta, instigator);
             return false;
         }
-
+        
         private bool TryHeal(double delta, Character instigator)
         {
             foreach (var statusEffect in character.StatusEffects.GetAll())
                 if(statusEffect is IModifyHealStatusEffect modifier)
                     modifier.ModifyHeal(instigator, ref delta);
 
+            if (delta <= 0) return false;
+
             var oldHealth = health;
             health += delta;
             Clamp();
-            OnHealthChanged?.Invoke(oldHealth, health);
+            OnUpdated?.Invoke(oldHealth, health);
             return true;
         }
 
         private bool TryHarm(double delta, Character instigator)
         {
-            foreach (var statusEffect in character.StatusEffects.GetAll())
+            foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
                 if(statusEffect is IModifyDamageStatusEffect modifier)
                     modifier.ModifyDamage(instigator, ref delta);
+
+            if (delta <= 0) return false;
             
             var oldHealth = health;
             health -= delta;
-            OnHealthChanged?.Invoke(oldHealth, health);
+            OnUpdated?.Invoke(oldHealth, health);
             if (health >= 0) return true;
 
             character.Kill();
             
             return true;
         }
+
     }
 }

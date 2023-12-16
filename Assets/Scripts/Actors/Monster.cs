@@ -16,7 +16,7 @@ namespace Actors
             skills = new Skill[]
             {
                 new AttackSkill(0.3f, 3f, 10f),
-                new ChargeAttackSkill(10f, 3f, 120f, 5f)
+                new SporePopSkill(10f, 3f, 120f, 5f)
             };
         }
 

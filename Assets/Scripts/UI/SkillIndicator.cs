@@ -12,29 +12,37 @@ namespace UI
     {
         [SerializeField] private Character character;
         [SerializeField] private int skillIndex;
-        [SerializeField] private GameObject cooldownGroup, lockedGroup;
-        [SerializeField] private Image fillImage;
-        [SerializeField] private Slider cooldownSlider;
+        [SerializeField] private GameObject cooldownGroup, lockedGroup, allGroup;
+        [SerializeField] private Image fillImage, iconImage;
         [SerializeField] private TextMeshProUGUI cooldownText;
-        [SerializeField] private TextMeshProUGUI skillNameText;
         [SerializeField] private Color skillCooldownColor, globalCooldownColor;
 
         private Skill skill;
         private bool usesGlobalCooldown;
 
-        private void Start()
-        {
-            
-        }
-
+        //SHOULD HAVE ON SKILL UPDATED EVENT, NOT ON UPDATE
         private void Update()
         {
-            skill = character.GetSkill(skillIndex);
+            if (!character.TryGetSkill(skillIndex, out skill))
+            {
+               DisplayEmpty();
+               return;
+            }
+
+            if (skill.Description.isEmpty)
+            {
+                DisplayEmpty();
+                return;
+            }
+            
+            if (!allGroup.activeInHierarchy) allGroup.SetActive(true);
+            
             usesGlobalCooldown = skill is IGlobalCooldownSkill;
-            skillNameText.text = skill.DisplayName;
 
             bool preventedCasting = character.StatusEffects.Has<IPreventAbilityCasting>();
             lockedGroup.SetActive(preventedCasting);
+
+            iconImage.sprite = skill.Description.icon;
             
             if (usesGlobalCooldown) HandleGlobalCooldownSkill();
             else HandleSkill();
@@ -47,8 +55,8 @@ namespace UI
             if (!isOnCooldown) return;
 
             cooldownText.text = skill.Cooldown.RemainingTime.ToString("F1");
-            cooldownSlider.value = skill.Cooldown.NormalizedTime;
-            fillImage.color = cooldownText.color = skillCooldownColor;
+            fillImage.fillAmount = skill.Cooldown.NormalizedTime;
+            fillImage.color = skillCooldownColor;
         }
 
         private void HandleGlobalCooldownSkill()
@@ -58,7 +66,7 @@ namespace UI
             if (!isOnCooldown) return;
 
             bool shouldDisplayGlobal = character.GlobalCooldown.RemainingTime > skill.Cooldown.RemainingTime;
-            cooldownSlider.value = shouldDisplayGlobal
+            fillImage.fillAmount = shouldDisplayGlobal
                 ? character.GlobalCooldown.NormalizedTime
                 : skill.Cooldown.NormalizedTime;
 
@@ -66,7 +74,12 @@ namespace UI
                 ? character.GlobalCooldown.RemainingTime.ToString("F1")
                 : skill.Cooldown.RemainingTime.ToString("F1");
 
-            fillImage.color = cooldownText.color = shouldDisplayGlobal ? globalCooldownColor : skillCooldownColor;
+            fillImage.color = shouldDisplayGlobal ? globalCooldownColor : skillCooldownColor;
+        }
+
+        public void DisplayEmpty()
+        {
+            allGroup.SetActive(false);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Actors;
+﻿using System;
+using Actors;
 
 namespace CharacterResources
 {
@@ -8,5 +9,6 @@ namespace CharacterResources
         public double Get();
         public bool TrySet(double value, Character instigator);
         public bool TryAdd(double delta, Character instigator);
+        public event Action<double, double> OnUpdated;
     }
 }

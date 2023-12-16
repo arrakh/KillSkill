@@ -41,7 +41,6 @@ namespace StatusEffects
             }
             
             statusEffects[type] = statusEffect;
-            Debug.Log($"ADDING STATUS EFFECT {statusEffect.DisplayName}, has prevent? {Has<IPreventAbilityCasting>()}");
 
             statusEffects[type].OnAdded(character);
             

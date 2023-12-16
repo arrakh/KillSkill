@@ -7,7 +7,13 @@ namespace Skills
     {
         private float blockDuration;
         private float stunDuration;
-        public override string DisplayName => "Block";
+        
+        public override SkillDescription Description => new()
+        {
+            name = "Block Stun",
+            description = $"Blocks for {blockDuration} seconds, then stuns for {stunDuration} when caster is hit",
+            icon = SkillIconDatabase.Get("block-stun").icon
+        };
 
         public BlockStunSkill(float cooldown, float blockDuration, float stunDuration) : base(cooldown)
         {

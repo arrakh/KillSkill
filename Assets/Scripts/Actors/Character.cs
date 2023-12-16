@@ -1,41 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arr;
 using CharacterResources;
+using CharacterResources.Implementations;
 using DefaultNamespace;
 using Skills;
 using StatusEffects;
 using UnityEngine;
 using UnityEngine.Events;
+using VisualEffects;
 
 namespace Actors
 {
     public class Character : MonoBehaviour
     {
-        [SerializeField] private float hp, maxHp;
+        [SerializeField] private EffectController effectController; //TEMP, SHOULD BE INJECTED FROM OUTSIDE
+        [SerializeField] private float hp, maxHp; //TEMP, SHOULD BE DATA DRIVEN
         [SerializeField] private CharacterAnimator animator;
 
         protected StatusEffectsHandler statusEffects;
         protected CharacterResourcesHandler resources;
 
+        protected Skill[] skills;
+
+        //HANDLERS, ABSTRACT EVERYTHING HERE AND INJECT WHAT IS NEEDED
         public StatusEffectsHandler StatusEffects => statusEffects;
+        
         public CharacterResourcesHandler Resources => resources;
 
-        protected Skill[] skills;
         public CharacterAnimator Animator => animator;
         
+        public IVisualEffectsHandler VisualEffects => effectController;
+        
+        public PersistentEventTemplate<Character> onInitialize = new();
+        //==============================================================
+
         public float CooldownMultiplier { get; private set; }
 
         public Timer GlobalCooldown => globalCd;
 
         private Timer globalCd = new(0, false);
 
+        public virtual Type MainResource => typeof(Health);
+
         public void Initialize()
         {
             statusEffects = new(this);
+            resources = new();
             
+            resources.Assign(new Health(this, hp, maxHp));
             
+            onInitialize.Invoke(this);
+            
+            animator.Initialize();
+            
+            animator.PlayFlipBook("idle");
         }
+
 
         public bool CanCastAbility(Skill skill)
         {
@@ -68,6 +90,14 @@ namespace Actors
         protected virtual void OnUpdate(){}
 
         public Skill GetSkill(int index) => skills[index];
+
+        public bool TryGetSkill(int index, out Skill skill)
+        {
+            skill = default;
+            if (index >= skills.Length) return false;
+            skill = skills[index];
+            return true;
+        }
 
         protected void ExecuteSkill(int index, Character target)
         {
