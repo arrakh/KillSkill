@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Arr.EventsSystem
 {
-    public class EventHandler
+    public partial class EventHandler
     {
         private readonly Dictionary<Type, List<Delegate>> eventListeners = new();
 

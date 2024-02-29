@@ -2,7 +2,12 @@
 {
     public static class GlobalEvents
     {
-        private static EventHandler _handler = new EventHandler();
+        private static EventHandler _handler;
+
+        static GlobalEvents()
+        {
+            _handler = new();
+        }
 
         public static EventHandler Instance => _handler;
 

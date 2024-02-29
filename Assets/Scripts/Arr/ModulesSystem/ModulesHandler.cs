@@ -33,7 +33,7 @@ namespace Arr.ModulesSystem
         {
             foreach (var module in modules.Values)
             {
-                InjectEvents(module);
+                eventHandler.RegisterMultiple(module);
                 await module.Initialize();
             }
 
@@ -65,57 +65,11 @@ namespace Arr.ModulesSystem
             }
         }
 
-        private void InjectEvents(IModule module)
-        {
-            var interfaces = module.GetType().GetInterfaces();
-            foreach (var i in interfaces)
-            {
-                if (!i.IsGenericType) continue;
-
-                var genericType = i.GetGenericTypeDefinition();
-                var args = i.GetGenericArguments();
-                InvokeEventFunction(nameof(EventHandler.Register), module, genericType, method => method.MakeGenericMethod(args));
-            }
-        }
-
-        private void InvokeEventFunction(string funcName, IModule module, Type genericEventType, Func<MethodInfo, MethodInfo> makeGenericMethodFunc)
-        {
-            var method = typeof(EventHandler)
-                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                .FirstOrDefault(m => m.IsGenericMethod && m.Name == funcName
-                                                       && m.GetParameters().Length == 1
-                                                       && m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == genericEventType);
-                             
-            if (method == null)
-            {
-                Debug.LogError($"Failed to find the Register method of type {genericEventType}.");
-                return;
-            }
-            
-            var genericMethod = makeGenericMethodFunc.Invoke(method);
-
-            genericMethod.Invoke(eventHandler, new object[] { module });
-        }
-
-        private void UnregisterEvents(IModule module)
-        {
-            var interfaces = module.GetType().GetInterfaces();
-            
-            foreach (var i in interfaces)
-            {
-                if (!i.IsGenericType) continue;
-
-                var genericType = i.GetGenericTypeDefinition();
-                var args = i.GetGenericArguments();
-                InvokeEventFunction(nameof(EventHandler.Unregister), module, genericType, method => method.MakeGenericMethod(args));
-            }
-        }
-
         public async Task Stop()
         {
             foreach (var module in modules.Values)
             {
-                UnregisterEvents(module);
+                eventHandler.UnregisterMultiple(module);
                 await module.Unload();
             }
         }
