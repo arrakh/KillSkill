@@ -1,6 +1,7 @@
 ﻿using System;
-using Actors;
+using KillSkill.Characters;
 using KillSkill.SettingsData;
+using KillSkill.Skills;
 using Skills;
 using StatusEffects;
 using TMPro;

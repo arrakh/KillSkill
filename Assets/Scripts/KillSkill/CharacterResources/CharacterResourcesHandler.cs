@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using Actors;
 using Arr;
-using UnityEngine;
+using CharacterResources;
 
-namespace CharacterResources
+namespace KillSkill.CharacterResources
 {
-    public class CharacterResourcesHandler : IDisposable
+    public partial class CharacterResourcesHandler : IDisposable
     {
-        public delegate void ResourceAssignedDelegate<T>(T resource) where T : ICharacterResource;
-        
-        private readonly Dictionary<Type, Action> onUnassignedObservers = new();
-        private readonly Dictionary<Type, Delegate> onAssignedObservers = new();
-
-        private PersistentEventTemplate<Type, ICharacterResource> onAnyResourceAssigned = new();
-        private PersistentEventTemplate<Type> onAnyResourceUnassigned = new();
-
         private Dictionary<Type, ICharacterResource> resources = new();
 
         private HashSet<Type> recentlyUnassigned = new();
+
+        public IReadOnlyDictionary<Type, ICharacterResource> Current => resources;
 
         public void Assign<T>(T newResource, bool overrideExisting = false) where T : ICharacterResource
         {
@@ -48,6 +41,8 @@ namespace CharacterResources
         public bool IsAssigned<T>() where T : ICharacterResource
             => resources.ContainsKey(typeof(T));
 
+        public IEnumerable<ICharacterResource> GetAll() => resources.Values;
+
         public T Get<T>() where T : ICharacterResource
         {
             if (resources[typeof(T)] is T t) return t;
@@ -62,30 +57,6 @@ namespace CharacterResources
             instance = t;
             return true;
         }
-
-        public void ObserveUnassigned<T>(Action onUnassigned, bool persistent = true) where T : ICharacterResource
-        {
-            var type = typeof(T);
-            if (persistent && recentlyUnassigned.Contains(type)) onUnassigned.Invoke();
-            
-            onUnassignedObservers[type] += onUnassigned;
-        }
-
-        public void ObserveAssigned<T>(ResourceAssignedDelegate<T> onAssigned, bool persistent = true) where T : ICharacterResource
-        {
-            var type = typeof(T);
-            if (persistent && resources.TryGetValue(type, out var resource)) 
-                onAssigned.Invoke((T)resource);
-
-            if (!onAssignedObservers.ContainsKey(type)) onAssignedObservers[type] = onAssigned;
-            else onAssignedObservers[type] = Delegate.Combine(onAssignedObservers[type], onAssigned);
-        }
-
-        public void ObserveAnyAssigned(EventTemplate<Type, ICharacterResource>.EventHandler onAnyAssigned)
-            => onAnyResourceAssigned.Subscribe(onAnyAssigned);
-
-        public void ObserveAnyUnassigned(EventTemplate<Type>.EventHandler onAnyUnassigned)
-            => onAnyResourceAssigned.Subscribe(onAnyUnassigned);
         
         private bool disposed;
         public void Dispose()

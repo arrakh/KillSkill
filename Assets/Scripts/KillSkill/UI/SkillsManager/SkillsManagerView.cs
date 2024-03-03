@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Arr.ViewModuleSystem;
 using KillSkill.SessionData.Implementations;
+using KillSkill.Skills;
 using KillSkill.UI.Navigation;
 using SessionData.Implementations;
 using Skills;

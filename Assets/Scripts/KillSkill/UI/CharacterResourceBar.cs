@@ -1,14 +1,14 @@
 ﻿using System;
-using Actors;
 using CharacterResources;
-using CharacterResources.Implementations;
+using KillSkill.Characters;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
 {
-    public class ResourceBarDisplaySettings
+    public class ResourceBarDisplay
     {
+        public double value;
         public double min;
         public double max;
         public Color barColor;
@@ -22,7 +22,6 @@ namespace UI
         private bool isActive;
         private ICharacterResource assignedResource;
         private IResourceBarDisplay barDisplay;
-        private ResourceBarDisplaySettings displaySettings;
 
         public bool IsActive => isActive;
 
@@ -30,12 +29,10 @@ namespace UI
         {
             assignedResource = resource;
             barDisplay = display;
-            displaySettings = display.GetDisplaySettings(target);
 
-            fillImage.color = displaySettings.barColor;
-            Debug.Log($"WILL SET COLOR TO {displaySettings.barColor}", gameObject);
+            OnDisplayUpdated(display.DisplayData);
             
-            resource.OnUpdated += OnResourceUpdated;
+            display.OnUpdateDisplay += OnDisplayUpdated;
             gameObject.SetActive(true);
             isActive = true;
         }
@@ -43,17 +40,17 @@ namespace UI
         public void Unassign()
         {
             gameObject.SetActive(false);
-            assignedResource.OnUpdated -= OnResourceUpdated;
+            barDisplay.OnUpdateDisplay -= OnDisplayUpdated;
             isActive = false;
         }
 
-        private void OnResourceUpdated(double oldVal, double newVal)
+        private void OnDisplayUpdated(ResourceBarDisplay display)
         {
-            var min = (float) displaySettings.min;
-            var max = (float) displaySettings.max;
+            var min = (float) display.min;
+            var max = (float) display.max;
 
-            slider.value = Mathf.Clamp01(Mathf.InverseLerp(min, max, (float) newVal));
-            fillImage.color = displaySettings.barColor;
+            slider.value = Mathf.Clamp01(Mathf.InverseLerp(min, max, (float) display.value));
+            fillImage.color = display.barColor;
         }
     }
 }

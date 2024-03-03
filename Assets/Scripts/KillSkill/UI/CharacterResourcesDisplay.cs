@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Actors;
 using CharacterResources;
+using KillSkill.Characters;
 using UnityEngine;
 
 namespace UI
@@ -50,6 +50,7 @@ namespace UI
 
         private void OnAnyUnassigned(Type type)
         {
+            Debug.Log($"UNASSIGNING {type.Name}");
             if (!activeBars.Remove(type, out var bar)) return;
             bar.Unassign();
         }

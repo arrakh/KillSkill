@@ -2,8 +2,8 @@
 {
     public static class Archetypes
     {
-        public const string WARRIOR = "archetype-warrior";
-        public const string HEALER = "archetype-healer";
-        public const string MAGE = "archetype-mage";
+        public const string FIGHTER = "archetype-fighter";
+        public const string HEAVY_KNIGHT = "archetype-heavy-knight";
+        public const string ASSASSIN = "archetype-assassin";
     }
 }

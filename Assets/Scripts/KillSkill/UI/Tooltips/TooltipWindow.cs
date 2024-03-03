@@ -39,8 +39,8 @@ namespace UI.Tooltips
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.LeftAlt)) SetExtraContentVisible(true);
-            else if (Input.GetKeyUp(KeyCode.LeftAlt)) SetExtraContentVisible(false);
+            if (hasExtraContent && Input.GetKeyDown(KeyCode.LeftAlt)) SetExtraContentVisible(true);
+            else if (hasExtraContent && Input.GetKeyUp(KeyCode.LeftAlt)) SetExtraContentVisible(false);
             
             CalculatePosition();
         }
@@ -72,7 +72,7 @@ namespace UI.Tooltips
             Vector2 targetPivot = new Vector2(quadrantX, quadrantY);
 
             Vector2 currentPivot = windowRect.pivot;
-            windowRect.pivot = Vector2.Lerp(currentPivot, targetPivot, Time.deltaTime * pivotLerpSpeed);
+            windowRect.pivot = Vector2.Lerp(currentPivot, targetPivot, Time.unscaledDeltaTime * pivotLerpSpeed);
         }
 
         public void Animate(bool isAnimatingIn)

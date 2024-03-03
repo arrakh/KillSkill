@@ -13,18 +13,8 @@ MonoBehaviour:
   m_Name: Archetype Database
   m_EditorClassIdentifier: 
   data:
-  - id: archetype-warrior
-    name: Warrior
+  - id: archetype-fighter
+    name: Fighter
     description: Born from the ashes, risen with rage and hatred.
     bannerColor: {r: 0.5019608, g: 0, b: 0, a: 1}
     contentColor: {r: 0.30980393, g: 0.10980393, b: 0.10980393, a: 1}
-  - id: archetype-healer
-    name: Healer
-    description: Tend the sick, Mend the wound. Plunge thy enemies to their doom.
-    bannerColor: {r: 0.14117648, g: 0.37647063, b: 0.039215688, a: 1}
-    contentColor: {r: 0.10980393, g: 0.30980393, b: 0.14509805, a: 1}
-  - id: archetype-mage
-    name: Mage
-    description: A myth forged in the crucible of magic.
-    bannerColor: {r: 0.09545212, g: 0.09545212, b: 0.3679245, a: 1}
-    contentColor: {r: 0.03804734, g: 0.03804734, b: 0.14150941, a: 1}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Actors;
+using KillSkill.Characters;
+using KillSkill.StatusEffects;
 using StatusEffects;
 using TMPro;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace UI
             c.StatusEffects.OnRemoved += OnStatusEffectRemoved;
         }
 
-        private void OnStatusEffectAdded(StatusEffect effect)
+        private void OnStatusEffectAdded(IStatusEffect effect)
         {
             var type = effect.GetType();
             if (spawnedElements.ContainsKey(type))
@@ -39,7 +40,7 @@ namespace UI
             element.Initialize(effect);
         }
         
-        private void OnStatusEffectRemoved(StatusEffect effect)
+        private void OnStatusEffectRemoved(IStatusEffect effect)
         {
             var type = effect.GetType();
             if (!spawnedElements.TryGetValue(type, out var element))

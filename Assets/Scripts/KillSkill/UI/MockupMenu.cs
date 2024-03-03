@@ -27,16 +27,20 @@ namespace KillSkill.UI
 
         private ResourcesSessionData resourcesSession;
         private SkillsSessionData skillsSession;
+        private BattleSessionData battleSession;
+        
         private void Start()
         {
             resourcesSession = Session.GetData<ResourcesSessionData>();
             skillsSession = Session.GetData<SkillsSessionData>();
+            battleSession = Session.GetData<BattleSessionData>();
             
             skillsManager.Display(resourcesSession, skillsSession);
             
             navigationView.AddSection(skillsManager);
             navigationView.AddSection(arenaView);
             navigationView.Select(skillsManager);
+            arenaView.Display(battleSession);
             GlobalEvents.Instance.RegisterMultiple(this);
         }
 

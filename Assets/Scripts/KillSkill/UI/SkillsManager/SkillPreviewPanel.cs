@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Arr.EventsSystem;
 using KillSkill.SessionData.Events;
 using KillSkill.SessionData.Implementations;
+using KillSkill.Skills;
 using KillSkill.UI.SkillsManager.Events;
 using Skills;
 using TMPro;

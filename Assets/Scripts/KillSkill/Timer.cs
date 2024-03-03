@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
+namespace KillSkill
 {
     public class Timer
     {

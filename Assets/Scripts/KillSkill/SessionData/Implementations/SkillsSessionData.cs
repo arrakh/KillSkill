@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Arr.EventsSystem;
 using KillSkill.SessionData.Events;
+using KillSkill.Skills;
+using KillSkill.Skills.Implementations.Fighter;
 using SessionData.Implementations;
 using Skills;
 using UnityEngine;
@@ -13,9 +15,9 @@ namespace KillSkill.SessionData.Implementations
     {
         private List<Skill> loadout = new()
         {
-            null,
-            new AttackSkill(),
-            null,
+            new SlashSkill(),
+            new VigorSkill(),
+            new QuickBlockSkill(),
             null,
             null,
             null,
@@ -25,8 +27,9 @@ namespace KillSkill.SessionData.Implementations
 
         private HashSet<Type> ownedSkills = new()
         {
-            typeof(AttackSkill),
-            typeof(BlockStunSkill)
+            typeof(SlashSkill),
+            typeof(VigorSkill),
+            typeof(QuickBlockSkill),
         };
 
         public IReadOnlyCollection<Skill> Loadout => loadout;

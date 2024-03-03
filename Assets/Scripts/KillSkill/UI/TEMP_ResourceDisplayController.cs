@@ -1,5 +1,5 @@
 ﻿using System;
-using Actors;
+using KillSkill.Characters;
 using UnityEngine;
 
 namespace UI

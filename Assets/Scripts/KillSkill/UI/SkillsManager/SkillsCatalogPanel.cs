@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using KillSkill.Database;
 using KillSkill.SessionData.Implementations;
+using KillSkill.Skills;
 using Skills;
 using UnityEngine;
 
@@ -24,12 +25,19 @@ namespace KillSkill.UI.SkillsManager
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => typeof(Skill).IsAssignableFrom(type) && type != typeof(Skill));
 
+            var skillsToSpawn = new List<Skill>();
+            
             foreach (var skillType in allSkills)
             {
                 var instance = Activator.CreateInstance(skillType);
                 if (instance is not Skill skill) throw new Exception($"Trying to display catalog but Type {skillType} is not a SKILL");
-                if (!skill.CatalogEntry.Purchasable) continue;
+                if (skill.CatalogEntry.hideInCatalog) continue;
 
+                skillsToSpawn.Add(skill);    
+            }
+
+            foreach (var skill in skillsToSpawn.OrderBy(x => x.CatalogEntry.order))
+            {
                 var archetype = skill.CatalogEntry.archetypeId;
                 
                 if (!ArchetypesDatabase.TryGet(archetype, out var archetypeData))

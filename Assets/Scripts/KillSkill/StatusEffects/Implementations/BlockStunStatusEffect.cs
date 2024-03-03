@@ -1,10 +1,11 @@
-﻿using Actors;
-using DG.Tweening;
+﻿using DG.Tweening;
+using KillSkill.Characters;
+using KillSkill.StatusEffects;
 using UnityEngine;
 
 namespace StatusEffects
 {
-    public class BlockStunStatusEffect : StatusEffect, IModifyDamageStatusEffect
+    /*public class BlockStunStatusEffect : IStatusEffect, IModifyDamageStatusEffect
     {
         private float stunDuration;
         public override string DisplayName => "Blocking";
@@ -28,5 +29,5 @@ namespace StatusEffects
             damage = 0;
             if (damager != null) damager.StatusEffects.Add(new StunStatusEffect(stunDuration));
         }
-    }
+    }*/
 }

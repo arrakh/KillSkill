@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Actors;
 using DG.Tweening;
+using KillSkill.Characters;
+using KillSkill.StatusEffects;
 using UnityEngine;
 
 namespace StatusEffects
@@ -14,7 +15,7 @@ namespace StatusEffects
         public event StatusEffectEvent OnRemoved;
         public event StatusEffectEvent OnUpdated;
         
-        private Dictionary<Type, StatusEffect> statusEffects = new();
+        private Dictionary<Type, IStatusEffect> statusEffects = new();
         private Character character;
 
         public StatusEffectsHandler(Character character)
@@ -26,10 +27,11 @@ namespace StatusEffects
         {
             foreach (var statusEffect in statusEffects.Values.ToList())
             {
-                statusEffect.UpdateDuration(deltaTime);
+                if (statusEffect is ITimerStatusEffect timer) timer.UpdateDuration(deltaTime);
+                
                 if (statusEffect.IsActive)
                 {
-                    statusEffect.OnUpdate(character);
+                    statusEffect.OnUpdate(character, deltaTime);
                     OnUpdated?.Invoke(statusEffect);
                 }
                 else
@@ -41,7 +43,7 @@ namespace StatusEffects
             }
         }
         
-        public void Add(StatusEffect statusEffect)
+        public void Add(IStatusEffect statusEffect)
         {
             var type = statusEffect.GetType();
             if (statusEffects.TryGetValue(type, out var effect))
@@ -57,7 +59,7 @@ namespace StatusEffects
             OnAdded?.Invoke(statusEffect);
         }
 
-        public void Remove<T>() where T : StatusEffect
+        public void Remove<T>() where T : IStatusEffect
         {
             var toRemove = statusEffects[typeof(T)]; 
             toRemove.OnRemoved(character);
@@ -86,6 +88,6 @@ namespace StatusEffects
             return false;
         }
 
-        public IEnumerable<StatusEffect> GetAll() => statusEffects.Values;
+        public IEnumerable<IStatusEffect> GetAll() => statusEffects.Values;
     }
 }

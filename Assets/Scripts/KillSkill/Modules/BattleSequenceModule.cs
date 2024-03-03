@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
-using Actors;
+using System.Collections.Generic;
 using DefaultNamespace;
+using KillSkill.Battle;
+using KillSkill.Characters;
 using KillSkill.Constants;
 using KillSkill.SessionData;
+using KillSkill.SessionData.Implementations;
 using KillSkill.UI.Game;
 using SessionData.Implementations;
 using UI;
@@ -18,18 +21,19 @@ namespace Modules
         [SerializeField] private CountdownUI countdown;
         [SerializeField] private Character player, enemy;
 
-        private bool hasPlayerWon;
+        private float battleTimeSeconds = 0f;
+
+        private bool hasPlayerWon, isBattlePaused;
 
         private BattleResultData result;
-        
+
         private IEnumerator Start()
         {
             player.onDeath += OnAnyDeath;
             enemy.onDeath += OnAnyDeath;
             
-            player.SetBattlePaused(true);
-            enemy.SetBattlePaused(true);
-
+            SetBattlePause(true);
+            
             for (int i = 3; i > 0; i--)
             {
                 countdown.Count(i);
@@ -38,8 +42,20 @@ namespace Modules
             
             countdown.Count(0);
             
-            player.SetBattlePaused(false);
-            enemy.SetBattlePaused(false);
+            SetBattlePause(false);
+        }
+
+        private void Update()
+        {
+            if (isBattlePaused) return;
+            battleTimeSeconds += Time.deltaTime;
+        }
+
+        public void SetBattlePause(bool pause)
+        {
+            isBattlePaused = pause;
+            player.SetBattlePaused(pause);
+            enemy.SetBattlePaused(pause);
         }
 
         public void OnAnyDeath()
@@ -47,32 +63,26 @@ namespace Modules
             player.onDeath -= OnAnyDeath;
             enemy.onDeath -= OnAnyDeath;
 
+            SetBattlePause(true);
+
             hasPlayerWon = player.IsAlive;
 
-            result = new()
-            {
-                playerWon = hasPlayerWon,
-                gainedResources = new()
-                {
-                    {GameResources.COINS, hasPlayerWon ? Random.Range(40, 70) : 0}
-                }
-            };
+            var battleSession = Session.GetData<BattleSessionData>();
+
+            var state = new BattleResultState(hasPlayerWon, player.Resources.Current, enemy.Resources.Current, battleTimeSeconds);
+
+            result = new(hasPlayerWon, battleSession.CalculateReward(state));
 
             var resourcesSession = Session.GetData<ResourcesSessionData>();
             
             foreach (var resource in result.gainedResources)
                 resourcesSession.AddResource(resource.Key, resource.Value);
-            
-            Debug.Log("WINNNNN");
-            
+
             StartCoroutine(EndingSequence());
         }
 
         private IEnumerator EndingSequence()
         {
-            player.SetBattlePaused(true);
-            enemy.SetBattlePaused(true);
-            
             Time.timeScale = 0.2f;
 
             var animTime = 3f;

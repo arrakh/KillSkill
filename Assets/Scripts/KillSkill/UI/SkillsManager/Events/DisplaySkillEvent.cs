@@ -1,3 +1,4 @@
+using KillSkill.Skills;
 using Skills;
 
 namespace KillSkill.UI.SkillsManager.Events

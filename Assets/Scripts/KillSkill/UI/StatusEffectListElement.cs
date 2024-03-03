@@ -1,4 +1,5 @@
-﻿using StatusEffects;
+﻿using KillSkill.StatusEffects;
+using StatusEffects;
 using UI.Tooltips;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +11,9 @@ namespace UI
         [SerializeField] private Image iconImage;
         [SerializeField] private Image fillImage;
 
-        private StatusEffect statusEffect;
+        private IStatusEffect statusEffect;
 
-        public void Initialize(StatusEffect status)
+        public void Initialize(IStatusEffect status)
         {
             statusEffect = status;
             var desc = status.Description;
@@ -23,7 +24,13 @@ namespace UI
         public void Update()
         {
             if (statusEffect == null) return;
-            fillImage.fillAmount = statusEffect.NormalizedDuration;
+            
+            if (statusEffect is ITimerStatusEffect timer)
+            {
+                fillImage.fillAmount = timer.NormalizedDuration;
+                fillImage.enabled = true;
+            }
+            else fillImage.enabled = false;
         }
 
         public bool HasData() => statusEffect is {IsActive: true};

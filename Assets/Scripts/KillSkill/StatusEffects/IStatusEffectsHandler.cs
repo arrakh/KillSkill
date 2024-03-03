@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using KillSkill.StatusEffects;
 
 namespace StatusEffects
 {
-    public delegate void StatusEffectEvent(StatusEffect effect);
+    public delegate void StatusEffectEvent(IStatusEffect effect);
 
     public interface IStatusEffectsHandler
     {
@@ -10,10 +11,10 @@ namespace StatusEffects
         public event StatusEffectEvent OnRemoved;
         public event StatusEffectEvent OnUpdated;
         
-        public void Add(StatusEffect statusEffect);
-        public void Remove<T>() where T : StatusEffect;
+        public void Add(IStatusEffect statusEffect);
+        public void Remove<T>() where T : IStatusEffect;
         public void RemoveAny<T>();
         public bool Has<T>();
-        public IEnumerable<StatusEffect> GetAll();
+        public IEnumerable<IStatusEffect> GetAll();
     }
 }

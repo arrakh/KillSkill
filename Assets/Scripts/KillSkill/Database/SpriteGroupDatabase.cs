@@ -10,7 +10,7 @@ namespace Database
         public static Sprite Get(string id) => SpriteGroupDatabase.GetSprite(id);
     }
     
-    [CreateAssetMenu(menuName = "Sprite Group DB")]
+    [CreateAssetMenu(menuName = "Scriptable DBs/Sprite Group DB")]
     public class SpriteGroupDatabase : ObjectScriptableDatabase<SpriteGroupData>
     {
         private static Dictionary<string, Sprite> _spriteMap = new();

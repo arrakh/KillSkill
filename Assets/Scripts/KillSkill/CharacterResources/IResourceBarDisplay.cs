@@ -1,10 +1,12 @@
-﻿using Actors;
+﻿using System;
+using KillSkill.Characters;
 using UI;
 
 namespace CharacterResources
 {
     public interface IResourceBarDisplay
     {
-        public ResourceBarDisplaySettings GetDisplaySettings(Character character);
+        public event Action<ResourceBarDisplay> OnUpdateDisplay; 
+        public ResourceBarDisplay DisplayData { get; }
     }
 }

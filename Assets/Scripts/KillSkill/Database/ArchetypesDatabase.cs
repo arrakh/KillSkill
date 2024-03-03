@@ -15,7 +15,7 @@ namespace KillSkill.Database
         public string Key => id;
     }
     
-    [CreateAssetMenu(menuName = "Archetype DB")]
+    [CreateAssetMenu(menuName = "Scriptable DBs/Archetype DB")]
     public class ArchetypesDatabase : PairScriptableDatabase<string, ArchetypeData>
     {
         

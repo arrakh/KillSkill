@@ -2,8 +2,10 @@
 using Arr.ViewModuleSystem;
 using DefaultNamespace;
 using DG.Tweening;
+using KillSkill.Battle;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace KillSkill.UI.Game
@@ -27,12 +29,12 @@ namespace KillSkill.UI.Game
 
         private void OnExit()
         {
-            
+            SceneManager.LoadScene("Menu");
         }
 
         private void OnRetry()
         {
-            
+            SceneManager.LoadScene("Game");
         }
 
         public void Display(BattleResultData result)

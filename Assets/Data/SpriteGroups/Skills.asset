@@ -14,11 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groupId: Skills
   sprites:
-  - id: skill-attack
+  - id: skill-slash
     sprite: {fileID: 21300000, guid: 66ccc6676fc4f2a4f9b8bb246f916160, type: 3}
-  - id: skill-heal
+  - id: skill-vigor
     sprite: {fileID: 21300000, guid: fdf20c71758a39847b887e4137176bce, type: 3}
-  - id: skill-sacrifice
-    sprite: {fileID: 21300000, guid: e695ae8879de10c48a4762f4e7b57bbb, type: 3}
-  - id: skill-block-stun
+  - id: skill-quick-block
     sprite: {fileID: 21300000, guid: ad4b6830aeca2904bb056d817eb8a793, type: 3}

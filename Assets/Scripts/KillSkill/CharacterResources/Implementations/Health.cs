@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Linq;
-using Actors;
+using CharacterResources;
+using KillSkill.Characters;
 using StatusEffects;
 using UI;
 using UnityEngine;
 
-namespace CharacterResources.Implementations
+namespace KillSkill.CharacterResources.Implementations
 {
     public class Health : ICharacterResource, IResourceBarDisplay
     {
-        public event Action<double, double> OnUpdated;
+        public event Action<ResourceBarDisplay> OnUpdateDisplay;
+        public ResourceBarDisplay DisplayData { get; private set; }
 
         private Character character;
         private double health, maxHealth;
@@ -21,15 +23,14 @@ namespace CharacterResources.Implementations
             this.character = character;
             this.health = health;
             this.maxHealth = maxHealth;
-        }
-        
-        public ResourceBarDisplaySettings GetDisplaySettings(Character character)
-        {
-            bool isPlayer = character is Player;
+            
+            bool isPlayer = character is PlayerCharacter;
             var playerColor = new Color(165f / 255f, 1f, 97f / 255f);
             var enemyColor = new Color(1f, 25f / 255f, 25f / 255f);
-            return new()
+
+            DisplayData = new()
             {
+                value = health,
                 min = 0,
                 max = Max,
                 barColor = isPlayer ? playerColor : enemyColor
@@ -44,13 +45,18 @@ namespace CharacterResources.Implementations
         {
             if (health > maxHealth) health = maxHealth;
         }
-
+        
+        private void UpdateDisplay()
+        {
+            DisplayData.value = health;
+            OnUpdateDisplay?.Invoke(DisplayData);
+        }
+        
         public bool TrySet(double value, Character instigator)
         {
-            var oldHealth = health;
             health = value;
             Clamp();
-            OnUpdated?.Invoke(oldHealth, health);
+            UpdateDisplay();
             return true;
         }
 
@@ -64,30 +70,39 @@ namespace CharacterResources.Implementations
         
         private bool TryHeal(double delta, Character instigator)
         {
-            foreach (var statusEffect in character.StatusEffects.GetAll())
-                if(statusEffect is IModifyHealStatusEffect modifier)
+            foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
+                if(statusEffect is IModifyHeal modifier)
+                    modifier.ModifyHeal(instigator, ref delta);
+            
+            foreach (var resource in character.Resources.GetAll().ToList())
+                if(resource is IModifyHeal modifier)
                     modifier.ModifyHeal(instigator, ref delta);
 
             if (delta <= 0) return false;
 
-            var oldHealth = health;
             health += delta;
             Clamp();
-            OnUpdated?.Invoke(oldHealth, health);
+            UpdateDisplay();
+
             return true;
         }
 
         private bool TryHarm(double delta, Character instigator)
         {
             foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
-                if(statusEffect is IModifyDamageStatusEffect modifier)
+                if(statusEffect is IModifyDamage modifier)
+                    modifier.ModifyDamage(instigator, ref delta);
+            
+            foreach (var resource in character.Resources.GetAll().ToList())
+                if(resource is IModifyDamage modifier)
                     modifier.ModifyDamage(instigator, ref delta);
 
             if (delta <= 0) return false;
             
-            var oldHealth = health;
             health -= delta;
-            OnUpdated?.Invoke(oldHealth, health);
+            
+            UpdateDisplay();
+
             if (health > 0) return true;
 
             character.Kill();

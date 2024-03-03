@@ -1,11 +1,9 @@
-using Actors;
-using DefaultNamespace;
-using StatusEffects;
-using UnityEngine;
+using KillSkill.Characters;
+using Skills;
 
-namespace Skills
+namespace KillSkill.Skills
 {
-    //plan: MAKE THIS AN ISKILL
+    //todo: MAKE THIS AN ISKILL
     //HAVE IT BE HANDLED IN SKILLHANDLER IN CHARACTER
     //SKILLHANDLER WILL HAVE WRAPPER THAT TAKES AWAY THE IMPLEMENTATION OF A SKILL
     //HAVE SKILL HAVE INTERFACES LIKE ICOOLDOWNSKILL

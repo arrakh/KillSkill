@@ -1,13 +1,13 @@
 ﻿using System;
-using Actors;
 using Database;
+using KillSkill.Characters;
+using KillSkill.StatusEffects;
+using KillSkill.StatusEffects.Implementations.Core;
 
 namespace StatusEffects
 {
-    public class CastingStatusEffect : StatusEffect, IPreventCasting
+    public class CastingStatusEffect : TimerStatusEffect
     {
-        public override string DisplayName => "Casting";
-
         public override StatusEffectDescription Description => new()
         {
             icon = SpriteDatabase.Get("status-casting"),
@@ -26,7 +26,7 @@ namespace StatusEffects
 
         public override void OnRemoved(Character target)
         {
-            if (IsActive) onChargingInterrupted?.Invoke();
+            if (timer.IsActive) onChargingInterrupted?.Invoke();
             else onDoneCharging?.Invoke();
         }
     }

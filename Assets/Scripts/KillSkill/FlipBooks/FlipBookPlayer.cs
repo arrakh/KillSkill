@@ -7,27 +7,31 @@ namespace FlipBooks
     public class FlipBookPlayer : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private FlipBookAsset[] flipBooks;
-        [SerializeField] private FlipBookAsset defaultFlipBook;
         
-        private FlipBook flipBook;
+        private FlipBook currentFlipBook;
+        private FlipBook defaultFlipBook;
         private Dictionary<string, FlipBook> collection = new();
+        
         private float playSpeed = 1f;
         private float currentTime = 0f;
         private bool shouldCallback = false;
+        private bool revertToDefault = true;
         private Action onCurrentDone;
         
-        public void Initialize()
+        public void Initialize(FlipBook @default, IEnumerable<FlipBook> flipBooks)
         {
+            collection.Clear();
+            defaultFlipBook = @default;
+            collection[defaultFlipBook.Id] = defaultFlipBook;
             foreach (var entry in flipBooks)
-                collection[entry.flipBook.Id.ToLowerInvariant()] = entry.flipBook;
+                collection[entry.Id.ToLowerInvariant()] = entry;
         }
 
         public bool Has(string id) => collection.ContainsKey(id);
 
-        public void Play(string id, float speed = 1f, Action onDone = null)
+        public void Play(string id, float speed = 1f, Action onDone = null, bool revertToDefaultOnDone = true)
         {
-            if (!collection.TryGetValue(id.ToLowerInvariant(), out flipBook))
+            if (!collection.TryGetValue(id.ToLowerInvariant(), out currentFlipBook))
             {
                 Debug.LogError($"COULD NOT FIND FLIPBOOK ID {id}");
                 return;
@@ -37,29 +41,23 @@ namespace FlipBooks
             currentTime = 0;
             shouldCallback = onDone != null;
             onCurrentDone = onDone;
+            revertToDefault = revertToDefaultOnDone;
         }
 
         private void Update()
         {
-            if (flipBook == null) return;
+            if (currentFlipBook == null) return;
             currentTime += Time.deltaTime * playSpeed;
-            if (!flipBook.IsLooping && currentTime > flipBook.TotalDuration)
+            if (!currentFlipBook.IsLooping && currentTime > currentFlipBook.TotalDuration)
             {
                 if (shouldCallback)
                 {
                     shouldCallback = false;
                     onCurrentDone?.Invoke();
                 }
-                else flipBook = defaultFlipBook.flipBook;
+                else if (revertToDefault) currentFlipBook = defaultFlipBook;
             }
-            spriteRenderer.sprite = flipBook.GetFrame(currentTime);
+            spriteRenderer.sprite = currentFlipBook.GetFrame(currentTime);
         }
-
-        #if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (defaultFlipBook == null && flipBooks.Length > 0) defaultFlipBook = flipBooks[0];
-        }
-        #endif
     }
 }

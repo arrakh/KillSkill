@@ -12,7 +12,7 @@ namespace DefaultNamespace.Database
         public Sprite sprite;
     }
     
-    [CreateAssetMenu(menuName = "Sprite Group")]
+    [CreateAssetMenu(menuName = "Scriptable DBs/Sprite Group")]
     public class SpriteGroupData : ScriptableObject, IScriptableKey
     {
         [SerializeField] private string groupId;
