@@ -31,6 +31,9 @@ namespace KillSkill.UI.SkillsManager
         }
 
         //todo: Should sit in the view module
+        public Skill GetCurrentlyDisplayed() => skillPreviewPanel.CurrentSkill;
+        
+        //todo: Should sit in the view module
         int INavigateSection.Order => 1;
         string INavigateSection.Name => "Skills";
         void INavigateSection.OnNavigate(bool selected)

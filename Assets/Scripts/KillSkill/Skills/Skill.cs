@@ -12,12 +12,13 @@ namespace KillSkill.Skills
         private readonly Timer cd;
         
         public virtual string DisplayName => string.Empty;
-        public virtual SkillMetadata Metadata => SkillMetadata.Empty;
         
         public Timer Cooldown => cd;
 
+        //todo: THIS IS IMMUTABLE DATA, SHOULD BE SEPARATED FROM AN INSTANCE OF A SKILL
         protected abstract float CooldownTime { get; }
         public virtual CatalogEntry CatalogEntry => CatalogEntry.NonPurchasable;
+        public virtual SkillMetadata Metadata => SkillMetadata.Empty;
 
         protected Skill()
         {

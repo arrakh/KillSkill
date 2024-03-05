@@ -2,6 +2,7 @@
 using System.Linq;
 using CharacterResources;
 using KillSkill.Characters;
+using KillSkill.Skills;
 using StatusEffects;
 using UI;
 using UnityEngine;
@@ -59,24 +60,24 @@ namespace KillSkill.CharacterResources.Implementations
             UpdateDisplay();
             return true;
         }
-
-        public bool TryAdd(double delta, Character instigator)
-        {
-            if (instigator == null) return false;
-            if (delta > 0f) return TryHeal(delta, instigator);
-            if (delta < 0f) return TryHarm(-delta, instigator);
-            return false;
-        }
         
-        private bool TryHeal(double delta, Character instigator)
+        public bool TryHeal(ref double delta, Character instigator)
         {
             foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
-                if(statusEffect is IModifyHeal modifier)
-                    modifier.ModifyHeal(instigator, ref delta);
+                if(statusEffect is IModifyIncomingHeal modifier)
+                    modifier.ModifyHeal(instigator, character, ref delta);
             
             foreach (var resource in character.Resources.GetAll().ToList())
-                if(resource is IModifyHeal modifier)
-                    modifier.ModifyHeal(instigator, ref delta);
+                if(resource is IModifyIncomingHeal modifier)
+                    modifier.ModifyHeal(instigator, character, ref delta);
+            
+            foreach (var statusEffect in instigator.StatusEffects.GetAll().ToList())
+                if(statusEffect is IModifyHealingDealt modifier)
+                    modifier.ModifyHeal(instigator, character, ref delta);
+            
+            foreach (var resource in instigator.Resources.GetAll().ToList())
+                if(resource is IModifyHealingDealt modifier)
+                    modifier.ModifyHeal(instigator, character, ref delta);
 
             if (delta <= 0) return false;
 
@@ -87,15 +88,23 @@ namespace KillSkill.CharacterResources.Implementations
             return true;
         }
 
-        private bool TryHarm(double delta, Character instigator)
+        public bool TryDamage(ref double delta, Character instigator)
         {
             foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
-                if(statusEffect is IModifyDamage modifier)
-                    modifier.ModifyDamage(instigator, ref delta);
+                if (statusEffect is IModifyIncomingDamage modifier)
+                    modifier.ModifyDamage(instigator, character, ref delta);
             
             foreach (var resource in character.Resources.GetAll().ToList())
-                if(resource is IModifyDamage modifier)
-                    modifier.ModifyDamage(instigator, ref delta);
+                if(resource is IModifyIncomingDamage modifier)
+                    modifier.ModifyDamage(instigator, character, ref delta);
+            
+            foreach (var statusEffect in instigator.StatusEffects.GetAll().ToList())
+                if (statusEffect is IModifyDamageDealt modifier)
+                    modifier.ModifyDamage(instigator, character, ref delta);
+            
+            foreach (var resource in instigator.Resources.GetAll().ToList())
+                if(resource is IModifyDamageDealt modifier)
+                    modifier.ModifyDamage(instigator, character, ref delta);
 
             if (delta <= 0) return false;
             

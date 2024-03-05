@@ -1,4 +1,5 @@
 ﻿using System;
+using KillSkill.SettingsData;
 using KillSkill.Skills;
 using Skills;
 using TMPro;
@@ -13,6 +14,12 @@ namespace KillSkill.UI.SkillsManager
         [SerializeField] private Button keybindingButton;
         [SerializeField] private TextMeshProUGUI keybindText;
 
+        private int slotIndex;
+
+        public int SlotIndex => slotIndex;
+        
+        int ITooltipElement.UniqueId => gameObject.GetInstanceID();
+        
         public override void Display(Skill toDisplay, Action<SkillDisplay> onClicked)
         {
             base.Display(toDisplay, onClicked);
@@ -26,11 +33,12 @@ namespace KillSkill.UI.SkillsManager
             
         }
 
-        public void SetKeybinding(string keybind)
+        public void SetSlotIndex(int index)
         {
-            keybindText.text = keybind;
+            slotIndex = index;
+            
+            keybindText.text = GameplaySettings.GetFormattedKeybinding(index);
         }
-        
         
         public bool HasData() => skill != null && !skill.Metadata.isEmpty;
 
@@ -39,7 +47,5 @@ namespace KillSkill.UI.SkillsManager
             var desc = skill.Metadata;
             return new TooltipData(desc.icon, desc.name, desc.description);
         }
-
-        public int UniqueId => gameObject.GetInstanceID();
     }
 }

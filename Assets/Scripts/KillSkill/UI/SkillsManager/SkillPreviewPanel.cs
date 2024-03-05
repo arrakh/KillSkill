@@ -25,6 +25,8 @@ namespace KillSkill.UI.SkillsManager
         private bool skillEquipped;
         private Skill skill;
 
+        public Skill CurrentSkill => skill;
+
         private void Awake()
         {
             purchaseButton.onClick.AddListener(OnPurchase);

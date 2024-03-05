@@ -10,7 +10,7 @@ namespace KillSkill.Characters
         public static bool TryDamage(this Character character, Character damager, double damage)
         {
             var health = character.Resources.Get<Health>();
-            bool success = health.TryAdd(-damage, damager);
+            bool success = health.TryDamage(ref damage, damager);
             if (!success) return false;
 
             var maxHealth = health.Max;
@@ -30,8 +30,12 @@ namespace KillSkill.Characters
 
             return true;
         }
-        
+
         public static bool TryHeal(this Character character, Character healer, double heal)
-            => character.Resources.Get<Health>().TryAdd(heal, healer);
+        {
+            //todo: Add effects like damage
+            bool success = character.Resources.Get<Health>().TryHeal(ref heal, healer);
+            return success;
+        }
     }
 }

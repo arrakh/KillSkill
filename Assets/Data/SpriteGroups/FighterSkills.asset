@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 787360125ba44eacb63c2c16bb501733, type: 3}
-  m_Name: Skills
+  m_Name: FighterSkills
   m_EditorClassIdentifier: 
-  groupId: Skills
+  groupId: FighterSkills
   sprites:
   - id: skill-slash
     sprite: {fileID: 21300000, guid: 66ccc6676fc4f2a4f9b8bb246f916160, type: 3}
@@ -20,3 +20,9 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: fdf20c71758a39847b887e4137176bce, type: 3}
   - id: skill-quick-block
     sprite: {fileID: 21300000, guid: ad4b6830aeca2904bb056d817eb8a793, type: 3}
+  - id: skill-vigorous-shield
+    sprite: {fileID: 21300000, guid: cc0dbc09d4b6f5f409e54b5642264162, type: 3}
+  - id: skill-slashing-shield
+    sprite: {fileID: 21300000, guid: 5d14e25487505764199ab0a13d2567bc, type: 3}
+  - id: skill-cleave
+    sprite: {fileID: 21300000, guid: b83477a844b4cc941afc64244c40279c, type: 3}

@@ -12,14 +12,14 @@ using UnityEngine;
 
 namespace KillSkill.UI
 {
-    public struct TestEvent{}
-    
+    //todo: SHOULD BE SEPARATE MODULES
     public class MockupMenu : MonoBehaviour, 
         IEventListener<SkillsUpdatedEvent>,
         IEventListener<EquipSkillEvent>,
         IEventListener<UnequipSkillEvent>,
         IEventListener<PurchaseSkillEvent>,
-        IEventListener<DisplaySkillEvent>
+        IEventListener<DisplaySkillEvent>,
+        IQueryProvider<DisplayedSkillQuery>
     {
         [SerializeField] private SkillsManagerView skillsManager;
         [SerializeField] private NavigationView navigationView;
@@ -83,6 +83,18 @@ namespace KillSkill.UI
         public void OnEvent(DisplaySkillEvent data)
         {
             skillsManager.PreviewSkill(data.skill, skillsSession);
+        }
+
+        public DisplayedSkillQuery OnQuery()
+        {
+            var skill = skillsManager.GetCurrentlyDisplayed();
+            if (skill != null) Debug.Log($"GOT: {skill.Metadata.name}");
+            else Debug.Log("GOT NOTHING???");
+            return new DisplayedSkillQuery()
+            {
+                success = skill != null,
+                skill = skill
+            };
         }
     }
 }

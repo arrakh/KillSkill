@@ -15,7 +15,7 @@ namespace KillSkill.Skills.Implementations.Enemy.Mushroom
 
         private bool charging = false;
 
-        protected override float CooldownTime => 10f;
+        protected override float CooldownTime => 16f;
 
         public override void Execute(Character caster, Character target)
         {

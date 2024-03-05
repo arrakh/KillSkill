@@ -13,30 +13,29 @@ namespace KillSkill.SessionData.Implementations
 {
     public class SkillsSessionData : ISessionData
     {
-        private List<Skill> loadout = new()
+        private List<Type> loadout = new()
         {
-            new SlashSkill(),
-            new VigorSkill(),
-            new QuickBlockSkill(),
+            typeof(SlashSkill),
+            typeof(VigorSkill),
+            null,
             null,
             null,
             null,
         };
         
-        private Dictionary<Type, Skill> loadoutByType = new();
+        private HashSet<Type> loadoutByType = new();
 
         private HashSet<Type> ownedSkills = new()
         {
             typeof(SlashSkill),
             typeof(VigorSkill),
-            typeof(QuickBlockSkill),
         };
 
-        public IReadOnlyCollection<Skill> Loadout => loadout;
+        public IReadOnlyCollection<Type> Loadout => loadout;
 
         public int SlotCount => loadout.Count;
         
-        public bool IsEquipped(Skill skill) => loadoutByType.ContainsKey(skill.GetType());
+        public bool IsEquipped(Skill skill) => loadoutByType.Contains(skill.GetType());
         public bool Owns(Skill skill) => ownedSkills.Contains(skill.GetType());
         public bool Owns<T>() where T : Skill => ownedSkills.Contains(typeof(T));
 
@@ -69,19 +68,32 @@ namespace KillSkill.SessionData.Implementations
 
         public void Equip(Skill skill, int index)
         {
+            if (IsEquipped(skill)) Unequip(skill);
+            
             int finalIndex = index;
             if (index >= loadout.Count) finalIndex = GetFirstUnoccupiedIndex();
 
-            loadout[finalIndex] = skill;
-            loadoutByType[skill.GetType()] = skill;
+            var type = skill.GetType();
+            loadout[finalIndex] = type;
+            loadoutByType.Add(type);
             GlobalEvents.Fire(new SkillsUpdatedEvent(this));
         }
 
         public void Unequip(Skill skill)
         {
             var index = GetSkillIndex(skill.GetType());
-            loadout[index] = null;
-            loadoutByType.Remove(skill.GetType());
+            Unequip(index);
+        }
+
+        public void Unequip(int skillIndex)
+        {
+            if (skillIndex > loadout.Count)
+                throw new Exception($"Cannot unequip index {skillIndex}, loadout only has {loadout.Count} slots!");
+            
+            var skill = loadout[skillIndex];
+            if (skill == null) return;
+            loadoutByType.Remove(skill);
+            loadout[skillIndex] = null;
             GlobalEvents.Fire(new SkillsUpdatedEvent(this));
         }
 
@@ -91,7 +103,7 @@ namespace KillSkill.SessionData.Implementations
             {
                 var skill = loadout[i];
                 if (skill == null) continue;
-                if (skill.GetType() == skillType) return i;
+                if (skill == skillType) return i;
             }
 
             throw new Exception($"Trying to Get skill index for {skillType} but cannot find!");
@@ -128,7 +140,7 @@ namespace KillSkill.SessionData.Implementations
             foreach (var skill in loadout)
             {
                 if (skill == null) continue;
-                loadoutByType[skill.GetType()] = skill;
+                loadoutByType.Add(skill);
             }
         }
 

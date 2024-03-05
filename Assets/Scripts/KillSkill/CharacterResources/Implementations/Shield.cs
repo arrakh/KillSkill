@@ -1,12 +1,13 @@
 ﻿using System;
 using CharacterResources;
 using KillSkill.Characters;
+using KillSkill.Skills;
 using UI;
 using UnityEngine;
 
 namespace KillSkill.CharacterResources.Implementations
 {
-    public class Shield : ICharacterResource, IModifyDamage, IResourceBarDisplay
+    public class Shield : ICharacterResource, IModifyIncomingDamage, IResourceBarDisplay
     {
         public Shield(Character owner, double charge)
         {
@@ -27,6 +28,8 @@ namespace KillSkill.CharacterResources.Implementations
         private double charge;
         private double maxCharge;
 
+        public double Charge => charge;
+
         public void AddCharge(double delta)
         {
             charge += delta;
@@ -42,10 +45,9 @@ namespace KillSkill.CharacterResources.Implementations
             OnUpdateDisplay?.Invoke(DisplayData);
         }
 
-        public void ModifyDamage(Character damager, ref double damage)
+        public void ModifyDamage(Character damager, Character target, ref double damage)
         {
             var lowest = Math.Min(damage, charge);
-            Debug.Log($"[SHIELD] LOWEST {lowest}, DMG {damage}, CHARGE {charge}");
             damage -= lowest;
             charge -= lowest;
 
@@ -56,5 +58,7 @@ namespace KillSkill.CharacterResources.Implementations
 
         public event Action<ResourceBarDisplay> OnUpdateDisplay;
         public ResourceBarDisplay DisplayData { get; private set; }
+
+        public static string StandardDescription() => "When damaged, removes shield instead of health";
     }
 }

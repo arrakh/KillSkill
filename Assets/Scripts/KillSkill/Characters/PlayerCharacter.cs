@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using KillSkill.Characters.Implementations.PlayerData;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
 using KillSkill.SettingsData;
+using KillSkill.Skills;
 using UnityEngine;
 
 namespace KillSkill.Characters
@@ -13,8 +15,20 @@ namespace KillSkill.Characters
         {
             var skillsSession = Session.GetData<SkillsSessionData>();
 
-            skills = skillsSession.Loadout.ToArray();
+            var loadout = skillsSession.Loadout.ToArray();
+            skills = new Skill[loadout.Length];
             
+            for (var i = 0; i < loadout.Length; i++)
+            {
+                var skill = loadout[i];
+                if (skill == null) skills[i] = null;
+                else
+                {
+                    var instance = Activator.CreateInstance(skill) as Skill;
+                    skills[i] = instance;
+                }
+            }
+
             Initialize(new MockupPlayer());
         }
 
