@@ -9,6 +9,12 @@ namespace KillSkill.CharacterResources.Implementations
 {
     public class Shield : ICharacterResource, IModifyIncomingDamage, IResourceBarDisplay
     {
+        private Character owner;
+        private double charge;
+        private double maxCharge;
+
+        public double Charge => charge;
+        
         public Shield(Character owner, double charge)
         {
             this.owner = owner;
@@ -23,12 +29,6 @@ namespace KillSkill.CharacterResources.Implementations
             };
 
         }
-
-        private Character owner;
-        private double charge;
-        private double maxCharge;
-
-        public double Charge => charge;
 
         public void AddCharge(double delta)
         {
@@ -57,7 +57,7 @@ namespace KillSkill.CharacterResources.Implementations
         }
 
         public event Action<ResourceBarDisplay> OnUpdateDisplay;
-        public ResourceBarDisplay DisplayData { get; private set; }
+        public ResourceBarDisplay DisplayData { get; }
 
         public static string StandardDescription() => "When damaged, removes shield instead of health";
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using KillSkill.CharacterResources.Implementations;
 using UnityEngine;
 using VisualEffects.EffectComponents;
@@ -7,6 +8,18 @@ namespace KillSkill.Characters
 {
     public static class CharacterExtensions
     {
+        public static void AnimateMoveTowards(this Character character, Character target, float time, Ease ease, float distanceModifier = 1f, Action onComplete = null)
+        {
+            var cPos = character.Animator.Visual.position;
+            var tPos = target.Animator.Visual.position;
+            float distance = tPos.x - cPos.x;
+            float realDistance = distance * distanceModifier;
+            
+            Tween forward = character.Animator.Visual.DOMoveX(cPos.x + realDistance, time).SetEase(ease);
+            if (onComplete != null) forward.OnComplete(() => { onComplete(); }); 
+            character.Animator.AddTweens(forward);
+        }
+        
         public static bool TryDamage(this Character character, Character damager, double damage)
         {
             var health = character.Resources.Get<Health>();

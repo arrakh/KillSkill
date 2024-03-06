@@ -4,6 +4,7 @@ using Arr.EventsSystem;
 using KillSkill.SessionData.Events;
 using KillSkill.Skills;
 using KillSkill.Skills.Implementations.Fighter;
+using KillSkill.Skills.Implementations.HeavyKnight;
 using SessionData.Implementations;
 using Skills;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace KillSkill.SessionData.Implementations
         {
             typeof(SlashSkill),
             typeof(VigorSkill),
-            null,
+            typeof(SmashSkill),
             null,
             null,
             null,
@@ -29,6 +30,7 @@ namespace KillSkill.SessionData.Implementations
         {
             typeof(SlashSkill),
             typeof(VigorSkill),
+            typeof(SmashSkill),
         };
 
         public IReadOnlyCollection<Type> Loadout => loadout;

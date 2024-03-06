@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace KillSkill.StatusEffects.Implementations
 {
-    public class StunStatusEffect : TimerStatusEffect, IPreventCasting
+    public class StunStatusEffect : TimerStatusEffect, IPreventSkillExecution
     {
         public override void OnAdded(Character target)
         {

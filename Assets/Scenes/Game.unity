@@ -2246,12 +2246,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1973616715}
     - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
-      propertyPath: m_StartCorner
-      value: 1
+      propertyPath: m_CellSize.x
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
-      propertyPath: m_ChildAlignment
-      value: 2
+      propertyPath: m_CellSize.y
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 9204082206836138942, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_Name
@@ -6238,8 +6238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectController: {fileID: 2005726121}
-  hp: 500
-  maxHp: 500
+  hp: 450
+  maxHp: 450
   animator: {fileID: 1973616718}
   battlePause: 1
   target: {fileID: 1773989687}
@@ -6930,6 +6930,14 @@ PrefabInstance:
     - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_CellSize.y
       value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
+      propertyPath: m_StartCorner
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9204082206836138942, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_Name

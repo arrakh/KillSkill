@@ -21,10 +21,10 @@ namespace VisualEffects
         {
             base.Initialize();
 
-            foreach (var key in _dict)
+            /*foreach (var key in _dict)
             {
                 Debug.Log($"UNITY EFFECT {key.Key}");
-            }
+            }*/
         }
     }
 }

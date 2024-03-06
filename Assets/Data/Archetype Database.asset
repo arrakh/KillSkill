@@ -18,3 +18,8 @@ MonoBehaviour:
     description: Born from the ashes, risen with rage and hatred.
     bannerColor: {r: 0.5019608, g: 0, b: 0, a: 1}
     contentColor: {r: 0.30980393, g: 0.10980393, b: 0.10980393, a: 1}
+  - id: archetype-heavy-knight
+    name: Heavy Knight
+    description: Forged in battle, unyielding as stone.
+    bannerColor: {r: 0.6792453, g: 0.45416746, b: 0.13777146, a: 1}
+    contentColor: {r: 0.3018868, g: 0.14298043, b: 0.09825561, a: 1}

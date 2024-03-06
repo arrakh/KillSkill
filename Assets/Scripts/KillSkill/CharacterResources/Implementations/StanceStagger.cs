@@ -1,0 +1,52 @@
+using System;
+using CharacterResources;
+using KillSkill.Characters;
+using KillSkill.Skills;
+using KillSkill.StatusEffects.Implementations;
+using UI;
+using UnityEngine;
+
+namespace KillSkill.CharacterResources.Implementations
+{
+    public class StanceStagger : ICharacterResource, IModifyIncomingDamage, IResourceBarDisplay
+    {
+        private const float STAGGER_TIME = 6f;
+        
+        private Character owner;
+        private double currentValue;
+        
+        public event Action<ResourceBarDisplay> OnUpdateDisplay;
+        public ResourceBarDisplay DisplayData { get; }
+
+        public StanceStagger(Character owner, double maxThreshold)
+        {
+            this.owner = owner;
+            currentValue = maxThreshold;
+
+            DisplayData = new()
+            {
+                value = currentValue,
+                min = 0,
+                max = maxThreshold,
+                barColor = new Color(242/255f, 179/255f, 31/255f)
+            };
+        }
+
+        public void ModifyDamage(Character damager, Character target, ref double damage)
+        {
+            currentValue -= damage;
+            DisplayData.value = currentValue;
+
+            if (currentValue > 0)
+            {
+                OnUpdateDisplay?.Invoke(DisplayData);
+                return;
+            }
+            
+            owner.Resources.Unassign<StanceStagger>();
+            owner.StatusEffects.Add(new StaggerStatusEffect(STAGGER_TIME));
+            if (owner.StatusEffects.Has<StancingStatusEffect>()) 
+                owner.StatusEffects.Remove<StancingStatusEffect>();
+        }
+    }
+}

@@ -30,13 +30,7 @@ namespace KillSkill.Skills.Implementations.Fighter
             targetChar = target;
             caster.StatusEffects.Add(new CastingStatusEffect(CAST_TIME, OnDone, OnInterrupted));
 
-            var cPos = casterChar.Animator.Visual.position;
-            var tPos = targetChar.Animator.Visual.position;
-            float distance = tPos.x - cPos.x;
-            float realDistance = distance / 8f;
-            Tween forward = casterChar.Animator.Visual.DOMoveX(cPos.x + realDistance, CAST_TIME).SetEase(Ease.OutQuart);
-            
-            casterChar.Animator.AddTweens(forward);
+            casterChar.AnimateMoveTowards(target, CAST_TIME, Ease.OutQuart, 1/8f);
             casterChar.Animator.PlayFlipBook("attack");
         }
 
@@ -48,12 +42,7 @@ namespace KillSkill.Skills.Implementations.Fighter
         private void OnDone()
         {
             targetChar.TryDamage(casterChar, DAMAGE);
-            var tPos = targetChar.Animator.Visual.position.x;
-            var cPos = casterChar.Animator.Visual.position.x;
-            float distance = tPos - cPos;
-            float realDistance = distance / 5f;
-            Tween move = casterChar.Animator.Visual.DOMoveX(cPos + realDistance, 0.15f).OnComplete(casterChar.Animator.BackToPosition);
-            casterChar.Animator.AddTweens(move);
+            casterChar.AnimateMoveTowards(targetChar, 0.15f, Ease.OutQuart, 1/5f, casterChar.Animator.BackToPosition);
             casterChar.Animator.PlayFlipBook("idle");
         }
     }

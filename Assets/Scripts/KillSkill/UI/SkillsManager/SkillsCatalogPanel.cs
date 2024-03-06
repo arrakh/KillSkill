@@ -43,7 +43,7 @@ namespace KillSkill.UI.SkillsManager
                 if (!ArchetypesDatabase.TryGet(archetype, out var archetypeData))
                     Debug.LogError($"{skill.Metadata.name} does NOT belong to any archetype with id {skill.CatalogEntry.archetypeId}");
                 
-                Debug.Log($"[SKILL] {skill.Metadata.name} - {archetypeData.name}");
+                //Debug.Log($"[SKILL] {skill.Metadata.name} - {archetypeData.name}");
 
                 if (!spawnedElements.TryGetValue(archetype, out var element))
                     element = CreateNewArchetype(skillsSession, archetypeData);

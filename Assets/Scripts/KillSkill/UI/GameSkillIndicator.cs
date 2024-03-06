@@ -44,7 +44,7 @@ namespace UI
             
             usesGlobalCooldown = skill is IGlobalCooldownSkill;
 
-            bool preventedCasting = character.StatusEffects.Has<IPreventCasting>();
+            bool preventedCasting = character.StatusEffects.Has<IPreventSkillExecution>();
             lockedGroup.SetActive(preventedCasting);
 
             var icon = skill.Metadata.icon;

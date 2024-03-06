@@ -16,3 +16,11 @@ MonoBehaviour:
   sprites:
   - id: status-casting
     sprite: {fileID: 21300000, guid: 9a185185d0048284490c58031ab3036c, type: 3}
+  - id: status-parrying
+    sprite: {fileID: 21300000, guid: b1bc095f805738a4ea11e2b611d14acf, type: 3}
+  - id: status-empowered
+    sprite: {fileID: 21300000, guid: b1a2d548e8248a7428ec9da01505c585, type: 3}
+  - id: status-stagger
+    sprite: {fileID: 21300000, guid: e1fe481bbab21e24da552d5dc8e0c310, type: 3}
+  - id: status-stancing
+    sprite: {fileID: 21300000, guid: db59314e07aaa6143bb7162a14bd3d10, type: 3}

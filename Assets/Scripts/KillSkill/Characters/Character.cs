@@ -85,7 +85,7 @@ namespace KillSkill.Characters
         {
             if (!isAlive) return false;
             
-            bool canCast = !statusEffects.Has<IPreventCasting>();
+            bool canCast = !statusEffects.Has<IPreventSkillExecution>();
 
             if (skill is IGlobalCooldownSkill) return canCast && !globalCd.IsActive;
 

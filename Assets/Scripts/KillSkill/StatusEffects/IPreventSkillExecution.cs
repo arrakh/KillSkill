@@ -1,6 +1,6 @@
 ﻿namespace StatusEffects
 {
-    public interface IPreventCasting
+    public interface IPreventSkillExecution
     {
         
     }

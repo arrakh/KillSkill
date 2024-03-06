@@ -10,9 +10,7 @@ namespace KillSkill.Skills
     public abstract class Skill
     {
         private readonly Timer cd;
-        
-        public virtual string DisplayName => string.Empty;
-        
+
         public Timer Cooldown => cd;
 
         //todo: THIS IS IMMUTABLE DATA, SHOULD BE SEPARATED FROM AN INSTANCE OF A SKILL
