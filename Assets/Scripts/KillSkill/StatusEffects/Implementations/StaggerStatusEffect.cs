@@ -1,13 +1,13 @@
-using Database;
 using DG.Tweening;
 using KillSkill.Characters;
+using KillSkill.Database;
 using KillSkill.StatusEffects.Implementations.Core;
 using StatusEffects;
 using UnityEngine;
 
 namespace KillSkill.StatusEffects.Implementations
 {
-    public class StaggerStatusEffect : TimerStatusEffect, IPreventSkillExecution
+    public class StaggerStatusEffect : TimedStatusEffect, IPreventSkillExecution
     {
         public StaggerStatusEffect(float duration) : base(duration)
         {
@@ -26,8 +26,10 @@ namespace KillSkill.StatusEffects.Implementations
         public override StatusEffectDescription Description => new()
         {
             name = "Staggered",
-            description = "Prevent triggering ability while active",
+            description = StandardDescription(),
             icon = SpriteDatabase.Get("status-stagger")
         };
+
+        public static string StandardDescription() => "Prevent triggering ability while active";
     }
 }

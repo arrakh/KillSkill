@@ -17,7 +17,7 @@ namespace KillSkill.Characters
             
             Tween forward = character.Animator.Visual.DOMoveX(cPos.x + realDistance, time).SetEase(ease);
             if (onComplete != null) forward.OnComplete(() => { onComplete(); }); 
-            character.Animator.AddTweens(forward);
+            character.Animator.AddMovementTweens(forward);
         }
         
         public static bool TryDamage(this Character character, Character damager, double damage)

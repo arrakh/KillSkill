@@ -19,7 +19,7 @@ namespace KillSkill.SessionData.Implementations
             typeof(SlashSkill),
             typeof(VigorSkill),
             typeof(SmashSkill),
-            null,
+            typeof(SlamSkill),
             null,
             null,
         };
@@ -31,6 +31,7 @@ namespace KillSkill.SessionData.Implementations
             typeof(SlashSkill),
             typeof(VigorSkill),
             typeof(SmashSkill),
+            typeof(SlamSkill),
         };
 
         public IReadOnlyCollection<Type> Loadout => loadout;

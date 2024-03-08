@@ -1,31 +1,45 @@
-﻿using KillSkill.StatusEffects;
-using StatusEffects;
+﻿using DG.Tweening;
+using KillSkill.StatusEffects;
 using UI.Tooltips;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
-namespace UI
+namespace KillSkill.UI
 {
     public class StatusEffectListElement : MonoBehaviour, ITooltipElement
     {
         [SerializeField] private Image iconImage;
         [SerializeField] private Image fillImage;
+        [SerializeField] private StatusEffectNameplate nameplate;
 
         private IStatusEffect statusEffect;
 
-        public void Initialize(IStatusEffect status)
+        public void Display(IStatusEffect status)
         {
             statusEffect = status;
             var desc = status.Description;
 
             iconImage.sprite = desc.icon;
+            
+            nameplate.Display(status.Description.name);
+
+            Animate();
+        }
+
+        private void Animate()
+        {
+            DOTween.Kill(gameObject);
+            
+            transform.localScale = Vector3.one * 1.2f;
+            transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutQuart);
         }
 
         public void Update()
         {
             if (statusEffect == null) return;
             
-            if (statusEffect is ITimerStatusEffect timer)
+            if (statusEffect is ITimedStatusEffect timer)
             {
                 fillImage.fillAmount = timer.NormalizedDuration;
                 fillImage.enabled = true;

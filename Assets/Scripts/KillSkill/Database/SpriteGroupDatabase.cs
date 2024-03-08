@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Arr.SDS;
-using DefaultNamespace.Database;
 using UnityEngine;
 
-namespace Database
+namespace KillSkill.Database
 {
     public static class SpriteDatabase
     {

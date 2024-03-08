@@ -14,6 +14,7 @@ namespace KillSkill.Skills
         public Timer Cooldown => cd;
 
         //todo: THIS IS IMMUTABLE DATA, SHOULD BE SEPARATED FROM AN INSTANCE OF A SKILL
+        //SHOULD SIT IN A JSON, CAN GENERATE THAT WITH REFLECTION WHEN PIVOTING
         protected abstract float CooldownTime { get; }
         public virtual CatalogEntry CatalogEntry => CatalogEntry.NonPurchasable;
         public virtual SkillMetadata Metadata => SkillMetadata.Empty;
@@ -28,7 +29,7 @@ namespace KillSkill.Skills
             cd.Update(deltaTime);
         }
 
-        public bool CanExecute(Character caster) => !cd.IsActive && caster.CanCastAbility(this);
+        public virtual bool CanExecute(Character caster) => !cd.IsActive && caster.Skills.CanCast(this);
 
         public void TriggerCooldown() => cd.Reset();
 

@@ -2245,13 +2245,17 @@ PrefabInstance:
       propertyPath: character
       value: 
       objectReference: {fileID: 1973616715}
+    - target: {fileID: 7530920696391832693, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
+      propertyPath: elementPrefab
+      value: 
+      objectReference: {fileID: 7414933883932291347, guid: a14d35bb129cb1a4faeb298cebe2f117, type: 3}
     - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_CellSize.x
-      value: 64
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_CellSize.y
-      value: 64
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 9204082206836138942, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_Name
@@ -6925,11 +6929,11 @@ PrefabInstance:
       objectReference: {fileID: 1773989687}
     - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_CellSize.x
-      value: 64
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_CellSize.y
-      value: 64
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 8928492753898657738, guid: 946c59d00cc505a41bb8454ca167f8c4, type: 3}
       propertyPath: m_StartCorner
@@ -7193,6 +7197,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1774884564670059449, guid: 4f6de5610fd6c8a4590d456f30674b83, type: 3}
+      propertyPath: character
+      value: 
+      objectReference: {fileID: 1773989687}
     - target: {fileID: 2013704288471418615, guid: 4f6de5610fd6c8a4590d456f30674b83, type: 3}
       propertyPath: character
       value: 

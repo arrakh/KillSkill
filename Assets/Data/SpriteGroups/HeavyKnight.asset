@@ -16,3 +16,11 @@ MonoBehaviour:
   sprites:
   - id: skill-smash
     sprite: {fileID: 21300000, guid: e050b38ef291a534cbeddc5e3a112941, type: 3}
+  - id: skill-slam
+    sprite: {fileID: 21300000, guid: 49a2db5169fdd7a4b88527638b88266d, type: 3}
+  - id: skill-heavy-parry
+    sprite: {fileID: 21300000, guid: ac273ad0ad317ef4795617061f281dea, type: 3}
+  - id: skill-cancel-stance
+    sprite: {fileID: 21300000, guid: 4fa58c79de9dfc74889a76ccd1e4b55c, type: 3}
+  - id: skill-power-burst
+    sprite: {fileID: 21300000, guid: 8b53e2c77d6382640a71246eeaba7d1c, type: 3}

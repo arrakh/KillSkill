@@ -6,17 +6,20 @@ using KillSkill.SessionData.Implementations;
 using KillSkill.SettingsData;
 using KillSkill.Skills;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KillSkill.Characters
 {
     public class PlayerCharacter : Character
     {
+        public UnityEvent<int> OnSkillIndexPressed;
+
         private void Start()
         {
             var skillsSession = Session.GetData<SkillsSessionData>();
 
             var loadout = skillsSession.Loadout.ToArray();
-            skills = new Skill[loadout.Length];
+            var skills = new Skill[loadout.Length];
             
             for (var i = 0; i < loadout.Length; i++)
             {
@@ -29,17 +32,22 @@ namespace KillSkill.Characters
                 }
             }
 
-            Initialize(new MockupPlayer());
+            Initialize(new MockupPlayer(), skills);
         }
 
         protected override void OnUpdate()
         {
-            for (var i = 0; i < skills.Length; i++)
+            var arr = Skills.GetAll();
+            for (var i = 0; i < arr.Length; i++)
             {
-                if (skills[i] == null) continue;
+                if (arr[i] == null) continue;
                 var key = GameplaySettings.SkillBindings[i];
                 if (key == KeyCode.None) continue;
-                if (Input.GetKeyDown(key)) ExecuteSkill(i, target);
+                if (Input.GetKeyDown(key))
+                {
+                    OnSkillIndexPressed?.Invoke(i);
+                    Skills.Execute(i, target);
+                }
             }
         }
     }

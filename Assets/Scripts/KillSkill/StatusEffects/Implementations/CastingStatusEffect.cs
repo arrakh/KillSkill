@@ -1,12 +1,12 @@
 ﻿using System;
-using Database;
 using KillSkill.Characters;
+using KillSkill.Database;
 using KillSkill.StatusEffects;
 using KillSkill.StatusEffects.Implementations.Core;
 
 namespace StatusEffects
 {
-    public class CastingStatusEffect : TimerStatusEffect
+    public class CastingStatusEffect : TimedStatusEffect
     {
         public override StatusEffectDescription Description => new()
         {

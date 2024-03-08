@@ -6,9 +6,9 @@ namespace Skills
     {
         public bool hideInCatalog;
         public int order;
-        
-        public IReadOnlyDictionary<string, double> resourceCosts;
         public string archetypeId;
+
+        public IReadOnlyDictionary<string, double> resourceCosts;
 
         public static CatalogEntry NonPurchasable => new() { hideInCatalog = true };
         public static CatalogEntry UnlockedFromStart(string archetypeId, int order = int.MinValue) => new ()

@@ -1,13 +1,13 @@
-﻿using Database;
-using KillSkill.CharacterResources.Implementations;
+﻿using KillSkill.CharacterResources.Implementations;
 using KillSkill.Characters;
+using KillSkill.Database;
 using KillSkill.Skills;
 using KillSkill.StatusEffects.Implementations.Core;
 using StatusEffects;
 
 namespace KillSkill.StatusEffects.Implementations
 {
-    public class VigorousShieldStatusEffect : TimerStatusEffect, IModifyHealingDealt
+    public class VigorousShieldStatusEffect : TimedStatusEffect, IModifyHealingDealt
     {
         private float shieldConversionPercent;
 
@@ -20,7 +20,7 @@ namespace KillSkill.StatusEffects.Implementations
         {
             icon = SpriteDatabase.Get("skill-vigorous-shield"),
             name = "Vigorous Shield",
-            description = $"When healing, gain {shieldConversionPercent}% of your shield as extra heal"
+            description = $"When healing, the user gains {shieldConversionPercent}% of their shield as extra heal"
         };
 
 

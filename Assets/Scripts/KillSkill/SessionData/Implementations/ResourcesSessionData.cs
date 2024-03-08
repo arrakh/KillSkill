@@ -13,7 +13,7 @@ namespace SessionData.Implementations
     {
         private Dictionary<string, double> resources = new()
         {
-            {GameResources.COINS, 5}
+            {GameResources.COINS, 900}
         };
 
         public IReadOnlyDictionary<string, double> Resources => resources;

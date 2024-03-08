@@ -24,10 +24,7 @@ namespace KillSkill.Characters
         
         protected StatusEffectsHandler statusEffects;
         protected CharacterResourcesHandler resources;
-
-        
-        protected Skill[] skills;
-        protected Dictionary<Type, int> skillIndexes = new();
+        protected CharacterSkillHandler skillHandler;
 
         protected bool isAlive = true;
 
@@ -43,119 +40,46 @@ namespace KillSkill.Characters
         public CharacterResourcesHandler Resources => resources;
 
         public CharacterAnimator Animator => animator;
+        public CharacterSkillHandler Skills => skillHandler;
         
         public IVisualEffectsHandler VisualEffects => effectController;
         
         public PersistentEventTemplate<Character> onInitialize = new();
         //==============================================================
 
-        public float CooldownMultiplier { get; private set; }
-
-        public Timer GlobalCooldown => globalCd;
-
-        private Timer globalCd = new(0, false);
+        
 
         public virtual Type MainResource => typeof(Health);
 
-        public void Initialize(ICharacterData characterData)
+        public void Initialize(ICharacterData characterData, Skill[] skills)
         {
             isAlive = true;
             statusEffects = new(this);
             resources = new();
+            skillHandler = new CharacterSkillHandler(skills, statusEffects, this);
             
             resources.Assign(new Health(this, hp, maxHp));
-            
-            onInitialize.Invoke(this);
             
             animator.Initialize(characterData);
             
             animator.PlayFlipBook("idle");
-
-            for (var index = 0; index < skills.Length; index++)
-            {
-                var skill = skills[index];
-                if (skill == null) continue;
-                skillIndexes[skill.GetType()] = index;
-            }
+            
+            onInitialize.Invoke(this);
         }
 
         public void SetBattlePaused(bool paused) => battlePause = paused;
 
-        public bool CanCastAbility(Skill skill)
-        {
-            if (!isAlive) return false;
-            
-            bool canCast = !statusEffects.Has<IPreventSkillExecution>();
-
-            if (skill is IGlobalCooldownSkill) return canCast && !globalCd.IsActive;
-
-            return canCast;
-        }
-
-        public bool CanCastAbility(int index)
-        {
-            if (index < 0 || index >= skills.Length) return false;
-            var skill = skills[index];
-            if (skill == null) return false;
-            return CanCastAbility(skill);
-        }
-
-        public void SetCooldownSpeed(float multiplier)
-        {
-            CooldownMultiplier = multiplier;
-            globalCd.SetSpeed(multiplier);
-            foreach (var skill in skills)
-                skill?.Cooldown.SetSpeed(multiplier);
-        }
-
         private void Update()
         {
             if (battlePause || !isAlive) return;
-            globalCd.Update(Time.deltaTime);
-            statusEffects.Update(Time.deltaTime);
-            
-            foreach (var skill in skills)
-                skill?.UpdateCooldown(Time.deltaTime);
+            var time = Time.deltaTime;
+            statusEffects.Update(time);
+            skillHandler.Update(time);
             
             OnUpdate();
         }
         
         protected virtual void OnUpdate(){}
-
-        public Skill GetSkill(int index) => skills[index];
-
-        public bool TryGetSkill(int index, out Skill skill)
-        {
-            skill = default;
-            if (index >= skills.Length) return false;
-            skill = skills[index];
-            return true;
-        }
-
-        public bool TryGetSkillIndex<T>(out int skillIndex)
-            => skillIndexes.TryGetValue(typeof(T), out skillIndex);
-
-        public void ExecuteSkill<T>(Character target) where T : Skill
-        {
-            if (!skillIndexes.TryGetValue(typeof(T), out var index))
-                throw new Exception($"Trying to execute {typeof(T)} but character does not have it!");
-            
-            ExecuteSkill(index, target);
-        }
-
-        protected void ExecuteSkill(int index, Character target)
-        {
-            if (index >= skills.Length)
-                throw new Exception($"Trying to execute Skill index {index} but there are only {skills.Length} skills!");
-            
-            var skill = skills[index];
-            if (!skill.CanExecute(this)) return;
-            
-            skill.Execute(this, target);
-            skill.TriggerCooldown();
-            
-            if (skill is IGlobalCooldownSkill) globalCd.Set(skill.Cooldown.Duration);
-        }
 
         public void Kill()
         {

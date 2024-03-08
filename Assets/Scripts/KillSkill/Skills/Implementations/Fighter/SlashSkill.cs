@@ -1,7 +1,7 @@
-﻿using Database;
-using DG.Tweening;
+﻿using DG.Tweening;
 using KillSkill.Characters;
 using KillSkill.Constants;
+using KillSkill.Database;
 using Skills;
 using StatusEffects;
 

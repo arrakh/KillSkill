@@ -3,14 +3,14 @@ using StatusEffects;
 
 namespace KillSkill.StatusEffects.Implementations.Core
 {
-    public abstract class TimerStatusEffect : IStatusEffect, ITimerStatusEffect
+    public abstract class TimedStatusEffect : IStatusEffect, ITimedStatusEffect
     {
         public float NormalizedDuration => timer.NormalizedTime;
         public float RemainingDuration => timer.RemainingTime;
         
         protected readonly Timer timer;
 
-        protected TimerStatusEffect(float duration)
+        protected TimedStatusEffect(float duration)
         {
             timer = new Timer(duration);
         }
@@ -18,20 +18,20 @@ namespace KillSkill.StatusEffects.Implementations.Core
         bool IStatusEffect.IsActive => timer.IsActive;
         public abstract StatusEffectDescription Description { get; }
 
-        void IStatusEffect.OnDuplicateAdded(Character target)
+        void IStatusEffect.OnDuplicateAdded(Character target, IStatusEffect duplicate)
         {
             timer.Reset();
-            OnDuplicateAdded(target);
+            OnDuplicateAdded(target, duplicate);
         }
 
-        void ITimerStatusEffect.UpdateDuration(float deltaTime)
+        void ITimedStatusEffect.UpdateDuration(float deltaTime)
         {
             timer.Update(deltaTime);
             UpdateDuration(deltaTime);
         }
 
         protected virtual void UpdateDuration(float deltaTime){}
-        protected virtual void OnDuplicateAdded(Character target){}
+        protected virtual void OnDuplicateAdded(Character target, IStatusEffect duplicate){}
 
         public virtual void OnAdded(Character target){}
 

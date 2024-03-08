@@ -1,13 +1,13 @@
-﻿using Database;
-using DG.Tweening;
+﻿using DG.Tweening;
 using KillSkill.Characters;
+using KillSkill.Database;
 using KillSkill.StatusEffects.Implementations.Core;
 using StatusEffects;
 using UnityEngine;
 
 namespace KillSkill.StatusEffects.Implementations
 {
-    public class StunStatusEffect : TimerStatusEffect, IPreventSkillExecution
+    public class StunStatusEffect : TimedStatusEffect, IPreventSkillExecution
     {
         public override void OnAdded(Character target)
         {

@@ -48,5 +48,8 @@ namespace KillSkill.CharacterResources.Implementations
             if (owner.StatusEffects.Has<StancingStatusEffect>()) 
                 owner.StatusEffects.Remove<StancingStatusEffect>();
         }
+
+        public static string StandardDescription() =>
+            $"When this resource hits 0, the user is instantly <u>Staggered</u> for {STAGGER_TIME} seconds";
     }
 }

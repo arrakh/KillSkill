@@ -14,12 +14,13 @@ namespace KillSkill.UI.SkillsManager
 {
     public class SkillPreviewPanel : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI title, description, purchaseText;
+        [SerializeField] private TextMeshProUGUI title, description, extraDescription, purchaseText;
         [SerializeField] private Image icon;
         [SerializeField] private ResourcesPanel resourcesPanel;
         [SerializeField] private RectTransform content;
         [SerializeField] private Button purchaseButton;
         [SerializeField] private GameObject emptyGroup, contentGroup;
+        [SerializeField] private GameObject extraDescSeparator;
 
         private bool skillOwned;
         private bool skillEquipped;
@@ -59,8 +60,21 @@ namespace KillSkill.UI.SkillsManager
             
 
             purchaseText.text = skillEquipped ? "Unequip" : skillOwned ? "Equip" : "Buy";
+
+            DisplayExtraDescription(toDisplay);
             
             Invoke(nameof(DelayedRebuild), 0f);
+        }
+
+        private void DisplayExtraDescription(Skill toDisplay)
+        {
+            var hasExtraDesc = !String.IsNullOrEmpty(toDisplay.Metadata.extraDescription);
+            
+            extraDescSeparator.SetActive(hasExtraDesc);
+            extraDescription.gameObject.SetActive(hasExtraDesc);
+            if (!hasExtraDesc) return;
+
+            extraDescription.text = toDisplay.Metadata.extraDescription;
         }
 
         private void OnPurchase()

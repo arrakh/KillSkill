@@ -16,6 +16,7 @@ namespace KillSkill.Characters
         public SpriteRenderer Sprite => spriteRenderer;
 
         private List<Tween> tweens = new();
+        private List<Tween> movementTweens = new();
         private Vector3 originalPosition;
 
         public void Initialize(ICharacterData characterData)
@@ -40,13 +41,21 @@ namespace KillSkill.Characters
 
         public void BackToPosition()
         {
+            foreach (var t in movementTweens)
+                t.Kill(true);
+            
             Tween move = visualTransform.DOMove(originalPosition, 0.33f).SetEase(Ease.OutQuart);
-            AddTweens(move);
+            AddMovementTweens(move);
         }
 
         public void AddTweens(params Tween[] t)
         {
             tweens.AddRange(t);
+        }
+
+        public void AddMovementTweens(params Tween[] t)
+        {
+            movementTweens.AddRange(t);
         }
 
         private void Clear()

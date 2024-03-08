@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Database;
 using DG.Tweening;
 using KillSkill.Characters;
 using KillSkill.Constants;
+using KillSkill.Database;
 using Skills;
 using StatusEffects;
 
@@ -37,7 +37,7 @@ namespace KillSkill.Skills.Implementations.Fighter
             Tween forward = caster.Animator.Visual.DOMoveX(caster.Animator.Visual.position.x + 2f, 0.15f)
                 .SetEase(Ease.OutQuart).OnComplete(() => {caster.Animator.BackToPosition();});
             
-            caster.Animator.AddTweens(forward);
+            caster.Animator.AddMovementTweens(forward);
             caster.Animator.PlayFlipBook("attack");
         }
     }

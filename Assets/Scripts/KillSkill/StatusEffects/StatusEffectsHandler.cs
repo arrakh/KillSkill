@@ -27,7 +27,7 @@ namespace StatusEffects
         {
             foreach (var statusEffect in statusEffects.Values.ToList())
             {
-                if (statusEffect is ITimerStatusEffect timer) timer.UpdateDuration(deltaTime);
+                if (statusEffect is ITimedStatusEffect timer) timer.UpdateDuration(deltaTime);
                 
                 if (statusEffect.IsActive)
                 {
@@ -48,7 +48,7 @@ namespace StatusEffects
             var type = statusEffect.GetType();
             if (statusEffects.TryGetValue(type, out var effect))
             {
-                effect.OnDuplicateAdded(character);
+                effect.OnDuplicateAdded(character, statusEffect);
                 OnAdded?.Invoke(effect);
                 return;
             }

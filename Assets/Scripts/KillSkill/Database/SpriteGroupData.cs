@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Arr.SDS;
 using UnityEngine;
 
-namespace DefaultNamespace.Database
+namespace KillSkill.Database
 {
     [Serializable]
     public struct SpriteData

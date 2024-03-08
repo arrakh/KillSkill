@@ -24,3 +24,5 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: e1fe481bbab21e24da552d5dc8e0c310, type: 3}
   - id: status-stancing
     sprite: {fileID: 21300000, guid: db59314e07aaa6143bb7162a14bd3d10, type: 3}
+  - id: status-open-wide
+    sprite: {fileID: 21300000, guid: 25aaa0112a7bbb941a24e8cb0de820b4, type: 3}

@@ -1,13 +1,13 @@
 using System;
-using Database;
 using KillSkill.CharacterResources.Implementations;
 using KillSkill.Characters;
+using KillSkill.Database;
 using KillSkill.StatusEffects.Implementations.Core;
 using StatusEffects;
 
 namespace KillSkill.StatusEffects.Implementations
 {
-    public class StancingStatusEffect : TimerStatusEffect
+    public class StancingStatusEffect : TimedStatusEffect
     {
         public Action onComplete;
         public float staggerThreshold;
@@ -41,6 +41,9 @@ namespace KillSkill.StatusEffects.Implementations
         };
 
         public static string StandardDescription(float staggerThreshold) =>
-            $"While active, getting damaged for {staggerThreshold} HP will put you in <u>Stagger</u>";
+            $"While active, getting damaged for {staggerThreshold} HP will put the user in <u>Stagger</u>";
+
+        public static string StandardDescription() =>
+            $"While active, getting damaged will put the user in <u>Stagger</u>";
     }
 }

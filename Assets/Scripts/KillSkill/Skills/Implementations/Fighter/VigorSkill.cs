@@ -1,15 +1,15 @@
-﻿using Database;
-using KillSkill.Characters;
+﻿using KillSkill.Characters;
 using KillSkill.Constants;
+using KillSkill.Database;
 using Skills;
 
 namespace KillSkill.Skills.Implementations.Fighter
 {
-    public class VigorSkill : Skill, IGlobalCooldownSkill
+    public class VigorSkill : Skill
     {
-        private const float HEAL_AMOUNT = 60f;
+        private const float HEAL_AMOUNT = 90f;
         
-        protected override float CooldownTime => 4f;
+        protected override float CooldownTime => 8f;
         
         public override SkillMetadata Metadata => new()
         {

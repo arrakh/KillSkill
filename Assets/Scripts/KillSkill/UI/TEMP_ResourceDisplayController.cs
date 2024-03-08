@@ -1,8 +1,8 @@
-﻿using System;
-using KillSkill.Characters;
+﻿using KillSkill.Characters;
+using UI;
 using UnityEngine;
 
-namespace UI
+namespace KillSkill.UI
 {
     public class TEMP_ResourceDisplayController : MonoBehaviour
     {

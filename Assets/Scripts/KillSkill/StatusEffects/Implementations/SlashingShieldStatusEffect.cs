@@ -1,6 +1,6 @@
-﻿using Database;
-using KillSkill.CharacterResources.Implementations;
+﻿using KillSkill.CharacterResources.Implementations;
 using KillSkill.Characters;
+using KillSkill.Database;
 using KillSkill.Skills;
 using KillSkill.Skills.Implementations.Fighter;
 using KillSkill.StatusEffects.Implementations.Core;
@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace KillSkill.StatusEffects.Implementations
 {
-    public class SlashingShieldStatusEffect : TimerStatusEffect, IModifyDamageDealt
+    public class SlashingShieldStatusEffect : TimedStatusEffect, IModifyDamageDealt
     {
         private float shieldConversionPercent;
 
@@ -22,7 +22,7 @@ namespace KillSkill.StatusEffects.Implementations
         {
             icon = SpriteDatabase.Get("skill-slashing-shield"),
             name = "Slashing Shield",
-            description = $"When attacking, gain {shieldConversionPercent}% of your shield as extra damage"
+            description = $"When attacking, the user gains {shieldConversionPercent}% of their shield as extra damage"
         };
 
 

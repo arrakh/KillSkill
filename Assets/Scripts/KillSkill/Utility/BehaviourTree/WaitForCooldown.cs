@@ -15,14 +15,14 @@ namespace KillSkill.Utility.BehaviourTree
 
             this.executor = executor;
             
-            if (!executor.TryGetSkillIndex<T>(out skillIndex))
+            if (!executor.Skills.TryGetIndex<T>(out skillIndex))
                 skillIndex = int.MaxValue;
         }
 
         protected override TaskStatus OnUpdate()
         {
             if (skillIndex == int.MaxValue) return TaskStatus.Failure;
-            var canCast = executor.CanCastAbility(skillIndex);
+            var canCast = executor.Skills.CanCast(skillIndex);
             return canCast ? TaskStatus.Success : TaskStatus.Continue;
         }
     }

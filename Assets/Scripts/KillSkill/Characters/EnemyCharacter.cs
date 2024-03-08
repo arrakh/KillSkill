@@ -16,9 +16,8 @@ namespace KillSkill.Characters
         {
             var battleSession = Session.GetData<BattleSessionData>();
             var enemyData = battleSession.GetEnemy();
-            skills = enemyData.Skills;
             
-            Initialize(enemyData);
+            Initialize(enemyData, enemyData.Skills);
 
             var builder = enemyData.OnBuildBehaviourTree(this, new BehaviorTreeBuilder(gameObject));
             aiTree = builder.Build();

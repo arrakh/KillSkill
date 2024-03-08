@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using KillSkill.Characters;
 using KillSkill.StatusEffects;
+using KillSkill.UI;
 using StatusEffects;
 using TMPro;
 using UnityEngine;
@@ -37,7 +38,7 @@ namespace UI
 
             var element = Instantiate(elementPrefab, parent, false).GetComponent<StatusEffectListElement>();
             spawnedElements[type] = element;
-            element.Initialize(effect);
+            element.Display(effect);
         }
         
         private void OnStatusEffectRemoved(IStatusEffect effect)

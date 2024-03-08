@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Database;
 using KillSkill.CharacterResources.Implementations;
 using KillSkill.Characters;
 using KillSkill.Constants;
+using KillSkill.Database;
 using Skills;
 
 namespace KillSkill.Skills.Implementations.Fighter

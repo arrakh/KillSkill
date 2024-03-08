@@ -20,15 +20,15 @@ namespace KillSkill.Utility.BehaviourTree
             target = executor.Target;
             this.failOnCantCast = failOnCantCast;
 
-            if (!executor.TryGetSkillIndex<T>(out skillIndex))
+            if (!executor.Skills.TryGetIndex<T>(out skillIndex))
                 skillIndex = int.MaxValue;
         }
 
         protected override TaskStatus OnUpdate()
         {
             if (skillIndex == int.MaxValue) return TaskStatus.Failure;
-            if (!executor.CanCastAbility(skillIndex)) return failOnCantCast ? TaskStatus.Failure : TaskStatus.Continue;
-            executor.ExecuteSkill<T>(target);
+            if (!executor.Skills.CanCast(skillIndex)) return failOnCantCast ? TaskStatus.Failure : TaskStatus.Continue;
+            executor.Skills.Execute<T>(target);
             return TaskStatus.Success;
         }
     }

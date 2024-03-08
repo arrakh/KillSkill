@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Database;
 using KillSkill.CharacterResources.Implementations;
 using KillSkill.Characters;
 using KillSkill.Constants;
+using KillSkill.Database;
 using KillSkill.StatusEffects.Implementations;
 using Skills;
 
@@ -28,7 +28,7 @@ namespace KillSkill.Skills.Implementations.Fighter
         {
             icon = SpriteDatabase.Get("skill-vigorous-shield"),
             name = "Vigorous Shield",
-            description = "Grants <u>Vigorous Shield</u>, increasing heal for every <u>Shield</u> you have",
+            description = "Grants <u>Vigorous Shield</u>, increasing heal for every <u>Shield</u> the user has",
             extraDescription = "- <u>Vigorous Shield</u> ??" +
                                $"\n- <u>Shield</u>:\n{Shield.StandardDescription()}"
         };
