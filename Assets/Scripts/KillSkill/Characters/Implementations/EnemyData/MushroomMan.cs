@@ -19,10 +19,17 @@ namespace KillSkill.Characters.Implementations.EnemyData
         public IEnumerable<FlipBook> FlipBooks => CharacterFlipBooksDatabase.Get(ID).FlipBooks;
 
         public string DisplayName => "Mushroom Man";
+        public int CatalogOrder => 0;
+        public float Health => 250f;
 
-        public IResourceReward[] Rewards => new[]
+        public IResourceReward[] Rewards => new IResourceReward[]
         {
-            new RandomIntWinReward(GameResources.COINS, 40, 70)
+            new RandomIntReward(GameResources.COINS, 40, 70, 0, 0),
+            new TimeRangeWinReward(GameResources.COINS, amount: 45, 8),
+            new TimeRangeWinReward(GameResources.COINS, amount: 20, 8, 15),
+            new TimeRangeWinReward(GameResources.COINS, amount: 5, 15, 30),
+            new TimeRangeWinReward(GameResources.MEDALS, amount: 1, 8),
+            new TimeRangeWinReward(GameResources.MEDALS, amount: 1, 20),
         };
 
         public Skill[] Skills => new Skill[]
@@ -41,7 +48,6 @@ namespace KillSkill.Characters.Implementations.EnemyData
                     .ExecuteSkill<SlashSkill>(character)
                     .ExecuteSkill<SporePopSkill>(character)
                     .WaitForCooldown<SporePopSkill>(character)
-                    .WaitTime(3f)
                 .End();
             //@formatter:on
         }

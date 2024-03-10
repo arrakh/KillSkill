@@ -40,6 +40,12 @@ namespace KillSkill.Skills
         private IStatusEffectsHandler statusEffects;
         private Character character;
 
+        public void InitializeSkills()
+        {
+            foreach (var skill in skills)
+                if (skill != null) skill.OnInitialize(character);
+        }
+
         public void Update(float deltaTime)
         {
             globalCd.Update(deltaTime);
@@ -62,6 +68,14 @@ namespace KillSkill.Skills
         public bool CanCast(int index)
         {
             if (index < 0 || index >= skills.Length) return false;
+            var skill = skills[index];
+            if (skill == null) return false;
+            return CanCast(skill);
+        }
+
+        public bool CanCast<T>()
+        {
+            if (!skillIndexes.TryGetValue(typeof(T), out var index)) return false;
             var skill = skills[index];
             if (skill == null) return false;
             return CanCast(skill);

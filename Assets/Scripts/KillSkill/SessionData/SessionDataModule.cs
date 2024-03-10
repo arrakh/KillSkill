@@ -6,6 +6,7 @@ using Arr.EventsSystem;
 using Arr.ModulesSystem;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Events;
+using KillSkill.Utility;
 
 namespace DefaultNamespace.SessionData
 {
@@ -16,9 +17,7 @@ namespace DefaultNamespace.SessionData
 
         protected override async Task OnLoad()
         {
-            var dataTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(ISessionData).IsAssignableFrom(type) && !type.IsInterface);
+            var dataTypes = ReflectionUtility.GetAll<ISessionData>();
 
             foreach (var type in dataTypes)
             {

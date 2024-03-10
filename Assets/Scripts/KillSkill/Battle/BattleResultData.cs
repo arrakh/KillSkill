@@ -5,12 +5,12 @@ namespace KillSkill.Battle
     public readonly struct BattleResultData
     {
         public readonly bool playerWon;
-        public readonly Dictionary<string, double> gainedResources;
+        public readonly IEnumerable<BattleReward> rewards;
 
-        public BattleResultData(bool playerWon, Dictionary<string, double> gainedResources)
+        public BattleResultData(bool playerWon, IEnumerable<BattleReward> rewards)
         {
             this.playerWon = playerWon;
-            this.gainedResources = gainedResources;
+            this.rewards = rewards;
         }
     }
 }

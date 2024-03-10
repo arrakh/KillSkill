@@ -67,6 +67,13 @@ namespace StatusEffects
             statusEffects.Remove(typeof(T));
         }
 
+        public bool TryRemove<T>() where T : IStatusEffect
+        {
+            if (!statusEffects.ContainsKey(typeof(T))) return false;
+            Remove<T>();
+            return true;
+        }
+
         public void RemoveAny<T>()
         {
             foreach (var statusEffect in statusEffects)

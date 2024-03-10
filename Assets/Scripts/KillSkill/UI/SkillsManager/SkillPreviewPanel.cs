@@ -28,11 +28,6 @@ namespace KillSkill.UI.SkillsManager
 
         public Skill CurrentSkill => skill;
 
-        private void Awake()
-        {
-            purchaseButton.onClick.AddListener(OnPurchase);
-        }
-
         public void UpdateDisplay(SkillsSessionData skillsSession)
         {
             if (skill == null) return;
@@ -50,6 +45,7 @@ namespace KillSkill.UI.SkillsManager
             title.text = metadata.name;
             description.text = metadata.description;
             icon.sprite = metadata.icon;
+            icon.enabled = true;
 
             skillOwned = skillSession.Owns(skill);
             skillEquipped = skillSession.IsEquipped(skill);
@@ -57,24 +53,26 @@ namespace KillSkill.UI.SkillsManager
 
             var cost = skillOwned ? new Dictionary<string, double>() : entry.resourceCosts;
             resourcesPanel.Display(cost);
-            
 
             purchaseText.text = skillEquipped ? "Unequip" : skillOwned ? "Equip" : "Buy";
 
-            DisplayExtraDescription(toDisplay);
+            DisplayExtraDescription(toDisplay.Metadata.extraDescription);
             
+            purchaseButton.onClick.RemoveAllListeners();
+            purchaseButton.onClick.AddListener(OnPurchase);
+
             Invoke(nameof(DelayedRebuild), 0f);
         }
 
-        private void DisplayExtraDescription(Skill toDisplay)
+        private void DisplayExtraDescription(string extraDesc)
         {
-            var hasExtraDesc = !String.IsNullOrEmpty(toDisplay.Metadata.extraDescription);
+            var hasExtraDesc = !String.IsNullOrEmpty(extraDesc);
             
             extraDescSeparator.SetActive(hasExtraDesc);
             extraDescription.gameObject.SetActive(hasExtraDesc);
             if (!hasExtraDesc) return;
 
-            extraDescription.text = toDisplay.Metadata.extraDescription;
+            extraDescription.text = extraDesc;
         }
 
         private void OnPurchase()
@@ -93,6 +91,31 @@ namespace KillSkill.UI.SkillsManager
         {
             emptyGroup.SetActive(showEmpty);
             contentGroup.SetActive(!showEmpty);
+        }
+
+        public void DisplayBuySlot(SkillsSessionData skillSession)
+        {
+            SetEmpty(false);
+
+            title.text = "Buy Slot";
+            description.text = "Buy an additional Skill slot";
+            icon.enabled = false;
+            purchaseText.text = "Buy";
+            
+            DisplayExtraDescription(string.Empty);
+
+            Dictionary<string, double> cost = skillSession.GetSlotCost();
+            resourcesPanel.Display(cost);
+            
+            purchaseButton.onClick.RemoveAllListeners();
+            purchaseButton.onClick.AddListener(OnPurchaseSlot);
+            
+            Invoke(nameof(DelayedRebuild), 0f);
+        }
+
+        private void OnPurchaseSlot()
+        {
+            GlobalEvents.Fire(new BuySlotEvent());
         }
     }
 }

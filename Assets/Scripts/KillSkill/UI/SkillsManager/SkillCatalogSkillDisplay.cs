@@ -10,7 +10,7 @@ namespace KillSkill.UI.SkillsManager
         public TooltipData GetData()
         {
             var desc = skill.Metadata;
-            return new TooltipData(desc.icon, desc.name, desc.description);
+            return new TooltipData(desc.icon, desc.name, desc.description, desc.extraDescription);
         }
 
         public int UniqueId => gameObject.GetInstanceID();

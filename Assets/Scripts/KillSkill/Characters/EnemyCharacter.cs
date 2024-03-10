@@ -16,6 +16,7 @@ namespace KillSkill.Characters
         {
             var battleSession = Session.GetData<BattleSessionData>();
             var enemyData = battleSession.GetEnemy();
+            hp = maxHp = enemyData.Health;
             
             Initialize(enemyData, enemyData.Skills);
 

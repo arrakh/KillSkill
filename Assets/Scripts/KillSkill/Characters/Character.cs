@@ -17,7 +17,7 @@ namespace KillSkill.Characters
     public class Character : MonoBehaviour
     {
         [SerializeField] private EffectController effectController; //todo: TEMP, SHOULD BE INJECTED FROM OUTSIDE
-        [SerializeField] private float hp, maxHp; //todo: TEMP, SHOULD BE DATA DRIVEN
+        [SerializeField] protected float hp, maxHp; //todo: TEMP, SHOULD BE DATA DRIVEN
         [SerializeField] private CharacterAnimator animator;
         [SerializeField] protected bool battlePause = true;
         [SerializeField] protected Character target;
@@ -46,9 +46,7 @@ namespace KillSkill.Characters
         
         public PersistentEventTemplate<Character> onInitialize = new();
         //==============================================================
-
         
-
         public virtual Type MainResource => typeof(Health);
 
         public void Initialize(ICharacterData characterData, Skill[] skills)
@@ -59,6 +57,8 @@ namespace KillSkill.Characters
             skillHandler = new CharacterSkillHandler(skills, statusEffects, this);
             
             resources.Assign(new Health(this, hp, maxHp));
+            
+            skillHandler.InitializeSkills();
             
             animator.Initialize(characterData);
             
@@ -75,6 +75,7 @@ namespace KillSkill.Characters
             var time = Time.deltaTime;
             statusEffects.Update(time);
             skillHandler.Update(time);
+            resources.Update(time);
             
             OnUpdate();
         }

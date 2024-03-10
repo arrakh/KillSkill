@@ -19,7 +19,7 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             icon = SpriteDatabase.Get("skill-power-burst"),
             name = "Power Burst",
             description = $"Grants {DURATION} seconds of <u>Empower</u>",
-            extraDescription = $"- <u>Empower</u>: {EmpowerStatusEffect.StandardDescription(DAMAGE_MULT)}"
+            extraDescription = $"- <u>Empower</u>: {EmpoweredStatusEffect.StandardDescription(DAMAGE_MULT)}"
         };
 
         public override CatalogEntry CatalogEntry => new()
@@ -27,13 +27,14 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             order = 5, archetypeId = Archetypes.HEAVY_KNIGHT,
             resourceCosts = new Dictionary<string, double>()
             {
-                {GameResources.COINS, 250}
+                {GameResources.COINS, 250},
+                {GameResources.MEDALS, 2}
             }
         };
 
         public override void Execute(Character caster, Character target)
         {
-            caster.StatusEffects.Add(new EmpowerStatusEffect(DAMAGE_MULT, DURATION));
+            caster.StatusEffects.Add(new EmpoweredStatusEffect(DAMAGE_MULT, DURATION));
         }
     }
 }

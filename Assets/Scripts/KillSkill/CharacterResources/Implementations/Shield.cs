@@ -2,12 +2,14 @@
 using CharacterResources;
 using KillSkill.Characters;
 using KillSkill.Skills;
+using KillSkill.UI;
+using KillSkill.UI.Game;
 using UI;
 using UnityEngine;
 
 namespace KillSkill.CharacterResources.Implementations
 {
-    public class Shield : ICharacterResource, IModifyIncomingDamage, IResourceBarDisplay
+    public class Shield : ICharacterResource, IModifyIncomingDamage, IResourceDisplay<ResourceBarDisplay>
     {
         private Character owner;
         private double charge;

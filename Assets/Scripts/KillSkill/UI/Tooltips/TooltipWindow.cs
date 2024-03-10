@@ -10,7 +10,7 @@ namespace UI.Tooltips
     {
         [SerializeField] private Image tooltipImage;
         [SerializeField] private TextMeshProUGUI title, content, extendedContent;
-        [SerializeField] private GameObject extraContentSeparator, moreInfoObject;
+        [SerializeField] private GameObject moreInfoObject, extraContentSeparator;
         [SerializeField] private RectTransform windowRect;
 
         [Header("Animation")] 
@@ -19,7 +19,7 @@ namespace UI.Tooltips
         [SerializeField] private float animTime;
         [SerializeField] private float pivotLerpSpeed = 10f;
 
-        private bool hasExtraContent;
+        private bool hasExtraContent, isExtraVisible;
         private TooltipData currentData;
         
         public void Display(TooltipData data)
@@ -30,26 +30,40 @@ namespace UI.Tooltips
             content.text = data.content;
 
             hasExtraContent = !String.IsNullOrEmpty(data.extraContent);
+            extendedContent.text = data.extraContent;
             
-            extraContentSeparator.SetActive(hasExtraContent);
-            moreInfoObject.SetActive(hasExtraContent);
-            extendedContent.gameObject.SetActive(false);
             Invoke(nameof(DelayedRedraw), 0.001f);
         }
 
         private void Update()
         {
-            if (hasExtraContent && Input.GetKeyDown(KeyCode.LeftAlt)) SetExtraContentVisible(true);
-            else if (hasExtraContent && Input.GetKeyUp(KeyCode.LeftAlt)) SetExtraContentVisible(false);
+            if (hasExtraContent)
+            {
+                if (Input.GetKeyDown(KeyCode.LeftAlt)) SetExtraContentVisible(true);
+                else if (Input.GetKeyUp(KeyCode.LeftAlt)) SetExtraContentVisible(false);
+                else
+                {
+                    extraContentSeparator.SetActive(true);
+                    moreInfoObject.SetActive(!isExtraVisible);
+                }
+            }
+            else
+            {
+                extraContentSeparator.SetActive(false);
+                moreInfoObject.SetActive(false);
+            }
+            
             
             CalculatePosition();
         }
 
         public void SetExtraContentVisible(bool visible)
         {
+            isExtraVisible = visible;
             moreInfoObject.SetActive(!visible);
             extendedContent.gameObject.SetActive(visible);
-            
+            extraContentSeparator.SetActive(true);
+
             Invoke(nameof(DelayedRedraw), 0.001f);
         }
 

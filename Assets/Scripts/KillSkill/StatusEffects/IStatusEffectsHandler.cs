@@ -12,6 +12,7 @@ namespace StatusEffects
         public event StatusEffectEvent OnUpdated;
         
         public void Add(IStatusEffect statusEffect);
+        public bool TryRemove<T>() where T : IStatusEffect;
         public void Remove<T>() where T : IStatusEffect;
         public void RemoveAny<T>();
         public bool Has<T>();

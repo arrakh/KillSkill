@@ -27,10 +27,10 @@ namespace KillSkill.StatusEffects.Implementations.Core
         void ITimedStatusEffect.UpdateDuration(float deltaTime)
         {
             timer.Update(deltaTime);
-            UpdateDuration(deltaTime);
+            OnUpdateDuration(deltaTime);
         }
 
-        protected virtual void UpdateDuration(float deltaTime){}
+        protected virtual void OnUpdateDuration(float deltaTime){}
         protected virtual void OnDuplicateAdded(Character target, IStatusEffect duplicate){}
 
         public virtual void OnAdded(Character target){}

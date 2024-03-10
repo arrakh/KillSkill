@@ -20,7 +20,8 @@ namespace KillSkill.Skills.Implementations.Fighter
             archetypeId = Archetypes.FIGHTER,
             order = 4, resourceCosts = new Dictionary<string, double>()
             {
-                {GameResources.COINS, 200}
+                {GameResources.COINS, 120},
+                {GameResources.MEDALS, 1},
             }
         };
 

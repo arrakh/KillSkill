@@ -30,3 +30,14 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 0dff1fa6080509b4193ba3290ab5a542, type: 2}
     - {fileID: 11400000, guid: 8f6f60b6d3ee7244b87a555fcecc646f, type: 2}
     - {fileID: 11400000, guid: 8190f47cdfdde974c9429bbaff0ba82b, type: 2}
+  - characterId: executioner
+    defaultFlipBook: {fileID: 11400000, guid: 75137204e611e044bbabda9776d3b553, type: 2}
+    flipBooks:
+    - {fileID: 11400000, guid: 4b60d0c357c6f7b479755cc4c2cf2054, type: 2}
+    - {fileID: 11400000, guid: 75137204e611e044bbabda9776d3b553, type: 2}
+    - {fileID: 11400000, guid: 6679b33f1d0659341b48b26bbc56ecd0, type: 2}
+    - {fileID: 11400000, guid: acf0f3150e8aaad4a9baabd7b42271f0, type: 2}
+    - {fileID: 11400000, guid: 3ade7ced8b1d0d948b58f2279686558b, type: 2}
+    - {fileID: 11400000, guid: 135da1d222f30194e9d8057ceaac2a4b, type: 2}
+    - {fileID: 11400000, guid: 0862b7597ea695c448153463878e223f, type: 2}
+    - {fileID: 11400000, guid: 5aa3991a4440da04ca39e04a9ef13df8, type: 2}

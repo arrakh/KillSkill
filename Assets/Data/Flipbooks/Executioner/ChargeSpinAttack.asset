@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d4fd924f12440f385ccd5d615ed4b06, type: 3}
+  m_Name: ChargeSpinAttack
+  m_EditorClassIdentifier: 
+  flipBook:
+    id: ChargeSpinAttack
+    frameRate: 16
+    loop: 0
+    frames:
+    - {fileID: -408573639, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}
+    - {fileID: 1824176818, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}
+    - {fileID: -118655324, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}
+    - {fileID: -649873967, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}
+    - {fileID: 1362763862, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}
+    - {fileID: -1350415994, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}
+    - {fileID: -1704395466, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}
+    - {fileID: 402615785, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}
+    - {fileID: 342832250, guid: e4ff3f7ba22e9e247beddaaaea6e62ce, type: 3}

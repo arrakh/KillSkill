@@ -15,14 +15,14 @@ namespace KillSkill.Skills.Implementations.Enemy.Mushroom
 
         private bool charging = false;
 
-        protected override float CooldownTime => 16f;
+        protected override float CooldownTime => 14f;
 
         public override void Execute(Character caster, Character target)
         {
             charging = true;
             casterChar = caster;
             targetChar = target;
-            caster.StatusEffects.Add(new CastingStatusEffect(CHARGE_DURATION, OnDone, null));
+            caster.StatusEffects.Add(new CastingStatusEffect(CHARGE_DURATION, OnDone));
             caster.Animator.PlayFlipBook("spore-charge-start", 1f, OnDoneChargeStart);
         }
 

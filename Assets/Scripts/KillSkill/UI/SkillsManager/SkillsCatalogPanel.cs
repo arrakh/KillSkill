@@ -5,6 +5,7 @@ using System.Reflection;
 using KillSkill.Database;
 using KillSkill.SessionData.Implementations;
 using KillSkill.Skills;
+using KillSkill.Utility;
 using Skills;
 using UnityEngine;
 
@@ -21,9 +22,7 @@ namespace KillSkill.UI.SkillsManager
         {
             CleanElements();
             
-            var allSkills = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(Skill).IsAssignableFrom(type) && type != typeof(Skill));
+            var allSkills = ReflectionUtility.GetAll<Skill>();
 
             var skillsToSpawn = new List<Skill>();
             

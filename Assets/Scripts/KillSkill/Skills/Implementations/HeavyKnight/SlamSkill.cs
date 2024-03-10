@@ -35,7 +35,7 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             order = 0, archetypeId = Archetypes.HEAVY_KNIGHT,
             resourceCosts = new Dictionary<string, double>()
             {
-                {GameResources.COINS, 10}
+                {GameResources.COINS, 30}
             },
         };
 

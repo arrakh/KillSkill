@@ -3,13 +3,15 @@ using System.Linq;
 using CharacterResources;
 using KillSkill.Characters;
 using KillSkill.Skills;
+using KillSkill.UI;
+using KillSkill.UI.Game;
 using StatusEffects;
 using UI;
 using UnityEngine;
 
 namespace KillSkill.CharacterResources.Implementations
 {
-    public class Health : ICharacterResource, IResourceBarDisplay
+    public class Health : ICharacterResource, IResourceDisplay<ResourceBarDisplay>
     {
         public event Action<ResourceBarDisplay> OnUpdateDisplay;
         public ResourceBarDisplay DisplayData { get; private set; }
@@ -34,7 +36,8 @@ namespace KillSkill.CharacterResources.Implementations
                 value = health,
                 min = 0,
                 max = Max,
-                barColor = isPlayer ? playerColor : enemyColor
+                barColor = isPlayer ? playerColor : enemyColor,
+                showValueText = false
             };
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Arr.EventsSystem;
+using KillSkill.Constants;
 using KillSkill.SessionData.Events;
 using KillSkill.Skills;
 using KillSkill.Skills.Implementations.Fighter;
@@ -14,12 +15,11 @@ namespace KillSkill.SessionData.Implementations
 {
     public class SkillsSessionData : ISessionData
     {
+        //todo: move default loadout to config
         private List<Type> loadout = new()
         {
             typeof(SlashSkill),
             typeof(VigorSkill),
-            typeof(SmashSkill),
-            typeof(SlamSkill),
             null,
             null,
         };
@@ -29,9 +29,7 @@ namespace KillSkill.SessionData.Implementations
         private HashSet<Type> ownedSkills = new()
         {
             typeof(SlashSkill),
-            typeof(VigorSkill),
-            typeof(SmashSkill),
-            typeof(SlamSkill),
+            typeof(VigorSkill)
         };
 
         public IReadOnlyCollection<Type> Loadout => loadout;
@@ -150,6 +148,20 @@ namespace KillSkill.SessionData.Implementations
         public void OnUnload()
         {
             
+        }
+
+        //todo: move into a config
+        public Dictionary<string,double> GetSlotCost()
+        {
+            return SlotCount switch
+            {
+                1 or 2 or 3 or 4 => new Dictionary<string, double>(){{GameResources.COINS, 40}},
+                5 or 6 or 7 => new Dictionary<string, double>(){{GameResources.COINS, 50}},
+                8 or 9 => new Dictionary<string, double>(){{GameResources.COINS, 120}},
+                10 or 11 or 12 => new Dictionary<string, double>(){{GameResources.COINS, 200}, {GameResources.MEDALS, 3}},
+                > 12 => new Dictionary<string, double>(){{GameResources.COINS, 500}, {GameResources.MEDALS, 7}},
+                _ => new Dictionary<string, double>(){{GameResources.COINS, 999999999}}
+            };
         }
     }
 }

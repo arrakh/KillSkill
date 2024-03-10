@@ -29,6 +29,8 @@ namespace KillSkill.Skills
             cd.Update(deltaTime);
         }
 
+        public virtual void OnInitialize(Character owner){}
+
         public virtual bool CanExecute(Character caster) => !cd.IsActive && caster.Skills.CanCast(this);
 
         public void TriggerCooldown() => cd.Reset();

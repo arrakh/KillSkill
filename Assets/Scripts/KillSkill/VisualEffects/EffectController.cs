@@ -18,6 +18,7 @@ namespace VisualEffects
             }
             
             var obj = pool.Get();
+            position.z -= 0.3f;
             obj.SetPosition(position);
 
             return obj;

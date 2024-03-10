@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3253cada18433f9508c827a336bda7, type: 3}
   m_Name: MasterScriptableDatabase
   m_EditorClassIdentifier: 
-  data: []
+  data:
+  - {fileID: 11400000, guid: 0f12b6a3332bfe84686218eb651fdb4e, type: 2}
+  - {fileID: 11400000, guid: d27f0c96062ff4a428cf0821f0303268, type: 2}
+  - {fileID: 11400000, guid: 27e31de60e70e1c4783dc1b9e1d12ed5, type: 2}
+  - {fileID: 11400000, guid: 9ded27e0e408cce46a3ea364fd0215a8, type: 2}
+  - {fileID: 11400000, guid: 316032fc51cb5df479c295bcff37ad1c, type: 2}
   populateOnStart: 1

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d4fd924f12440f385ccd5d615ed4b06, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  flipBook:
+    id: Attack
+    frameRate: 16
+    loop: 0
+    frames:
+    - {fileID: -1859297103, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: -2136675764, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: -367869079, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: -1128187803, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: -184997958, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: -968447080, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: 933006763, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: -473463783, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: -1490447934, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: -1517530022, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}
+    - {fileID: 1019522695, guid: 1207982eb0f29b04697b2d0e6e7cdc45, type: 3}

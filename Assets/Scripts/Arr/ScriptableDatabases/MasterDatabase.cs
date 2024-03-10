@@ -15,7 +15,7 @@ namespace Arr.SDS
         
         private const string FILE_NAME = "MasterScriptableDatabase";
         
-        #if !MASTER_DB_MANUAL_INIT && UNITY_EDITOR
+        #if !MASTER_DB_MANUAL_INIT
         [RuntimeInitializeOnLoadMethod] 
         #endif
         public static void StaticInitialize()
@@ -23,8 +23,10 @@ namespace Arr.SDS
             var masterDb = Resources.Load<MasterDatabase>(FILE_NAME);
             if (masterDb == null) HandleNullMaster();
             
+            #if UNITY_EDITOR
             if (masterDb.populateOnStart) masterDb.Populate();
-
+            #endif
+                
             masterDb.Initialize();
             
             foreach (var db in _items.Values) db.Initialize();

@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace KillSkill.StatusEffects.Implementations
 {
-    public class StaggerStatusEffect : TimedStatusEffect, IPreventSkillExecution
+    public class StaggeredStatusEffect : TimedStatusEffect, IPreventSkillExecution
     {
-        public StaggerStatusEffect(float duration) : base(duration)
+        public StaggeredStatusEffect(float duration) : base(duration)
         {
         }
 
@@ -21,6 +21,9 @@ namespace KillSkill.StatusEffects.Implementations
 
             var shake = visual.DOShakePosition(0.6f, Vector3.right * 0.2f, 5);
             anim.AddTweens(shake);
+            
+            target.StatusEffects.TryRemove<CastingStatusEffect>();
+            target.StatusEffects.TryRemove<StancingStatusEffect>();
         }
 
         public override StatusEffectDescription Description => new()

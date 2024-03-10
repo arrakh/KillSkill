@@ -32,9 +32,10 @@ namespace KillSkill.Characters
             character.Animator.Damage(intensity);
 
             var charPos = character.transform.position;
+            charPos.y += 1f;
             character.VisualEffects.Spawn("damage-hit", charPos);
 
-            charPos.y += 2f;
+            charPos.y += 1f;
             var flyingText = character.VisualEffects.Spawn("flying-text", charPos)
                 .GetEffectComponent<FlyingTextComponent>();
 

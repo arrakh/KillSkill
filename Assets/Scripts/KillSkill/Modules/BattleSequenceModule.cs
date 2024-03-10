@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using DefaultNamespace;
+using Arr.EventsSystem;
 using KillSkill.Battle;
 using KillSkill.Characters;
-using KillSkill.Constants;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
 using KillSkill.UI.Game;
+using KillSkill.UI.Game.Events;
+using KillSkill.UI.Game.GameResult;
 using SessionData.Implementations;
 using UI;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace Modules
+namespace KillSkill.Modules
 {
+    //todo: MAKE ACTUAL MODULE
     public class BattleSequenceModule : MonoBehaviour
     {
         [SerializeField] private ResultView resultView;
         [SerializeField] private CountdownUI countdown;
         [SerializeField] private Character player, enemy;
 
-        private float battleTimeSeconds = 0f;
-
         private bool hasPlayerWon, isBattlePaused;
+
+        public bool IsBattlePaused => isBattlePaused;
 
         private BattleResultData result;
 
@@ -45,12 +45,6 @@ namespace Modules
             SetBattlePause(false);
         }
 
-        private void Update()
-        {
-            if (isBattlePaused) return;
-            battleTimeSeconds += Time.deltaTime;
-        }
-
         public void SetBattlePause(bool pause)
         {
             isBattlePaused = pause;
@@ -69,16 +63,33 @@ namespace Modules
 
             var battleSession = Session.GetData<BattleSessionData>();
 
-            var state = new BattleResultState(hasPlayerWon, player.Resources.Current, enemy.Resources.Current, battleTimeSeconds);
+            var battleTimeSeconds = GlobalEvents.Query<BattleTimerQuery>().timeInSeconds;
 
-            result = new(hasPlayerWon, battleSession.CalculateReward(state));
+            var state = new BattleResultState(hasPlayerWon, player.Resources.Current, enemy.Resources.Current, battleTimeSeconds);
+            
+            var data = battleSession.GetEnemy();
+            var rewards = CalculateReward(data, state);
+
+            result = new(hasPlayerWon, rewards);
 
             var resourcesSession = Session.GetData<ResourcesSessionData>();
             
-            foreach (var resource in result.gainedResources)
-                resourcesSession.AddResource(resource.Key, resource.Value);
+            foreach (var resource in rewards)
+                resourcesSession.AddResource(resource.resourceId, resource.resourceAmount);
 
             StartCoroutine(EndingSequence());
+        }
+
+        private List<BattleReward> CalculateReward(IEnemyData data, BattleResultState state)
+        {
+            var list = new List<BattleReward>();
+            foreach (var reward in data.Rewards)
+            {
+                if (!reward.TryCalculateReward(state, out var calculatedReward)) continue;
+                list.Add(calculatedReward);
+            }
+
+            return list;
         }
 
         private IEnumerator EndingSequence()

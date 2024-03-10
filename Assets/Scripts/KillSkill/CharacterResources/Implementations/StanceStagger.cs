@@ -3,12 +3,14 @@ using CharacterResources;
 using KillSkill.Characters;
 using KillSkill.Skills;
 using KillSkill.StatusEffects.Implementations;
+using KillSkill.UI;
+using KillSkill.UI.Game;
 using UI;
 using UnityEngine;
 
 namespace KillSkill.CharacterResources.Implementations
 {
-    public class StanceStagger : ICharacterResource, IModifyIncomingDamage, IResourceBarDisplay
+    public class StanceStagger : ICharacterResource, IModifyIncomingDamage, IResourceDisplay<ResourceBarDisplay>
     {
         private const float STAGGER_TIME = 6f;
         
@@ -44,7 +46,7 @@ namespace KillSkill.CharacterResources.Implementations
             }
             
             owner.Resources.Unassign<StanceStagger>();
-            owner.StatusEffects.Add(new StaggerStatusEffect(STAGGER_TIME));
+            owner.StatusEffects.Add(new StaggeredStatusEffect(STAGGER_TIME));
             if (owner.StatusEffects.Has<StancingStatusEffect>()) 
                 owner.StatusEffects.Remove<StancingStatusEffect>();
         }

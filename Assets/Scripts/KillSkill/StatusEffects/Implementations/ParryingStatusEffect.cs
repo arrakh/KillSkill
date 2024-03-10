@@ -42,7 +42,7 @@ namespace KillSkill.StatusEffects.Implementations
         {
             success = true;
             damage -= damage * damageReduceMultiplier;
-            character.StatusEffects.Remove<ParryingStatusEffect>();
+            character.StatusEffects.TryRemove<ParryingStatusEffect>();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace SessionData.Implementations
     {
         private Dictionary<string, double> resources = new()
         {
-            {GameResources.COINS, 900}
+            
         };
 
         public IReadOnlyDictionary<string, double> Resources => resources;
@@ -22,6 +22,7 @@ namespace SessionData.Implementations
         {
             var finalAmount = amount;
             if (resources.TryGetValue(id, out var existing)) finalAmount = existing + amount;
+            if (finalAmount < 0) finalAmount = 0;
             resources[id] = finalAmount;
             GlobalEvents.Fire(new ResourcesUpdatedEvent(this));
         }

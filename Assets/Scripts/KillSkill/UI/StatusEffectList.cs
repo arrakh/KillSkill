@@ -33,8 +33,7 @@ namespace UI
         private void OnStatusEffectAdded(IStatusEffect effect)
         {
             var type = effect.GetType();
-            if (spawnedElements.ContainsKey(type))
-                throw new Exception($"Trying to add status effect type {type} but element already exist??");
+            if (spawnedElements.ContainsKey(type)) return;
 
             var element = Instantiate(elementPrefab, parent, false).GetComponent<StatusEffectListElement>();
             spawnedElements[type] = element;
@@ -44,8 +43,7 @@ namespace UI
         private void OnStatusEffectRemoved(IStatusEffect effect)
         {
             var type = effect.GetType();
-            if (!spawnedElements.TryGetValue(type, out var element))
-                throw new Exception($"Trying to remove status effect type {type} but element already does not exist??");
+            if (!spawnedElements.TryGetValue(type, out var element)) return;
             
             Destroy(element.gameObject);
 

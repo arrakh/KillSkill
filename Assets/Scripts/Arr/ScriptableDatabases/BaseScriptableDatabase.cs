@@ -26,6 +26,9 @@ namespace Arr.SDS
 
                 OnPopulatePathFound(path);
             }
+            
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
         
         protected virtual bool CanFilter { get; }

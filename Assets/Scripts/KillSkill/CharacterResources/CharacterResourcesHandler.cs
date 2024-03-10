@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arr;
 using CharacterResources;
 
@@ -17,7 +18,7 @@ namespace KillSkill.CharacterResources
 
         public void Update(float deltaTime)
         {
-            foreach (var resource in updatableResources.Values)
+            foreach (var resource in updatableResources.Values.ToList())
                 resource.OnUpdate(deltaTime);
         }
 

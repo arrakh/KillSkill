@@ -4,7 +4,6 @@ namespace KillSkill.Characters
 {
     public interface IResourceReward
     {
-        public string Id { get; }
-        public double CalculateReward(BattleResultState state);
+        public bool TryCalculateReward(BattleResultState state, out BattleReward reward);
     }
 }

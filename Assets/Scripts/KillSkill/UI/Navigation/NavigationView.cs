@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Arr.ViewModuleSystem;
 using UnityEngine;
@@ -10,12 +11,23 @@ namespace KillSkill.UI.Navigation
     {
         [SerializeField] private GameObject elementPrefab;
         [SerializeField] private RectTransform parent;
-
+        [SerializeField] private Button quitButton;
+        
         private Dictionary<string, INavigateSection> sections = new();
         private Dictionary<string, NavigationElement> spawnedElements = new();
 
         private INavigateSection lastSelected = null;
-        
+
+        private void Awake()
+        {
+            quitButton.onClick.AddListener(OnQuit);
+        }
+
+        private void OnQuit()
+        {
+            Application.Quit();
+        }
+
         public void AddSection(INavigateSection section)
         {
             CleanObjects();

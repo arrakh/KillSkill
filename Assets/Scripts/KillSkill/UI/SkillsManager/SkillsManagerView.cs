@@ -15,6 +15,8 @@ namespace KillSkill.UI.SkillsManager
         [SerializeField] private ResourcesPanel resourcesPanel;
         [SerializeField] private SkillPreviewPanel skillPreviewPanel;
         [SerializeField] private SkillsLoadoutPanel loadoutPanel;
+
+        private Skill currentlyDisplayedSkill = null;
         
         public void Display(ResourcesSessionData resources, SkillsSessionData skills)
         {
@@ -22,12 +24,19 @@ namespace KillSkill.UI.SkillsManager
             resourcesPanel.Display(resources.Resources);
             loadoutPanel.Display(skills);
             skillPreviewPanel.UpdateDisplay(skills);
+            if (currentlyDisplayedSkill != null) catalogPanel.Highlight(currentlyDisplayedSkill);
         }
 
         public void PreviewSkill(Skill skill, SkillsSessionData skillSession)
         {
+            currentlyDisplayedSkill = skill;
             skillPreviewPanel.Display(skill, skillSession);
             catalogPanel.Highlight(skill);
+        }
+
+        public void AnimateCannotBuy()
+        {
+            resourcesPanel.AnimateCannotBuy();
         }
 
         //todo: Should sit in the view module
@@ -39,6 +48,11 @@ namespace KillSkill.UI.SkillsManager
         void INavigateSection.OnNavigate(bool selected)
         {
             gameObject.SetActive(selected);
+        }
+
+        public void DisplayPurchaseSlot(SkillsSessionData skillSession)
+        {
+            skillPreviewPanel.DisplayBuySlot(skillSession);
         }
     }
 }

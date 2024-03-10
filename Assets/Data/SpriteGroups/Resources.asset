@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 787360125ba44eacb63c2c16bb501733, type: 3}
+  m_Name: Resources
+  m_EditorClassIdentifier: 
+  groupId: Resources
+  sprites:
+  - id: resources-coins
+    sprite: {fileID: 21300000, guid: 502d45320389b6944b4e6151f39beb5f, type: 3}
+  - id: resources-medals
+    sprite: {fileID: 21300000, guid: fa964a2394bb75b4c9426c5ce9551f95, type: 3}
+  - id: resources-bleed
+    sprite: {fileID: 21300000, guid: 8b722fd250692a94cab10c9292a9c050, type: 3}

@@ -28,15 +28,10 @@ namespace KillSkill.Skills.Implementations.Fighter
         {
             casterChar = caster;
             targetChar = target;
-            caster.StatusEffects.Add(new CastingStatusEffect(CAST_TIME, OnDone, OnInterrupted));
+            caster.StatusEffects.Add(new CastingStatusEffect(CAST_TIME, OnDone));
 
             casterChar.AnimateMoveTowards(target, CAST_TIME, Ease.OutQuart, 1/8f);
             casterChar.Animator.PlayFlipBook("attack");
-        }
-
-        private void OnInterrupted()
-        {
-            casterChar.Animator.BackToPosition();
         }
 
         private void OnDone()

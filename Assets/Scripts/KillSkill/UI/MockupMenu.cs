@@ -19,6 +19,8 @@ namespace KillSkill.UI
         IEventListener<UnequipSkillEvent>,
         IEventListener<PurchaseSkillEvent>,
         IEventListener<DisplaySkillEvent>,
+        IEventListener<PreviewBuySlotEvent>,
+        IEventListener<BuySlotEvent>,
         IQueryProvider<DisplayedSkillQuery>
     {
         [SerializeField] private SkillsManagerView skillsManager;
@@ -72,7 +74,7 @@ namespace KillSkill.UI
             
             if (!resourcesSession.CanAfford(cost))
             {
-                Debug.LogError("CANNOT AFFORD");
+                skillsManager.AnimateCannotBuy();
                 return;
             }
 
@@ -95,6 +97,26 @@ namespace KillSkill.UI
                 success = skill != null,
                 skill = skill
             };
+        }
+
+        public void OnEvent(PreviewBuySlotEvent data)
+        {
+            skillsManager.DisplayPurchaseSlot(skillsSession);
+        }
+
+        public void OnEvent(BuySlotEvent data)
+        {
+            var cost = skillsSession.GetSlotCost();
+            
+            if (!resourcesSession.CanAfford(cost))
+            {
+                Debug.LogError("CANNOT AFFORD");
+                return;
+            }
+
+            resourcesSession.RemoveResources(cost);
+            skillsSession.AddSlot(1);
+            skillsManager.DisplayPurchaseSlot(skillsSession);
         }
     }
 }

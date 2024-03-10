@@ -13,6 +13,7 @@ namespace KillSkill.UI.SkillsManager
     //todo: Separate some of this to SkillsManagerViewModule
     public class SkillsLoadoutPanel : MonoBehaviour
     {
+        [SerializeField] private GameObject buySlot;
         [SerializeField] private GameObject elementPrefab;
         [SerializeField] private RectTransform elementParent;
 
@@ -68,6 +69,8 @@ namespace KillSkill.UI.SkillsManager
                 
                 spawnedElements.Add(display);
             }
+            
+            buySlot.transform.SetAsLastSibling();
         }
 
         private void CleanObjects()
@@ -80,6 +83,8 @@ namespace KillSkill.UI.SkillsManager
 
         private void OnClicked(SkillDisplay display)
         {
+            if (display.Skill == null) return;
+            GlobalEvents.Fire(new DisplaySkillEvent(){skill = display.Skill});
         }
     }
 }

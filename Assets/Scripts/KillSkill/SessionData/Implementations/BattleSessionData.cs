@@ -2,12 +2,13 @@
 using KillSkill.Battle;
 using KillSkill.Characters;
 using KillSkill.Characters.Implementations.EnemyData;
+using UnityEngine.Rendering;
 
 namespace KillSkill.SessionData.Implementations
 {
     public class BattleSessionData : ISessionData
     {
-        private BattleStartData battleStart = new (new MushroomMan());
+        private BattleStartData battleStart = new (new Executioner());
 
         public void SetBattle(IEnemyData enemy)
         {
@@ -15,20 +16,6 @@ namespace KillSkill.SessionData.Implementations
         }
 
         public IEnemyData GetEnemy() => battleStart.enemyData;
-
-        public Dictionary<string, double> CalculateReward(BattleResultState state)
-        {
-            var rewards = new Dictionary<string, double>();
-
-            foreach (var reward in battleStart.enemyData.Rewards)
-            {
-                var amount = reward.CalculateReward(state);
-                if (amount == 0) continue;
-                rewards[reward.Id] = amount;
-            }
-
-            return rewards;
-        }
         
         public void OnLoad()
         {

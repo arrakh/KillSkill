@@ -7,7 +7,7 @@ namespace KillSkill.Skills.Implementations.Fighter
 {
     public class VigorSkill : Skill
     {
-        private const float HEAL_AMOUNT = 90f;
+        private const float HEAL_AMOUNT = 50f;
         
         protected override float CooldownTime => 8f;
         

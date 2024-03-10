@@ -7,19 +7,19 @@ using StatusEffects;
 
 namespace KillSkill.StatusEffects.Implementations
 {
-    public class EmpowerStatusEffect : TimedStatusEffect, IModifyDamageDealt
+    public class EmpoweredStatusEffect : TimedStatusEffect, IModifyDamageDealt
     {
         private float multiplier;
         
-        public EmpowerStatusEffect(float multiplier, float duration) : base(duration)
+        public EmpoweredStatusEffect(float multiplier, float duration) : base(duration)
         {
             this.multiplier = multiplier;
         }
 
         public override StatusEffectDescription Description => new()
         {
-            icon = SpriteDatabase.Get("status-empower"),
-            name = "Empower",
+            icon = SpriteDatabase.Get("status-empowered"),
+            name = "Empowered",
             description = StandardDescription(multiplier)
         };
 
@@ -28,7 +28,7 @@ namespace KillSkill.StatusEffects.Implementations
         
         protected override void OnDuplicateAdded(Character target, IStatusEffect duplicate)
         {
-            if (duplicate is not EmpowerStatusEffect empower) throw new Exception("Duplicate is not Open Wide?!");
+            if (duplicate is not EmpoweredStatusEffect empower) throw new Exception("Duplicate is not Open Wide?!");
 
             if (empower.multiplier > multiplier) multiplier = empower.multiplier;
             

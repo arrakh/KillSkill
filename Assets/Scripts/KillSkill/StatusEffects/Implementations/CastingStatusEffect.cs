@@ -16,18 +16,15 @@ namespace StatusEffects
         };
 
         private Action onDoneCharging;
-        private Action onChargingInterrupted;
 
-        public CastingStatusEffect(float duration, Action onDoneCharging, Action onChargingInterrupted) : base(duration)
+        public CastingStatusEffect(float duration, Action onDoneCharging) : base(duration)
         {
             this.onDoneCharging = onDoneCharging;
-            this.onChargingInterrupted = onChargingInterrupted;
         }
 
         public override void OnRemoved(Character target)
         {
-            if (timer.IsActive) onChargingInterrupted?.Invoke();
-            else onDoneCharging?.Invoke();
+            onDoneCharging?.Invoke();
         }
     }
 }

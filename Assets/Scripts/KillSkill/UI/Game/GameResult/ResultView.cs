@@ -1,6 +1,4 @@
-﻿using System;
-using Arr.ViewModuleSystem;
-using DefaultNamespace;
+﻿using Arr.ViewModuleSystem;
 using DG.Tweening;
 using KillSkill.Battle;
 using TMPro;
@@ -8,14 +6,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace KillSkill.UI.Game
+namespace KillSkill.UI.Game.GameResult
 {
     public class ResultView : View
     {
         [SerializeField] private RectTransform panel;
         [SerializeField] private TextMeshProUGUI resultText;
-        [SerializeField] private GameObject resourcePrefab;
-        [SerializeField] private RectTransform resourceParent;
+        [SerializeField] private GameObject rewardPrefab, statPrefab;
+        [SerializeField] private RectTransform rewardParent, statParent;
         [SerializeField] private float inAnimTime;
         [SerializeField] private AnimationCurve inAnimCurve;
         [SerializeField] private CanvasGroup canvasGroup;
@@ -43,12 +41,12 @@ namespace KillSkill.UI.Game
 
             resultText.text = result.playerWon ? "Victory" : "Defeat";
 
-            foreach (var resource in result.gainedResources)
+            foreach (var reward in result.rewards)
             {
-                var counter = Instantiate(resourcePrefab, resourceParent)
-                    .GetComponent<PlayerResourceCounter>();
+                var element = Instantiate(rewardPrefab, rewardParent)
+                    .GetComponent<GameResultRewardElement>();
                     
-                counter.Display(resource.Key, resource.Value);
+                element.Display(reward.resultText, reward.resourceId, reward.resourceAmount);
             }
         }
 

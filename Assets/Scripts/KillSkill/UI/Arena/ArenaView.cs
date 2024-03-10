@@ -6,6 +6,7 @@ using KillSkill.Characters;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
 using KillSkill.UI.Navigation;
+using KillSkill.Utility;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,21 +24,24 @@ namespace KillSkill.UI.Arena
         public void Display(BattleSessionData session)
         {
             battleSession = session;
-            var allMonsters = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(IEnemyData).IsAssignableFrom(type) && !type.IsInterface);
+            var allMonsters = ReflectionUtility.GetAll<IEnemyData>();
 
             CleanObjects();
 
+            var list = new List<IEnemyData>();
+            
             foreach (var monster in allMonsters)
             {
                 var instance = Activator.CreateInstance(monster);
-                if (instance is not IEnemyData enemyData) continue;
+                if (instance is IEnemyData enemyData) list.Add(enemyData);
+            }
 
+            foreach (var enemy in list.OrderBy(x => x.CatalogOrder))
+            {
                 var obj = Instantiate(elementPrefab, elementParent);
                 var element = obj.GetComponent<ArenaCatalogElement>();
                 
-                element.Display(enemyData, OnElementClicked);
+                element.Display(enemy, OnElementClicked);
                 spawnedElements.Add(element);
             }
         }

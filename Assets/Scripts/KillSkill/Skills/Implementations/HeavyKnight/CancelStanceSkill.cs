@@ -18,7 +18,7 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             name = "Cancel Stance",
             description = "Safely cancels <u>Stancing</u>. Can only be activated when the user is <u>Stancing</u>.",
             extraDescription = $"- <u>Stancing</u>:\n{StancingStatusEffect.StandardDescription()}\n\n" +
-                               $"- <u>Stagger</u>:\n{StaggerStatusEffect.StandardDescription()}"
+                               $"- <u>Stagger</u>:\n{StaggeredStatusEffect.StandardDescription()}"
         };
 
         public override CatalogEntry CatalogEntry => new()
@@ -26,7 +26,8 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             order = 2, archetypeId = Archetypes.HEAVY_KNIGHT,
             resourceCosts = new Dictionary<string, double>()
             {
-                {GameResources.COINS, 100}
+                {GameResources.COINS, 100},
+                {GameResources.MEDALS, 1},
             },
         };
 
