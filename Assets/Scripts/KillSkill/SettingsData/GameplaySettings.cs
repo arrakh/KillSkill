@@ -9,16 +9,6 @@ namespace KillSkill.SettingsData
     {
         private static List<KeyCode> _skillBindings = new()
         {
-            KeyCode.Alpha1,
-            KeyCode.Alpha2,
-            KeyCode.Alpha3,
-            KeyCode.Alpha4,
-            KeyCode.Alpha5,
-            KeyCode.Alpha6,
-            KeyCode.Alpha7,
-            KeyCode.Alpha8,
-            KeyCode.Alpha9,
-            KeyCode.Alpha0,
             KeyCode.Q,
             KeyCode.W,
             KeyCode.E,
@@ -29,6 +19,17 @@ namespace KillSkill.SettingsData
             KeyCode.I,
             KeyCode.O,
             KeyCode.P,
+            
+            KeyCode.A,
+            KeyCode.S,
+            KeyCode.D,
+            KeyCode.F,
+            KeyCode.G,
+            KeyCode.H,
+            KeyCode.J,
+            KeyCode.K,
+            KeyCode.L,
+            KeyCode.Semicolon,
         };
 
         public static IReadOnlyList<KeyCode> SkillBindings => _skillBindings;
@@ -48,6 +49,7 @@ namespace KillSkill.SettingsData
         
         private static string FormatBinding(string keycode)
         {
+            if (keycode.Equals("Semicolon")) return ";";
             if (keycode.StartsWith("Alpha")) return keycode.Substring(5);
             return keycode;
         }

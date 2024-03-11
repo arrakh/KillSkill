@@ -11,7 +11,7 @@ namespace KillSkill.Skills.Implementations.Enemy.Executioner
     public class SpinAttackSkill : Skill, IGlobalCooldownSkill
     {
         private const int SPIN_COUNT = 5;
-        private const float DAMAGE = 3f;
+        private const float DAMAGE = 5f;
         private const float INIT_PREP_TIME = 2f;
         private const float DURATION_PER_SPIN = 0.25f;
         protected override float CooldownTime => 6f;

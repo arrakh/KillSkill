@@ -9,7 +9,7 @@ namespace KillSkill.Skills.Implementations.Fighter
 {
     public class QuickBlockSkill : Skill
     {
-        private const float SHIELD_AMOUNT = 30f;
+        private const float SHIELD_AMOUNT = 12f;
         
         protected override float CooldownTime => 4f;
 

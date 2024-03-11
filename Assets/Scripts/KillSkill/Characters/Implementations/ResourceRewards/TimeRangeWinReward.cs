@@ -8,6 +8,7 @@ namespace KillSkill.Characters.Implementations.ResourceRewards
         private string id;
         private int amount;
         private float minSecond, maxSecond;
+        private string customMessage;
 
         public TimeRangeWinReward(string id, int amount, float maxSecond)
         {
@@ -17,12 +18,13 @@ namespace KillSkill.Characters.Implementations.ResourceRewards
             this.maxSecond = maxSecond;
         }
 
-        public TimeRangeWinReward(string id, int amount, float minSecond, float maxSecond)
+        public TimeRangeWinReward(string id, int amount, float minSecond, float maxSecond, string customMessage = "")
         {
             this.id = id;
             this.amount = amount;
             this.minSecond = minSecond;
             this.maxSecond = maxSecond;
+            this.customMessage = customMessage;
         }
 
         public bool TryCalculateReward(BattleResultState state, out BattleReward reward)
@@ -34,7 +36,9 @@ namespace KillSkill.Characters.Implementations.ResourceRewards
             var time = state.battleDurationSeconds;
             if (time > maxSecond || time < minSecond) return false;
 
-            reward = new($"Victory within {FormatTime(maxSecond)}", id, amount);
+            var msg = $"Victory within {FormatTime(maxSecond)}";
+            var hasCustomMsg = !string.IsNullOrEmpty(customMessage);
+            reward = new(hasCustomMsg ? customMessage : msg, id, amount);
             return true;
         }
 

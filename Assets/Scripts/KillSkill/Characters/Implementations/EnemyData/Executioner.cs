@@ -26,12 +26,14 @@ namespace KillSkill.Characters.Implementations.EnemyData
 
         public string DisplayName => "Executioner";
         public int CatalogOrder => 1;
-        public float Health => 600f;
+        public float Health => 800f;
 
         public IResourceReward[] Rewards => new IResourceReward[]
         {
-            new CustomMessageReward(GameResources.COINS, 99999,"You beat the demo, congrats :)"),
-            new CustomMessageReward(GameResources.MEDALS, 99,"Look forward to the next iteration of the game!")
+            new CustomMessageReward(GameResources.COINS, 999,"You beat the demo, congrats :)"),
+            new CustomMessageReward(GameResources.COINS, 999,"Look forward to the next iteration of the game!"),
+            
+            new TimeRangeWinReward(GameResources.MEDALS, 69, 0, 10, "Wow, you beat this guy within 10 seconds? That's crazy"),
         };
 
         public Skill[] Skills => new Skill[]
