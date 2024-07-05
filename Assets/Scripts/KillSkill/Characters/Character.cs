@@ -16,21 +16,25 @@ namespace KillSkill.Characters
     //todo: CHARACTER SHOULD BE INTERFACED TO ICHARACTER
     public class Character : MonoBehaviour
     {
-        [SerializeField] private EffectController effectController; //todo: TEMP, SHOULD BE INJECTED FROM OUTSIDE
         [SerializeField] protected float hp, maxHp; //todo: TEMP, SHOULD BE DATA DRIVEN
         [SerializeField] private CharacterAnimator animator;
-        [SerializeField] protected bool battlePause = true;
+        [SerializeField] protected bool battlePause = false;
         [SerializeField] protected Character target;
         
         protected StatusEffectsHandler statusEffects;
         protected CharacterResourcesHandler resources;
         protected CharacterSkillHandler skillHandler;
 
+        private ICharacterFactory characterFactory;
+        private IVisualEffectsHandler visualEffects;
+
         protected bool isAlive = true;
 
         public bool IsAlive => isAlive;
 
-        public event Action onDeath;
+        public int Uid => gameObject.GetInstanceID();
+
+        public event Action<Character> onDeath;
 
         //todo: HANDLERS, ABSTRACT EVERYTHING HERE AND INJECT WHAT IS NEEDED
         public Character Target => target;
@@ -42,20 +46,35 @@ namespace KillSkill.Characters
         public CharacterAnimator Animator => animator;
         public CharacterSkillHandler Skills => skillHandler;
         
-        public IVisualEffectsHandler VisualEffects => effectController;
-        
+        public IVisualEffectsHandler VisualEffects => visualEffects;
+        public ICharacterFactory CharacterFactory => characterFactory;
+
         public PersistentEventTemplate<Character> onInitialize = new();
+
+        public Vector3 Position
+        {
+            set
+            {
+                animator.UpdatePosition(value);
+                transform.position = value;
+            }
+
+            get => transform.position;
+        }
         //==============================================================
         
         public virtual Type MainResource => typeof(Health);
 
-        public void Initialize(ICharacterData characterData, Skill[] skills)
+        public virtual void Initialize(ICharacterData characterData, Skill[] skills, ICharacterFactory factory, IVisualEffectsHandler vfx)
         {
             isAlive = true;
             statusEffects = new(this);
             resources = new();
             skillHandler = new CharacterSkillHandler(skills, statusEffects, this);
-            
+            characterFactory = factory;
+            visualEffects = vfx;
+
+            hp = maxHp = characterData.Health;
             resources.Assign(new Health(this, hp, maxHp));
             
             skillHandler.InitializeSkills();
@@ -68,6 +87,8 @@ namespace KillSkill.Characters
         }
 
         public void SetBattlePaused(bool paused) => battlePause = paused;
+
+        public void SetTarget(Character newTarget) => target = newTarget;
 
         private void Update()
         {
@@ -96,7 +117,7 @@ namespace KillSkill.Characters
         {
             Debug.Log("DEATH INTERNAL");
             OnDeath();
-            onDeath?.Invoke();
+            onDeath?.Invoke(this);
         }
 
         protected virtual void OnDeath(){}

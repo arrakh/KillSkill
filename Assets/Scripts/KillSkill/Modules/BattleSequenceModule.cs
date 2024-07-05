@@ -29,8 +29,8 @@ namespace KillSkill.Modules
 
         private IEnumerator Start()
         {
-            player.onDeath += OnAnyDeath;
-            enemy.onDeath += OnAnyDeath;
+            player.onDeath += OnPlayerDeath;
+            enemy.onDeath += OnEnemyDeath;
             
             SetBattlePause(true);
             
@@ -45,6 +45,18 @@ namespace KillSkill.Modules
             SetBattlePause(false);
         }
 
+        private void OnEnemyDeath(Character character)
+        {
+            enemy.onDeath -= OnEnemyDeath;
+            OnAnyDeath();
+        }
+
+        private void OnPlayerDeath(Character character)
+        {
+            player.onDeath -= OnPlayerDeath;
+            OnAnyDeath();
+        }
+
         public void SetBattlePause(bool pause)
         {
             isBattlePaused = pause;
@@ -54,9 +66,6 @@ namespace KillSkill.Modules
 
         public void OnAnyDeath()
         {
-            player.onDeath -= OnAnyDeath;
-            enemy.onDeath -= OnAnyDeath;
-
             SetBattlePause(true);
 
             hasPlayerWon = player.IsAlive;

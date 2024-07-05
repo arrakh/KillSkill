@@ -1,10 +1,7 @@
 ﻿using CleverCrow.Fluid.BTs.Trees;
-using KillSkill.Characters.Implementations.EnemyData;
-using KillSkill.SessionData;
-using KillSkill.SessionData.Implementations;
-using KillSkill.Utility.BehaviourTree;
-using Skills;
+using KillSkill.Skills;
 using UnityEngine;
+using VisualEffects;
 
 namespace KillSkill.Characters
 {
@@ -12,14 +9,10 @@ namespace KillSkill.Characters
     {
         [SerializeField] private BehaviorTree aiTree;
 
-        private void Start()
+        public override void Initialize(ICharacterData characterData, Skill[] skills, ICharacterFactory factory, IVisualEffectsHandler vfx)
         {
-            var battleSession = Session.GetData<BattleSessionData>();
-            var enemyData = battleSession.GetEnemy();
-            hp = maxHp = enemyData.Health;
-            
-            Initialize(enemyData, enemyData.Skills);
-
+            base.Initialize(characterData, skills, factory, vfx);
+            if (characterData is not IEnemyData enemyData) return;
             var builder = enemyData.OnBuildBehaviourTree(this, new BehaviorTreeBuilder(gameObject));
             aiTree = builder.Build();
         }

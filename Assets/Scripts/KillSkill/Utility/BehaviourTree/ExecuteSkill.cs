@@ -9,7 +9,6 @@ namespace KillSkill.Utility.BehaviourTree
     public class ExecuteSkill<T> : ActionBase where T : Skill
     {
         private Character executor;
-        private Character target;
         private int skillIndex = int.MaxValue;
         private bool failOnCantCast;
 
@@ -17,7 +16,6 @@ namespace KillSkill.Utility.BehaviourTree
         {
             Name = $"Execute {typeof(T).Name}";
             this.executor = executor;
-            target = executor.Target;
             this.failOnCantCast = failOnCantCast;
 
             if (!executor.Skills.TryGetIndex<T>(out skillIndex))
@@ -28,7 +26,7 @@ namespace KillSkill.Utility.BehaviourTree
         {
             if (skillIndex == int.MaxValue) return TaskStatus.Failure;
             if (!executor.Skills.CanCast(skillIndex)) return failOnCantCast ? TaskStatus.Failure : TaskStatus.Continue;
-            executor.Skills.Execute<T>(target);
+            executor.Skills.Execute<T>(executor.Target);
             return TaskStatus.Success;
         }
     }

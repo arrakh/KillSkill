@@ -41,3 +41,11 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 135da1d222f30194e9d8057ceaac2a4b, type: 2}
     - {fileID: 11400000, guid: 0862b7597ea695c448153463878e223f, type: 2}
     - {fileID: 11400000, guid: 5aa3991a4440da04ca39e04a9ef13df8, type: 2}
+  - characterId: flying-eye
+    defaultFlipBook: {fileID: 11400000, guid: c1d91b0d159a50847b7a3e0e97a52ca0, type: 2}
+    flipBooks:
+    - {fileID: 11400000, guid: c1c1abab0e494214b8b1577590f0c2d8, type: 2}
+    - {fileID: 11400000, guid: cbe32b645e00a044d86876cfa28606ca, type: 2}
+    - {fileID: 11400000, guid: c99301e7415e3a3418944eb2e26cd1ab, type: 2}
+    - {fileID: 11400000, guid: 5bd66f54f8e130f4fafa7949b0e3bc2c, type: 2}
+    - {fileID: 11400000, guid: c1d91b0d159a50847b7a3e0e97a52ca0, type: 2}

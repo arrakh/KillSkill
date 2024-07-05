@@ -35,14 +35,25 @@ namespace KillSkill.Characters
             charPos.y += 1f;
             character.VisualEffects.Spawn("damage-hit", charPos);
 
-            charPos.y += 1f;
-            var flyingText = character.VisualEffects.Spawn("flying-text", charPos)
-                .GetEffectComponent<FlyingTextComponent>();
-
             var damageText = Math.Round(damage).ToString("F1");
-            flyingText.Display(damageText, 1f, Color.red);
+            var color = new Color(1f, 0.31f, 0.13f);
 
+            ShowFlyingText(character, damageText, color, Vector3.up);
+            
             return true;
+        }
+
+        public static void ShowFlyingText(this Character character, string text, Vector3 offsetPosition)
+            => ShowFlyingText(character, text, Color.white, offsetPosition);
+        
+        public static void ShowFlyingText(this Character character, string text, Color color, Vector3 offsetPosition)
+        {
+            var charPos = character.transform.position;
+
+            var flyingText = character.VisualEffects.Spawn("flying-text", charPos + offsetPosition)
+                .GetEffectComponent<FlyingTextComponent>();
+            
+            flyingText.Display(text, 1f, color);
         }
 
         public static bool TryHeal(this Character character, Character healer, double heal)

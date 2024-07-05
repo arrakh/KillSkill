@@ -1,12 +1,14 @@
 ﻿using System;
 using KillSkill.Characters;
 using KillSkill.Database;
+using KillSkill.Skills;
 using KillSkill.StatusEffects;
+using KillSkill.StatusEffects.Implementations;
 using KillSkill.StatusEffects.Implementations.Core;
 
 namespace StatusEffects
 {
-    public class CastingStatusEffect : TimedStatusEffect
+    public class CastingStatusEffect : TimedStatusEffect, IModifyIncomingDamage
     {
         public override StatusEffectDescription Description => new()
         {
@@ -25,6 +27,11 @@ namespace StatusEffects
         public override void OnRemoved(Character target)
         {
             onDoneCharging?.Invoke();
+        }
+
+        public void ModifyDamage(Character damager, Character target, ref double damage)
+        {
+            
         }
     }
 }

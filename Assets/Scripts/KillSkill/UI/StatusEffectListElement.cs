@@ -11,7 +11,6 @@ namespace KillSkill.UI
     {
         [SerializeField] private Image iconImage;
         [SerializeField] private Image fillImage;
-        [SerializeField] private StatusEffectNameplate nameplate;
 
         private IStatusEffect statusEffect;
 
@@ -21,8 +20,6 @@ namespace KillSkill.UI
             var desc = status.Description;
 
             iconImage.sprite = desc.icon;
-            
-            nameplate.Display(status.Description.name);
 
             Animate();
         }

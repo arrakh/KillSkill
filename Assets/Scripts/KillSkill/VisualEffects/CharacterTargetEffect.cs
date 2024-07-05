@@ -10,12 +10,14 @@ namespace VFX
 
         public void SetHighlight(bool on)
         {
+            return;
             if (on) spriteRenderer.material.EnableKeyword("HOLOGRAM_ON");
             else spriteRenderer.material.DisableKeyword("HOLOGRAM_ON");
         }
 
         public void SetLockOn(bool on)
         {
+            return;
             if (on) spriteRenderer.material.EnableKeyword("TWISTUV_ON");
             else spriteRenderer.material.DisableKeyword("TWISTUV_ON");
         }

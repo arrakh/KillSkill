@@ -25,6 +25,11 @@ namespace KillSkill.Characters
             flipBookPlayer.Initialize(characterData.DefaultFlipBook, characterData.FlipBooks);
         }
 
+        public void UpdatePosition(Vector3 newPosition)
+        {
+            originalPosition = newPosition;
+        }
+
         public void PlayFlipBook(string id, float speed = 1f, Action onDone = null, bool revertToDefaultOnDone = true) 
             => flipBookPlayer.Play(id, speed, onDone, revertToDefaultOnDone);
 
@@ -48,6 +53,7 @@ namespace KillSkill.Characters
             AddMovementTweens(move);
         }
 
+        //TODO: DONT EXPOSE TWEENS TO OUTSIDE, ONLY EXPOSE PRESET ANIMATIONS TO ICHARACTERANIMATOR
         public void AddTweens(params Tween[] t)
         {
             tweens.AddRange(t);

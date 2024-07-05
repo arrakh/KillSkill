@@ -7,6 +7,7 @@ using KillSkill.Characters.Implementations.ResourceRewards;
 using KillSkill.Constants;
 using KillSkill.Database;
 using KillSkill.Skills;
+using KillSkill.Skills.Implementations.Enemy;
 using KillSkill.Skills.Implementations.Enemy.Executioner;
 using KillSkill.Skills.Implementations.Enemy.Mushroom;
 using KillSkill.Skills.Implementations.Fighter;
@@ -43,6 +44,7 @@ namespace KillSkill.Characters.Implementations.EnemyData
             new PowerChargeSkill(),
             new SpinAttackSkill(),
             new CarefulParrySkill(),
+            new SummonFlyingEyeSkill()
         };
 
         public BehaviorTreeBuilder OnBuildBehaviourTree(Character character, BehaviorTreeBuilder builder)
@@ -50,6 +52,9 @@ namespace KillSkill.Characters.Implementations.EnemyData
             //@formatter:off
             return builder
                     .Selector()
+                        .Sequence("Summon Flying Eye")
+                            .ExecuteSkill<SummonFlyingEyeSkill>(character)
+                            .End()
                         .Sequence("Check and React to Casting")
                             .Condition(() => character.Target.StatusEffects.Has<CastingStatusEffect>() && character.Skills.CanCast<CarefulParrySkill>())
                             .WaitTime(0.2f)

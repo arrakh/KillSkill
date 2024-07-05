@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Linq;
 using KillSkill.Characters.Implementations.PlayerData;
+using KillSkill.Modules;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
 using KillSkill.SettingsData;
 using KillSkill.Skills;
 using UnityEngine;
 using UnityEngine.Events;
+using VisualEffects;
 
 namespace KillSkill.Characters
 {
     public class PlayerCharacter : Character
     {
+        [SerializeField] private CharacterFactoryModule tempFactory; //todo: MUST BE INITIALIZED FROM OUTSIDE
+        [SerializeField] private EffectController effectController; //todo: MUST BE INITIALIZED FROM OUTSIDE
+
         public UnityEvent<int> OnSkillIndexPressed;
 
         private void Start()
@@ -32,7 +37,7 @@ namespace KillSkill.Characters
                 }
             }
 
-            Initialize(new MockupPlayer(), skills);
+            Initialize(new MockupPlayer(), skills, tempFactory, effectController);
         }
 
         protected override void OnUpdate()
