@@ -1,7 +1,7 @@
 ﻿using Arr.ModulesSystem;
 using DefaultNamespace.SessionData;
 
-namespace DefaultNamespace.ModuleLoaders
+namespace KillSkill.ModuleLoaders
 {
     public class GameModuleLoader : ModulesLoader
     {

@@ -4,7 +4,7 @@ using Arr.ModulesSystem;
 using DefaultNamespace.SessionData;
 using UnityEngine;
 
-namespace DefaultNamespace.ModuleLoaders
+namespace KillSkill.ModuleLoaders
 {
     public static class MockupMainModuleLoader
     {
