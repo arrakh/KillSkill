@@ -6,9 +6,9 @@ using StatusEffects;
 
 namespace KillSkill.Skills
 {
-    public partial class CharacterSkillHandler : IDisposable
+    public partial class CharacterSkillHandler : IDisposable, ICharacterSkillHandler
     {
-        public CharacterSkillHandler(Skill[] skills, IStatusEffectsHandler statusEffects, Character character)
+        public CharacterSkillHandler(Skill[] skills, IStatusEffectsHandler statusEffects, ICharacter character)
         {
             this.skills = skills;
             this.statusEffects = statusEffects;
@@ -38,7 +38,7 @@ namespace KillSkill.Skills
         private Timer globalCd = new(0, false);
 
         private IStatusEffectsHandler statusEffects;
-        private Character character;
+        private ICharacter character;
 
         public void InitializeSkills()
         {
@@ -103,7 +103,7 @@ namespace KillSkill.Skills
         public bool TryGetIndex<T>(out int skillIndex)
             => skillIndexes.TryGetValue(typeof(T), out skillIndex);
 
-        public void Execute<T>(Character target) where T : Skill
+        public void Execute<T>(ICharacter target) where T : Skill
         {
             if (!skillIndexes.TryGetValue(typeof(T), out var index))
                 throw new Exception($"Trying to execute {typeof(T)} but character does not have it!");
@@ -111,7 +111,7 @@ namespace KillSkill.Skills
             Execute(index, target);
         }
 
-        public void Execute(int index, Character target)
+        public void Execute(int index, ICharacter target)
         {
             if (index >= skills.Length)
                 throw new Exception($"Trying to execute Skill index {index} but there are only {skills.Length} skills!");

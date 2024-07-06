@@ -8,17 +8,17 @@ namespace KillSkill.Minions
     public class CharacterMinionHandler : ICharacterMinionHandler
     {
         private ICharacterFactory characterFactory;
-        private Character character;
-        private Dictionary<int, Character> minions = new();
+        private ICharacter character;
+        private Dictionary<int, ICharacter> minions = new();
 
-        public void Initialize(ICharacterFactory factory, Character ownerChar)
+        public void Initialize(ICharacterFactory factory, ICharacter ownerChar)
         {
             characterFactory = factory;
             character = ownerChar;
             character.onDeath += OnCharacterDeath;
         }
 
-        private void OnCharacterDeath(Character obj)
+        private void OnCharacterDeath(ICharacter obj)
         {
             character.onDeath -= OnCharacterDeath;
             foreach (var minion in minions.Values)
@@ -26,16 +26,16 @@ namespace KillSkill.Minions
             minions.Clear();
         }
         
-        public Character Add(Vector3 position, ICharacterData data, bool parentToOwner = false)
+        public ICharacter Add(Vector3 position, ICharacterData data, bool parentToOwner = false)
         {
             var minion = characterFactory.Create(data);
             
             //should be impossible
-            if (minions.Remove(minion.Uid, out var existing)) Object.Destroy(existing.gameObject);
+            if (minions.Remove(minion.Uid, out var existing)) Object.Destroy(existing.GameObject);
             
-            if (parentToOwner) minion.transform.SetParent(character.transform);
+            if (parentToOwner) minion.GameObject.transform.SetParent(character.GameObject.transform);
 
-            minion.transform.position = position;
+            minion.GameObject.transform.position = position;
 
             minions[minion.Uid] = minion;
 
@@ -44,14 +44,14 @@ namespace KillSkill.Minions
             return minion;
         }
 
-        private void OnMinionDeath(Character minion)
+        private void OnMinionDeath(ICharacter minion)
         {
             minion.onDeath -= OnMinionDeath;
             minions.Remove(minion.Uid);
         }
 
-        public ICollection<Character> GetAll() => minions.Values;
+        public ICollection<ICharacter> GetAll() => minions.Values;
 
-        public Character GetRandom() => minions.Values.ToArray()[Random.Range(0, minions.Count)];
+        public ICharacter GetRandom() => minions.Values.ToArray()[Random.Range(0, minions.Count)];
     }
 }

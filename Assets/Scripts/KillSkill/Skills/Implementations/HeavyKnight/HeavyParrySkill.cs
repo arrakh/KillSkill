@@ -17,10 +17,10 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
         
         protected override float CooldownTime => 0.8f;
 
-        private Character casterChar;
-        private Character targetChar;
+        private ICharacter casterChar;
+        private ICharacter targetChar;
 
-        public override bool CanExecute(Character caster)
+        public override bool CanExecute(ICharacter caster)
             => !caster.StatusEffects.Has<ParryingStatusEffect>();
 
         public override SkillMetadata Metadata => new()
@@ -45,7 +45,7 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             }
         };
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             casterChar = caster;
             targetChar = target;

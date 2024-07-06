@@ -31,10 +31,10 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             },
         };
 
-        public override bool CanExecute(Character caster)
+        public override bool CanExecute(ICharacter caster)
             => base.CanExecute(caster) && caster.Resources.IsAssigned<StanceStagger>();
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             caster.Resources.Unassign<StanceStagger>();
             caster.StatusEffects.Remove<StancingStatusEffect>();

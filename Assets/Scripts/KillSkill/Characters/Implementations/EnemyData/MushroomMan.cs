@@ -38,7 +38,7 @@ namespace KillSkill.Characters.Implementations.EnemyData
             new SporePopSkill(),
         };
 
-        public BehaviorTreeBuilder OnBuildBehaviourTree(Character character, BehaviorTreeBuilder builder)
+        public BehaviorTreeBuilder OnBuildBehaviourTree(ICharacter character, BehaviorTreeBuilder builder)
         {
             //@formatter:off
             return builder

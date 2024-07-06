@@ -45,13 +45,13 @@ namespace KillSkill.Modules
             SetBattlePause(false);
         }
 
-        private void OnEnemyDeath(Character character)
+        private void OnEnemyDeath(ICharacter character)
         {
             enemy.onDeath -= OnEnemyDeath;
             OnAnyDeath();
         }
 
-        private void OnPlayerDeath(Character character)
+        private void OnPlayerDeath(ICharacter character)
         {
             player.onDeath -= OnPlayerDeath;
             OnAnyDeath();

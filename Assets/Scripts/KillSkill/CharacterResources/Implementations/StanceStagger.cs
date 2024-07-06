@@ -14,13 +14,13 @@ namespace KillSkill.CharacterResources.Implementations
     {
         private const float STAGGER_TIME = 6f;
         
-        private Character owner;
+        private ICharacter owner;
         private double currentValue;
         
         public event Action<ResourceBarDisplay> OnUpdateDisplay;
         public ResourceBarDisplay DisplayData { get; }
 
-        public StanceStagger(Character owner, double maxThreshold)
+        public StanceStagger(ICharacter owner, double maxThreshold)
         {
             this.owner = owner;
             currentValue = maxThreshold;
@@ -34,7 +34,7 @@ namespace KillSkill.CharacterResources.Implementations
             };
         }
 
-        public void ModifyDamage(Character damager, Character target, ref double damage)
+        public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
             currentValue -= damage;
             DisplayData.value = currentValue;

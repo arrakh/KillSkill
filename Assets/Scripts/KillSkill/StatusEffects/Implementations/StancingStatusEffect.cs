@@ -18,12 +18,12 @@ namespace KillSkill.StatusEffects.Implementations
             this.staggerThreshold = staggerThreshold;
         }
 
-        public override void OnAdded(Character target)
+        public override void OnAdded(ICharacter target)
         {
             target.Resources.Assign(new StanceStagger(target, staggerThreshold));
         }
 
-        public override void OnRemoved(Character target)
+        public override void OnRemoved(ICharacter target)
         {
             if (target.Resources.IsAssigned<StanceStagger>())
                 target.Resources.Unassign<StanceStagger>();

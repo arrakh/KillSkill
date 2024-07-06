@@ -20,7 +20,7 @@ namespace KillSkill.Skills.Implementations.Fighter
         
         public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.FIGHTER, int.MinValue + 1);
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             caster.TryHeal(caster, HEAL_AMOUNT);
         }

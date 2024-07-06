@@ -8,10 +8,10 @@ namespace KillSkill.StatusEffects
         public bool IsActive { get; }
         public StatusEffectDescription Description { get; }
 
-        public void OnDuplicateAdded(Character target, IStatusEffect duplicate);
+        public void OnDuplicateAdded(ICharacter target, IStatusEffect duplicate);
 
-        public void OnAdded(Character target);
-        public void OnUpdate(Character target, float deltaTime);
-        public void OnRemoved(Character target);
+        public void OnAdded(ICharacter target);
+        public void OnUpdate(ICharacter target, float deltaTime);
+        public void OnRemoved(ICharacter target);
     }
 }

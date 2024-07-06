@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace KillSkill.Characters
 {
-    public class CharacterAnimator : MonoBehaviour
+    public class CharacterAnimator : MonoBehaviour, ICharacterAnimator
     {
         [SerializeField] private Transform visualTransform;
         [SerializeField] private SpriteRenderer spriteRenderer;

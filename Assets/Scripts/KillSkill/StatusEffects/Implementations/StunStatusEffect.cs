@@ -9,7 +9,7 @@ namespace KillSkill.StatusEffects.Implementations
 {
     public class StunStatusEffect : TimedStatusEffect, IPreventSkillExecution
     {
-        public override void OnAdded(Character target)
+        public override void OnAdded(ICharacter target)
         {
             var anim = target.Animator;
             var visual = anim.Visual;

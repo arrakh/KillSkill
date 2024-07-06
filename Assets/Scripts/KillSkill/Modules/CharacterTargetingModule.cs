@@ -7,11 +7,11 @@ namespace Systems
 {
     public class CharacterTargetingModule : MonoBehaviour
     {
-        [SerializeField] private Character player;
+        [SerializeField] private ICharacter player;
 
         private Camera camera;
-        private Character lastTarget = null;
-        private Character lastHighlight = null;
+        private ICharacter lastTarget = null;
+        private ICharacter lastHighlight = null;
         private CharacterTargetEffect lastTargetEffect = null;
         private CharacterTargetEffect lastHighlightEffect = null;
         
@@ -51,12 +51,12 @@ namespace Systems
 
             lastHighlight = character;
             
-            if (!lastHighlight.TryGetComponent<CharacterTargetEffect>(out var highlighter)) return;
+            if (!lastHighlight.GameObject.TryGetComponent<CharacterTargetEffect>(out var highlighter)) return;
             lastHighlightEffect = highlighter;
             highlighter.SetHighlight(true);
         }
 
-        private bool TryRaycastCharacter(out Character character)
+        private bool TryRaycastCharacter(out ICharacter character)
         {
             character = null;
             var ray = camera.ScreenPointToRay(Input.mousePosition);

@@ -17,8 +17,8 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
         private const float STANCE_TIME = 2.2f;
         private const float STANCE_THRESHOLD = 10f;
 
-        private Character casterChar;
-        private Character targetChar;
+        private ICharacter casterChar;
+        private ICharacter targetChar;
 
         private bool shouldCombo = false;
         
@@ -45,7 +45,7 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             },
         };
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             casterChar = caster;
             targetChar = target;
@@ -59,7 +59,7 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             targetChar.TryDamage(casterChar, shouldCombo ? COMBO_DAMAGE : DAMAGE);
         }
 
-        public void OnAnyExecuted(Character caster, Character target, Skill skill)
+        public void OnAnyExecuted(ICharacter caster, ICharacter target, Skill skill)
         {
             if (skill is not IGlobalCooldownSkill) return;
             

@@ -29,12 +29,12 @@ namespace KillSkill.Skills
             cd.Update(deltaTime);
         }
 
-        public virtual void OnInitialize(Character owner){}
+        public virtual void OnInitialize(ICharacter owner){}
 
-        public virtual bool CanExecute(Character caster) => !cd.IsActive && caster.Skills.CanCast(this);
+        public virtual bool CanExecute(ICharacter caster) => !cd.IsActive && caster.Skills.CanCast(this);
 
         public void TriggerCooldown() => cd.Reset();
 
-        public virtual void Execute(Character caster, Character target) { }
+        public virtual void Execute(ICharacter caster, ICharacter target) { }
     }
 }

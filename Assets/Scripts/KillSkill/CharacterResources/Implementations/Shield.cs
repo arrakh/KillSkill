@@ -11,13 +11,13 @@ namespace KillSkill.CharacterResources.Implementations
 {
     public class Shield : ICharacterResource, IModifyIncomingDamage, IResourceDisplay<ResourceBarDisplay>
     {
-        private Character owner;
+        private ICharacter owner;
         private double charge;
         private double maxCharge;
 
         public double Charge => charge;
         
-        public Shield(Character owner, double charge)
+        public Shield(ICharacter owner, double charge)
         {
             this.owner = owner;
             this.charge = charge;
@@ -47,7 +47,7 @@ namespace KillSkill.CharacterResources.Implementations
             OnUpdateDisplay?.Invoke(DisplayData);
         }
 
-        public void ModifyDamage(Character damager, Character target, ref double damage)
+        public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
             var lowest = Math.Min(damage, charge);
             damage -= lowest;

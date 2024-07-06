@@ -27,7 +27,7 @@ namespace KillSkill.UI.Game
 
         public bool IsActive => isActive;
 
-        public void Assign(Character target, IResourceDisplay<ResourceBarDisplay> display)
+        public void Assign(ICharacter target, IResourceDisplay<ResourceBarDisplay> display)
         {
             barDisplay = display;
 

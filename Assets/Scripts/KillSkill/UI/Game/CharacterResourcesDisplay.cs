@@ -18,14 +18,14 @@ namespace KillSkill.UI.Game
         private Dictionary<Type, CharacterResourceBar> activeBars = new();
         private Dictionary<Type, GameObject> activeCounters = new();
 
-        private Character target;
+        private ICharacter target;
 
-        public void Initialize(Character character)
+        public void Initialize(ICharacter character)
         {
-            character.onInitialize.Subscribe(OnCharacterInitialized);
+            character.OnInitialize.Subscribe(OnCharacterInitialized);
         }
 
-        private void OnCharacterInitialized(Character t)
+        private void OnCharacterInitialized(ICharacter t)
         {
             target = t;
             target.Resources.ObserveAnyAssigned(OnAnyAssigned);

@@ -10,14 +10,14 @@ namespace KillSkill.Skills.Implementations.Enemy.Mushroom
         private const float CHARGE_DURATION = 3f;
         private const float DAMAGE = 120f;
         
-        private Character casterChar;
-        private Character targetChar;
+        private ICharacter casterChar;
+        private ICharacter targetChar;
 
         private bool charging = false;
 
         protected override float CooldownTime => 14f;
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             charging = true;
             casterChar = caster;
@@ -39,7 +39,7 @@ namespace KillSkill.Skills.Implementations.Enemy.Mushroom
             if (!targetChar.TryDamage(casterChar, DAMAGE)) return;
             
             casterChar.Animator.PlayFlipBook("spore-pop");
-            casterChar.VisualEffects.Spawn("spore-pop", casterChar.transform.position);
+            casterChar.VisualEffects.Spawn("spore-pop", casterChar.GameObject.transform.position);
         }
     }
 }

@@ -24,12 +24,12 @@ namespace StatusEffects
             this.onDoneCharging = onDoneCharging;
         }
 
-        public override void OnRemoved(Character target)
+        public override void OnRemoved(ICharacter target)
         {
             onDoneCharging?.Invoke();
         }
 
-        public void ModifyDamage(Character damager, Character target, ref double damage)
+        public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
             
         }

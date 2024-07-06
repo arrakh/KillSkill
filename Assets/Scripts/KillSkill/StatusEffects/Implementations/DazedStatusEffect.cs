@@ -19,14 +19,14 @@ namespace KillSkill.StatusEffects.Implementations
             description = StandardDescription()
         };
 
-        public override void OnAdded(Character target)
+        public override void OnAdded(ICharacter target)
         {
             base.OnAdded(target);
             target.StatusEffects.TryRemove<CastingStatusEffect>();
             target.StatusEffects.TryRemove<StancingStatusEffect>();
         }
 
-        public void ModifyDamage(Character damager, Character target, ref double damage)
+        public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
             target.StatusEffects.Remove<DazedStatusEffect>();
         }

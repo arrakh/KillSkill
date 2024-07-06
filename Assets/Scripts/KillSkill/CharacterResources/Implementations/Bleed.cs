@@ -8,7 +8,7 @@ namespace KillSkill.CharacterResources.Implementations
 {
     public class Bleed : ICharacterResource, IUpdatableCharacterResource, IResourceDisplay<ResourceFillCounterDisplay>
     {
-        public Bleed(Character owner, int stackCount)
+        public Bleed(ICharacter owner, int stackCount)
         {
             this.owner = owner;
             this.stackCount = stackCount;
@@ -25,7 +25,7 @@ namespace KillSkill.CharacterResources.Implementations
         public event Action<ResourceFillCounterDisplay> OnUpdateDisplay;
         public ResourceFillCounterDisplay DisplayData { get; }
 
-        private Character owner;
+        private ICharacter owner;
         private float durationPerStack = 1f;
         private float progress;
         private int stackCount;

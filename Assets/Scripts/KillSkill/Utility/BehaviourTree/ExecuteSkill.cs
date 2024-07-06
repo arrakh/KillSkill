@@ -8,11 +8,11 @@ namespace KillSkill.Utility.BehaviourTree
 {
     public class ExecuteSkill<T> : ActionBase where T : Skill
     {
-        private Character executor;
+        private ICharacter executor;
         private int skillIndex = int.MaxValue;
         private bool failOnCantCast;
 
-        public ExecuteSkill(Character executor, bool failOnCantCast = false)
+        public ExecuteSkill(ICharacter executor, bool failOnCantCast = false)
         {
             Name = $"Execute {typeof(T).Name}";
             this.executor = executor;

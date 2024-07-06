@@ -26,7 +26,7 @@ namespace KillSkill.StatusEffects.Implementations
         public static string StandardDescription() => "While active, the user's attacks is more powerful";
         public static string StandardDescription(float multiplier) => $"While active, the user's attacks is x{multiplier:F2} more powerful";
         
-        protected override void OnDuplicateAdded(Character target, IStatusEffect duplicate)
+        protected override void OnDuplicateAdded(ICharacter target, IStatusEffect duplicate)
         {
             if (duplicate is not EmpoweredStatusEffect empower) throw new Exception("Duplicate is not Open Wide?!");
 
@@ -35,7 +35,7 @@ namespace KillSkill.StatusEffects.Implementations
             base.OnDuplicateAdded(target, duplicate);
         }
         
-        public void ModifyDamage(Character damager, Character target, ref double damage)
+        public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
             damage *= multiplier;
         }

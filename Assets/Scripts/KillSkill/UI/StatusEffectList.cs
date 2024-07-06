@@ -19,12 +19,12 @@ namespace UI
 
         private void OnEnable()
         {
-            character.onInitialize.Subscribe(OnInitialized);
+            character.OnInitialize.Subscribe(OnInitialized);
         }
 
-        private void OnInitialized(Character c)
+        private void OnInitialized(ICharacter c)
         {
-            c.onInitialize.Unsubscribe(OnInitialized);
+            c.OnInitialize.Unsubscribe(OnInitialized);
 
             c.StatusEffects.OnAdded += OnStatusEffectAdded;
             c.StatusEffects.OnRemoved += OnStatusEffectRemoved;

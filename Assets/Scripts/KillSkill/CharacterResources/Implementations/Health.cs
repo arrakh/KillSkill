@@ -16,12 +16,12 @@ namespace KillSkill.CharacterResources.Implementations
         public event Action<ResourceBarDisplay> OnUpdateDisplay;
         public ResourceBarDisplay DisplayData { get; private set; }
 
-        private Character character;
+        private ICharacter character;
         private double health, maxHealth;
 
         public double Max => maxHealth;
 
-        public Health(Character character, double health, double maxHealth)
+        public Health(ICharacter character, double health, double maxHealth)
         {
             this.character = character;
             this.health = health;
@@ -56,7 +56,7 @@ namespace KillSkill.CharacterResources.Implementations
             OnUpdateDisplay?.Invoke(DisplayData);
         }
         
-        public bool TrySet(double value, Character instigator)
+        public bool TrySet(double value, ICharacter instigator)
         {
             health = value;
             Clamp();
@@ -64,7 +64,7 @@ namespace KillSkill.CharacterResources.Implementations
             return true;
         }
         
-        public bool TryHeal(ref double delta, Character instigator)
+        public bool TryHeal(ref double delta, ICharacter instigator)
         {
             foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
                 if(statusEffect is IModifyIncomingHeal modifier)
@@ -91,7 +91,7 @@ namespace KillSkill.CharacterResources.Implementations
             return true;
         }
 
-        public bool TryDamage(ref double delta, Character instigator)
+        public bool TryDamage(ref double delta, ICharacter instigator)
         {
             foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
                 if (statusEffect is IModifyIncomingDamage modifier)

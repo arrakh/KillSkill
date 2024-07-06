@@ -47,7 +47,7 @@ namespace KillSkill.Characters.Implementations.EnemyData
             new SummonFlyingEyeSkill()
         };
 
-        public BehaviorTreeBuilder OnBuildBehaviourTree(Character character, BehaviorTreeBuilder builder)
+        public BehaviorTreeBuilder OnBuildBehaviourTree(ICharacter character, BehaviorTreeBuilder builder)
         {
             //@formatter:off
             return builder

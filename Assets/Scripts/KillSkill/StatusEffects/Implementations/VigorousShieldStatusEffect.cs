@@ -24,7 +24,7 @@ namespace KillSkill.StatusEffects.Implementations
         };
 
 
-        public void ModifyHeal(Character damager, Character target, ref double damage)
+        public void ModifyHeal(ICharacter damager, ICharacter target, ref double damage)
         {
             if (!damager.Resources.TryGet(out Shield shield)) return;
 

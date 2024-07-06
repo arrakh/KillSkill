@@ -12,10 +12,10 @@ namespace KillSkill.Skills.Implementations.Enemy.Executioner
         private const float DAMAGE_REDUCTION = 0.2f;
         
         protected override float CooldownTime => 4f;
-        private Character casterChar;
-        private Character targetChar;
+        private ICharacter casterChar;
+        private ICharacter targetChar;
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             casterChar = caster;
             targetChar = target;

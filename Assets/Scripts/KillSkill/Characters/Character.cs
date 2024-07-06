@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using Arr;
-using CharacterResources;
-using DefaultNamespace;
 using KillSkill.CharacterResources;
 using KillSkill.CharacterResources.Implementations;
 using KillSkill.Skills;
-using Skills;
 using StatusEffects;
 using UnityEngine;
 using VisualEffects;
 
 namespace KillSkill.Characters
 {
-    //todo: CHARACTER SHOULD BE INTERFACED TO ICHARACTER
-    public class Character : MonoBehaviour
+    public class Character : MonoBehaviour, ICharacter
     {
         [SerializeField] protected float hp, maxHp; //todo: TEMP, SHOULD BE DATA DRIVEN
         [SerializeField] private CharacterAnimator animator;
@@ -27,6 +22,7 @@ namespace KillSkill.Characters
 
         private ICharacterFactory characterFactory;
         private IVisualEffectsHandler visualEffects;
+        private PersistentEventTemplate<ICharacter> onInitialize = new();
 
         protected bool isAlive = true;
 
@@ -34,22 +30,21 @@ namespace KillSkill.Characters
 
         public int Uid => gameObject.GetInstanceID();
 
-        public event Action<Character> onDeath;
-
-        //todo: HANDLERS, ABSTRACT EVERYTHING HERE AND INJECT WHAT IS NEEDED
-        public Character Target => target;
+        public event Action<ICharacter> onDeath;
+        
+        public ICharacter Target { get; private set; }
         
         public IStatusEffectsHandler StatusEffects => statusEffects;
         
-        public CharacterResourcesHandler Resources => resources;
+        public ICharacterResourcesHandler Resources => resources;
 
-        public CharacterAnimator Animator => animator;
-        public CharacterSkillHandler Skills => skillHandler;
+        public ICharacterAnimator Animator => animator;
+        public ICharacterSkillHandler Skills => skillHandler;
         
         public IVisualEffectsHandler VisualEffects => visualEffects;
         public ICharacterFactory CharacterFactory => characterFactory;
-
-        public PersistentEventTemplate<Character> onInitialize = new();
+        
+        public PersistentEventTemplate<ICharacter> OnInitialize => onInitialize;
 
         public Vector3 Position
         {
@@ -61,12 +56,13 @@ namespace KillSkill.Characters
 
             get => transform.position;
         }
-        //==============================================================
-        
+
+        public GameObject GameObject => gameObject;
         public virtual Type MainResource => typeof(Health);
 
         public virtual void Initialize(ICharacterData characterData, Skill[] skills, ICharacterFactory factory, IVisualEffectsHandler vfx)
         {
+            Target = target;
             isAlive = true;
             statusEffects = new(this);
             resources = new();
@@ -88,7 +84,7 @@ namespace KillSkill.Characters
 
         public void SetBattlePaused(bool paused) => battlePause = paused;
 
-        public void SetTarget(Character newTarget) => target = newTarget;
+        public void SetTarget(ICharacter newTarget) => Target = newTarget;
 
         private void Update()
         {

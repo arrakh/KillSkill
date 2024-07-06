@@ -18,7 +18,7 @@ namespace KillSkill.UI.Game
         [SerializeField] private Color skillCooldownColor, globalCooldownColor;
         [SerializeField] private SkillTapAnimation skillTapAnimation;
 
-        private Character character;
+        private ICharacter character;
         private Skill skill;
         private bool usesGlobalCooldown;
         private int skillIndex;
@@ -41,7 +41,7 @@ namespace KillSkill.UI.Game
 
         public void AnimateTap() => skillTapAnimation.Animate();
 
-        public void Display(int slotIndex, Character toDisplay)
+        public void Display(int slotIndex, ICharacter toDisplay)
         {
             character = toDisplay;
             skillIndex = slotIndex;

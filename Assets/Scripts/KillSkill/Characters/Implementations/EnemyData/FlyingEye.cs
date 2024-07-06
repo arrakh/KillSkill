@@ -25,7 +25,7 @@ namespace KillSkill.Characters.Implementations.EnemyData
             new SlashSkill()
         };
         
-        public BehaviorTreeBuilder OnBuildBehaviourTree(Character character, BehaviorTreeBuilder builder)
+        public BehaviorTreeBuilder OnBuildBehaviourTree(ICharacter character, BehaviorTreeBuilder builder)
         {
             //@formatter:off
             return builder

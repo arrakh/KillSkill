@@ -26,7 +26,7 @@ namespace KillSkill.StatusEffects.Implementations
         };
 
 
-        public void ModifyDamage(Character damager, Character target, ref double damage)
+        public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
             Debug.Log($"[SSSE] TRYING TO GET SHIELD with target {target.GetType().Name}");
             if (!damager.Resources.TryGet(out Shield shield)) return;

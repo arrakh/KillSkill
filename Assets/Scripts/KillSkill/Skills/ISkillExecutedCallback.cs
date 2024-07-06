@@ -4,6 +4,6 @@ namespace KillSkill.Skills
 {
     public interface ISkillExecutedCallback<in T> where T : Skill
     {
-        public void OnExecuted(Character caster, Character target, T skill);
+        public void OnExecuted(ICharacter caster, ICharacter target, T skill);
     }
 }

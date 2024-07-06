@@ -13,7 +13,7 @@ namespace KillSkill.Skills.Implementations.Fighter
         
         private const float DAMAGE = 20f;
         private const float CAST_TIME = 0.3f;
-        private Character casterChar, targetChar;
+        private ICharacter casterChar, targetChar;
 
         public override SkillMetadata Metadata => new()
         {
@@ -24,7 +24,7 @@ namespace KillSkill.Skills.Implementations.Fighter
         
         public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.FIGHTER);
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             casterChar = caster;
             targetChar = target;

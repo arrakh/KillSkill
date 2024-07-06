@@ -12,10 +12,10 @@ namespace KillSkill.Utility.BehaviourTree
         public static BehaviorTreeBuilder WaitUntil(this BehaviorTreeBuilder builder, Func<bool> until, string name = "Wait Until")
             => builder.AddNode(new WaitUntil(name, until));
         
-        public static BehaviorTreeBuilder ExecuteSkill<T>(this BehaviorTreeBuilder builder, Character executor, bool failOnCantCast = false) where T : Skill
+        public static BehaviorTreeBuilder ExecuteSkill<T>(this BehaviorTreeBuilder builder, ICharacter executor, bool failOnCantCast = false) where T : Skill
             => builder.AddNode(new ExecuteSkill<T>(executor, failOnCantCast));
 
-        public static BehaviorTreeBuilder WaitForCooldown<T>(this BehaviorTreeBuilder builder, Character executor)
+        public static BehaviorTreeBuilder WaitForCooldown<T>(this BehaviorTreeBuilder builder, ICharacter executor)
             => builder.AddNode(new WaitForCooldown<T>(executor));
     }
 }

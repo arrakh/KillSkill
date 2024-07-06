@@ -12,10 +12,10 @@ namespace KillSkill.Skills.Implementations.Enemy
         protected override float CooldownTime => 10f;
 
         private ICharacterFactory factory;
-        private Character casterChar;
-        private Character targetChar;
+        private ICharacter casterChar;
+        private ICharacter targetChar;
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             factory = caster.CharacterFactory;
             casterChar = caster;

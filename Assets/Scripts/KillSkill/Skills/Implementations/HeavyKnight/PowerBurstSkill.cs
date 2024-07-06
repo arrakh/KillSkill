@@ -32,7 +32,7 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             }
         };
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             caster.StatusEffects.Add(new EmpoweredStatusEffect(DAMAGE_MULT, DURATION));
         }

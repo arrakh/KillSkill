@@ -13,7 +13,7 @@ namespace KillSkill.StatusEffects.Implementations
         {
         }
 
-        public override void OnAdded(Character target)
+        public override void OnAdded(ICharacter target)
         {
             base.OnAdded(target);
             var anim = target.Animator;

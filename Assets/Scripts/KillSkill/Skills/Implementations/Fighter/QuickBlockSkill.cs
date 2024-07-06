@@ -31,7 +31,7 @@ namespace KillSkill.Skills.Implementations.Fighter
             order = 1,
         };
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             var resources = caster.Resources;
                 

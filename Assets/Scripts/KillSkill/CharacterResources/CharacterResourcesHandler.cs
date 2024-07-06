@@ -6,7 +6,7 @@ using CharacterResources;
 
 namespace KillSkill.CharacterResources
 {
-    public partial class CharacterResourcesHandler : IDisposable
+    public partial class CharacterResourcesHandler : IDisposable, ICharacterResourcesHandler
     {
         private Dictionary<Type, ICharacterResource> resources = new();
 

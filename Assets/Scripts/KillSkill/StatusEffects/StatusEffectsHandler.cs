@@ -16,9 +16,9 @@ namespace StatusEffects
         public event StatusEffectEvent OnUpdated;
         
         private Dictionary<Type, IStatusEffect> statusEffects = new();
-        private Character character;
+        private ICharacter character;
 
-        public StatusEffectsHandler(Character character)
+        public StatusEffectsHandler(ICharacter character)
         {
             this.character = character;
         }

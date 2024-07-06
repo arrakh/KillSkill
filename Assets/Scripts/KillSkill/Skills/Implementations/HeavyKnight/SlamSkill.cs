@@ -16,8 +16,8 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
         private const float STANCE_TIME = 1.5f;
         private const float STANCE_THRESHOLD = 30f;
 
-        private Character casterChar;
-        private Character targetChar;
+        private ICharacter casterChar;
+        private ICharacter targetChar;
 
         protected override float CooldownTime => 1.5f;
 
@@ -39,7 +39,7 @@ namespace KillSkill.Skills.Implementations.HeavyKnight
             },
         };
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             casterChar = caster;
             targetChar = target;

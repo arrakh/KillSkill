@@ -9,12 +9,12 @@ namespace KillSkill.StatusEffects.Implementations
 {
     public class ParryingStatusEffect : TimedStatusEffect, IModifyIncomingDamage
     {
-        private Character character;
+        private ICharacter character;
         private Action<bool> onResult;
         private float damageReduceMultiplier;
         private bool success = false;
         
-        public ParryingStatusEffect(Character character, Action<bool> onResult, float damageReduceMultiplier, float duration) : base(duration)
+        public ParryingStatusEffect(ICharacter character, Action<bool> onResult, float damageReduceMultiplier, float duration) : base(duration)
         {
             this.character = character;
             this.onResult = onResult;
@@ -32,13 +32,13 @@ namespace KillSkill.StatusEffects.Implementations
         public static string StandardDescription() =>
             "While active, parrying is a SUCCESS when the user is damaged. Parrying is FAILED when the timer runs out";
 
-        public override void OnRemoved(Character target)
+        public override void OnRemoved(ICharacter target)
         {
             onResult.Invoke(success);
             base.OnRemoved(target);
         }
 
-        public void ModifyDamage(Character damager, Character target, ref double damage)
+        public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
             success = true;
             damage -= damage * damageReduceMultiplier;

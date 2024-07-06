@@ -15,6 +15,6 @@ namespace KillSkill.Characters
         
         
         public Skill[] Skills { get; }
-        public BehaviorTreeBuilder OnBuildBehaviourTree(Character character, BehaviorTreeBuilder builder);
+        public BehaviorTreeBuilder OnBuildBehaviourTree(ICharacter character, BehaviorTreeBuilder builder);
     }
 }

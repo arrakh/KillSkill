@@ -18,7 +18,7 @@ namespace KillSkill.StatusEffects.Implementations.Core
         bool IStatusEffect.IsActive => timer.IsActive;
         public abstract StatusEffectDescription Description { get; }
 
-        void IStatusEffect.OnDuplicateAdded(Character target, IStatusEffect duplicate)
+        void IStatusEffect.OnDuplicateAdded(ICharacter target, IStatusEffect duplicate)
         {
             timer.Reset();
             OnDuplicateAdded(target, duplicate);
@@ -31,12 +31,12 @@ namespace KillSkill.StatusEffects.Implementations.Core
         }
 
         protected virtual void OnUpdateDuration(float deltaTime){}
-        protected virtual void OnDuplicateAdded(Character target, IStatusEffect duplicate){}
+        protected virtual void OnDuplicateAdded(ICharacter target, IStatusEffect duplicate){}
 
-        public virtual void OnAdded(Character target){}
+        public virtual void OnAdded(ICharacter target){}
 
-        public virtual void OnUpdate(Character target, float deltaTime){}
+        public virtual void OnUpdate(ICharacter target, float deltaTime){}
 
-        public virtual void OnRemoved(Character target) {}
+        public virtual void OnRemoved(ICharacter target) {}
     }
 }

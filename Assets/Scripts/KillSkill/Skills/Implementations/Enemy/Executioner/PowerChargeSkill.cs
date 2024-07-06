@@ -14,7 +14,7 @@ namespace KillSkill.Skills.Implementations.Enemy.Executioner
         
         protected override float CooldownTime => 10f;
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             caster.StatusEffects.Add(new EmpoweredStatusEffect(DAMAGE_MULT, DURATION));
         }

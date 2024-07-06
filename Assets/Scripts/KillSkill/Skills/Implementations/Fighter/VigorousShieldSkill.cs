@@ -34,7 +34,7 @@ namespace KillSkill.Skills.Implementations.Fighter
                                $"\n- <u>Shield</u>:\n{Shield.StandardDescription()}"
         };
 
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             caster.StatusEffects.Add(new VigorousShieldStatusEffect(SHIELD_CONVERT_PERCENT, STATUS_DURATION));
         }

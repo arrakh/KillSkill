@@ -28,7 +28,7 @@ namespace KillSkill.Skills
             }
         }
 
-        void InvokeCallbacks(Character caster, Character target, Skill targetSkill)
+        void InvokeCallbacks(ICharacter caster, ICharacter target, Skill targetSkill)
         {
             Type targetSkillType = targetSkill.GetType();
 

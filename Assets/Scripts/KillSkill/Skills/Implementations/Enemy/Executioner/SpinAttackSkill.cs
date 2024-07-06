@@ -16,10 +16,10 @@ namespace KillSkill.Skills.Implementations.Enemy.Executioner
         private const float DURATION_PER_SPIN = 0.25f;
         protected override float CooldownTime => 6f;
 
-        private Character casterChar;
-        private Character targetChar;
+        private ICharacter casterChar;
+        private ICharacter targetChar;
         
-        public override void Execute(Character caster, Character target)
+        public override void Execute(ICharacter caster, ICharacter target)
         {
             casterChar = caster;
             targetChar = target;

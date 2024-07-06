@@ -18,7 +18,7 @@ namespace KillSkill.UI.Game
 
         private void Start()
         {
-            character.onInitialize.Subscribe(OnInitialized);
+            character.OnInitialize.Subscribe(OnInitialized);
             character.OnSkillIndexPressed.AddListener(OnSkillIndexPressed);
         }
 
@@ -28,7 +28,7 @@ namespace KillSkill.UI.Game
             spawnedIndicators[index].AnimateTap();
         }
 
-        private void OnInitialized(Character t)
+        private void OnInitialized(ICharacter t)
         {
             var skillSession = Session.GetData<SkillsSessionData>();
             for (int i = 0; i < skillSession.SlotCount; i++)

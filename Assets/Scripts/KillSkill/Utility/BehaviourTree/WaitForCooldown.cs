@@ -6,10 +6,10 @@ namespace KillSkill.Utility.BehaviourTree
 {
     public class WaitForCooldown<T> : ActionBase
     {
-        private Character executor;
+        private ICharacter executor;
         private int skillIndex = int.MaxValue;
 
-        public WaitForCooldown(Character executor)
+        public WaitForCooldown(ICharacter executor)
         {
             Name = $"Waiting for {typeof(T).Name}";
 
