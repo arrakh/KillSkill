@@ -4,6 +4,8 @@ using Arr.EventsSystem;
 using KillSkill.Constants;
 using KillSkill.SessionData.Events;
 using KillSkill.Skills;
+using KillSkill.Skills.Implementations;
+using KillSkill.Skills.Implementations.Enemy.Executioner;
 using KillSkill.Skills.Implementations.Fighter;
 using KillSkill.Skills.Implementations.HeavyKnight;
 using SessionData.Implementations;
@@ -20,8 +22,8 @@ namespace KillSkill.SessionData.Implementations
         {
             typeof(SlashSkill),
             typeof(VigorSkill),
-            null,
-            null,
+            typeof(VampiricSkill),
+            null
         };
         
         private HashSet<Type> loadoutByType = new();
@@ -29,7 +31,8 @@ namespace KillSkill.SessionData.Implementations
         private HashSet<Type> ownedSkills = new()
         {
             typeof(SlashSkill),
-            typeof(VigorSkill)
+            typeof(VigorSkill),
+            typeof(VampiricSkill)
         };
 
         public IReadOnlyCollection<Type> Loadout => loadout;

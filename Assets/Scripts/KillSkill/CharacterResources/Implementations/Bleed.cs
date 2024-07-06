@@ -32,6 +32,8 @@ namespace KillSkill.CharacterResources.Implementations
         private float damagePerStack = 5f;
 
         public void AddStack(int delta) => stackCount += delta;
+        public void RemoveStack(int delta) => stackCount -= delta;
+        public int GetStack() => stackCount;
         public void AddDurationPerStack(float delta) => durationPerStack += delta;
         public void AddDamagePerStack(float delta) => damagePerStack += delta;
         

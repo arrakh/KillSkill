@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using KillSkill.CharacterResources.Implementations;
 using KillSkill.Characters;
 using KillSkill.Constants;
 using KillSkill.Database;
@@ -36,6 +37,11 @@ namespace KillSkill.Skills.Implementations.Fighter
 
         private void OnDone()
         {
+            if (casterChar.Resources.TryGet(out Bleed bleed)) 
+                bleed.AddStack(1);
+            else
+                casterChar.Resources.Assign(new Bleed(casterChar, 3));
+
             targetChar.TryDamage(casterChar, DAMAGE);
             casterChar.AnimateMoveTowards(targetChar, 0.15f, Ease.OutQuart, 1/5f, casterChar.Animator.BackToPosition);
             casterChar.Animator.PlayFlipBook("idle");
