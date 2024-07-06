@@ -8,14 +8,13 @@ namespace KillSkill.SessionData.Implementations
 {
     public class BattleSessionData : ISessionData
     {
-        private BattleStartData battleStart = new (new Executioner());
+        private IEnemyData currentEnemy = new Executioner();
+        private string currentLevelId = "forest";
+        
+        public void SetBattle(IEnemyData enemy) => currentEnemy = enemy;
+        public void SetLevel(string levelId) => currentLevelId = levelId;
 
-        public void SetBattle(IEnemyData enemy)
-        {
-            battleStart = new BattleStartData(enemy);
-        }
-
-        public IEnemyData GetEnemy() => battleStart.enemyData;
+        public BattleStartData StartData => new (currentEnemy, currentLevelId);
         
         public void OnLoad()
         {

@@ -28,7 +28,7 @@ namespace KillSkill.Minions
         
         public ICharacter Add(Vector3 position, ICharacterData data, bool parentToOwner = false)
         {
-            var minion = characterFactory.Create(data);
+            var minion = characterFactory.CreateNpc(data);
             
             //should be impossible
             if (minions.Remove(minion.Uid, out var existing)) Object.Destroy(existing.GameObject);

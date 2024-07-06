@@ -4,6 +4,6 @@ namespace KillSkill.Characters
 {
     public interface ICharacterFactory
     {
-        public ICharacter Create(ICharacterData data);
+        public NpcCharacter CreateNpc(ICharacterData data);
     }
 }

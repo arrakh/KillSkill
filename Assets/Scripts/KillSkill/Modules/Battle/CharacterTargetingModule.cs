@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Arr.ModulesSystem;
 using KillSkill.Characters;
 using UnityEngine;
 using VFX;
 
-namespace Systems
+namespace KillSkill.Modules.Battle
 {
-    public class CharacterTargetingModule : MonoBehaviour
+    public class CharacterTargetingModule : BaseModule
     {
         [SerializeField] private ICharacter player;
 

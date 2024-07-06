@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using FlipBooks;
+using KillSkill.Database;
 using UnityEngine;
 
 namespace KillSkill.Characters
@@ -22,7 +23,8 @@ namespace KillSkill.Characters
         public void Initialize(ICharacterData characterData)
         {
             originalPosition = visualTransform.position;
-            flipBookPlayer.Initialize(characterData.DefaultFlipBook, characterData.FlipBooks);
+            var flipBookData = CharacterFlipBooksDatabase.Get(characterData.Id);
+            flipBookPlayer.Initialize(flipBookData.Default, flipBookData.FlipBooks);
         }
 
         public void UpdatePosition(Vector3 newPosition)

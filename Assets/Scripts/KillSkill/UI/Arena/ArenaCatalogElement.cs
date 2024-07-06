@@ -1,5 +1,6 @@
 ﻿using System;
 using KillSkill.Characters;
+using KillSkill.Database;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +24,8 @@ namespace KillSkill.UI.Arena
             data = enemyData;
             onButtonClick = onClick;
 
-            enemyIcon.sprite = enemyData.DefaultFlipBook.GetFrame(0);
+            var flipbook = CharacterFlipBooksDatabase.Get(enemyData.Id);
+            enemyIcon.sprite = flipbook.Default.GetFrame(0);
             enemyText.text = data.DisplayName;
         }
         

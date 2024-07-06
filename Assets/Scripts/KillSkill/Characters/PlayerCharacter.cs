@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using KillSkill.Characters.Implementations.PlayerData;
-using KillSkill.Modules;
-using KillSkill.SessionData;
+using KillSkill.Characters.Implementations;
 using KillSkill.SessionData.Implementations;
 using KillSkill.SettingsData;
 using KillSkill.Skills;
@@ -14,15 +12,11 @@ namespace KillSkill.Characters
 {
     public class PlayerCharacter : Character
     {
-        [SerializeField] private CharacterFactoryModule tempFactory; //todo: MUST BE INITIALIZED FROM OUTSIDE
-        [SerializeField] private EffectController effectController; //todo: MUST BE INITIALIZED FROM OUTSIDE
-
         public UnityEvent<int> OnSkillIndexPressed;
 
-        private void Start()
+        public void Initialize(SkillsSessionData skillsSession, ICharacterFactory characterFactory, 
+            IVisualEffectsHandler visualEffectsHandler)
         {
-            var skillsSession = Session.GetData<SkillsSessionData>();
-
             var loadout = skillsSession.Loadout.ToArray();
             var skills = new Skill[loadout.Length];
             
@@ -37,7 +31,7 @@ namespace KillSkill.Characters
                 }
             }
 
-            Initialize(new MockupPlayer(), skills, tempFactory, effectController);
+            Initialize(new PlayerData(skills), characterFactory, visualEffectsHandler);
         }
 
         protected override void OnUpdate()

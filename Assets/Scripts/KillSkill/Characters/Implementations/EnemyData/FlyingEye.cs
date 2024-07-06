@@ -12,10 +12,8 @@ namespace KillSkill.Characters.Implementations.EnemyData
 {
     public class FlyingEye : IEnemyData
     {
-        private const string ID = "flying-eye";
+        public string Id => "flying-eye";
         public float Health => 20;
-        public FlipBook DefaultFlipBook => CharacterFlipBooksDatabase.Get(ID).Default;
-        public IEnumerable<FlipBook> FlipBooks => CharacterFlipBooksDatabase.Get(ID).FlipBooks;
         public string DisplayName => "Flying Eye";
         public int CatalogOrder => 3;
         public IResourceReward[] Rewards { get; }

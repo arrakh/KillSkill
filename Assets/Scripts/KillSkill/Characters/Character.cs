@@ -61,13 +61,13 @@ namespace KillSkill.Characters
         public GameObject GameObject => gameObject;
         public virtual Type MainResource => typeof(Health);
 
-        public virtual void Initialize(ICharacterData characterData, Skill[] skills, ICharacterFactory factory, IVisualEffectsHandler vfx)
+        public virtual void Initialize(ICharacterData characterData, ICharacterFactory factory, IVisualEffectsHandler vfx)
         {
             Target = target;
             isAlive = true;
             statusEffects = new(this);
             resources = new();
-            skillHandler = new CharacterSkillHandler(skills, statusEffects, this);
+            skillHandler = new CharacterSkillHandler(characterData.Skills, statusEffects, this);
             characterFactory = factory;
             visualEffects = vfx;
 

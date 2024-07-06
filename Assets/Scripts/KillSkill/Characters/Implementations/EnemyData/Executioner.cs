@@ -21,9 +21,7 @@ namespace KillSkill.Characters.Implementations.EnemyData
 {
     public class Executioner : IEnemyData
     {
-        private const string ID = "executioner";
-        public FlipBook DefaultFlipBook => CharacterFlipBooksDatabase.Get(ID).Default;
-        public IEnumerable<FlipBook> FlipBooks => CharacterFlipBooksDatabase.Get(ID).FlipBooks;
+        public string Id => "executioner";
 
         public string DisplayName => "Executioner";
         public int CatalogOrder => 1;

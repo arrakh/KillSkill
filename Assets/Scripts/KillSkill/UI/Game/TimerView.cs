@@ -9,28 +9,21 @@ using UnityEngine;
 namespace KillSkill.UI.Game
 {
     //todo: create module
-    public class TimerView : View, IQueryProvider<BattleTimerQuery>
+    public class TimerView : View
     {
         [SerializeField] private TextMeshProUGUI timerText;
-        [SerializeField] private BattleSequenceModule sequenceModule; //todo: will need to be from module later
 
         private float currentSeconds = 0;
+        private bool pause = false;
 
-        //should be in module
-        private void Start()
-        {
-            GlobalEvents.RegisterQuery(this);
-        }
+        public float CurrentSeconds => currentSeconds;
 
-        private void OnDestroy()
-        {
-            GlobalEvents.UnregisterQuery<BattleTimerQuery>();
-        }
+        public void SetPause(bool on) => pause = on;
 
         private void Update()
         {
             
-            if (!sequenceModule.IsBattlePaused) currentSeconds += Time.deltaTime;
+            if (!pause) currentSeconds += Time.deltaTime;
             
             int hours = (int)(currentSeconds / 3600);
             int minutes = (int)(currentSeconds / 60) % 60;
@@ -50,11 +43,6 @@ namespace KillSkill.UI.Game
             {
                 timerText.text = $"{seconds:00}.{milliseconds:00}s";
             }
-        }
-
-        public BattleTimerQuery OnQuery()
-        {
-            return new BattleTimerQuery() {timeInSeconds = currentSeconds};
         }
     }
 }

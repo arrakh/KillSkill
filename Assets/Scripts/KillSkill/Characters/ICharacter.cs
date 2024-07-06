@@ -43,7 +43,7 @@ namespace KillSkill.Characters
         
         public Type MainResource { get; }
 
-        public void Initialize(ICharacterData characterData, Skill[] skills, ICharacterFactory factory,
+        public void Initialize(ICharacterData characterData, ICharacterFactory factory,
             IVisualEffectsHandler vfx);
 
         public void SetBattlePaused(bool paused);

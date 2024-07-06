@@ -1,13 +1,13 @@
-﻿using Arr;
-using Arr.Utils;
+﻿using Arr.Utils;
+using Arr.ViewModuleSystem;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace KillSkill.UI.Game
 {
-    public class CountdownUI : MonoBehaviour
+    public class CountdownView : View
     {
         [SerializeField] private GameObject visibilityGroup;
         [SerializeField] private Image bg;

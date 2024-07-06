@@ -4,7 +4,7 @@ using Skills;
 
 namespace KillSkill.Characters
 {
-    public interface IEnemyData : ICharacterData
+    public interface IEnemyData : ICharacterData, IBehaviourTreeData
     {
         //todo: SEPARATE INTO ARENA CATALOG DATA!
         public string DisplayName { get; }
@@ -12,9 +12,5 @@ namespace KillSkill.Characters
         
         //todo: IF we want each enemy possibly have different rewards, put this outside of IEnemyData
         public IResourceReward[] Rewards { get; }
-        
-        
-        public Skill[] Skills { get; }
-        public BehaviorTreeBuilder OnBuildBehaviourTree(ICharacter character, BehaviorTreeBuilder builder);
     }
 }

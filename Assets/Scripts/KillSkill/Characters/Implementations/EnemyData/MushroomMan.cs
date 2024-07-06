@@ -14,9 +14,7 @@ namespace KillSkill.Characters.Implementations.EnemyData
 {
     public class MushroomMan : IEnemyData
     {
-        private const string ID = "mushroom-man";
-        public FlipBook DefaultFlipBook => CharacterFlipBooksDatabase.Get(ID).Default;
-        public IEnumerable<FlipBook> FlipBooks => CharacterFlipBooksDatabase.Get(ID).FlipBooks;
+        public string Id => "mushroom-man";
 
         public string DisplayName => "Mushroom Man";
         public int CatalogOrder => 0;

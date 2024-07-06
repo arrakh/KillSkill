@@ -25,7 +25,7 @@ namespace KillSkill.Skills.Implementations.Enemy
 
         private void OnCast()
         {
-            var character = factory.Create(new FlyingEye());
+            var character = factory.CreateNpc(new FlyingEye());
             character.Position = GetRandomPosition(casterChar.Position);
             character.SetTarget(targetChar);
         }

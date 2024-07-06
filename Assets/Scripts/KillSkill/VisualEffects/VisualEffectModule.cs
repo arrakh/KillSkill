@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Arr.ModulesSystem;
 using UnityEngine;
-using UnityEngine.Pool;
+using VisualEffects;
 
-namespace VisualEffects
+namespace KillSkill.VisualEffects
 {
-    public class EffectController : MonoBehaviour, IVisualEffectsHandler
+    public class VisualEffectModule : BaseModule, IVisualEffectsHandler
     {
         private Dictionary<string, UnityEffectPool> unityEffects = new();
 

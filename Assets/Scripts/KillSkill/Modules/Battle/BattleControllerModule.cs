@@ -1,25 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Arr.EventsSystem;
+using Arr.ModulesSystem;
+using Arr.UnityUtils;
 using KillSkill.Battle;
 using KillSkill.Characters;
+using KillSkill.Modules.Battle.Events;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
-using KillSkill.UI.Game;
 using KillSkill.UI.Game.Events;
-using KillSkill.UI.Game.GameResult;
+using KillSkill.UI.Game.Modules;
 using SessionData.Implementations;
-using UI;
 using UnityEngine;
 
-namespace KillSkill.Modules
+namespace KillSkill.Modules.Battle
 {
-    //todo: MAKE ACTUAL MODULE
-    public class BattleSequenceModule : MonoBehaviour
+    public class BattleControllerModule : BaseModule
     {
-        [SerializeField] private ResultView resultView;
-        [SerializeField] private CountdownUI countdown;
-        [SerializeField] private Character player, enemy;
+        [InjectModule] private ResultViewModule resultView;
+        [InjectModule] private CountdownViewModule countdown;
+        [InjectModule] private BattleFactoryModule battleFactory;
+        private Character player, enemy;
+        private BattleLevel level;
 
         private bool hasPlayerWon, isBattlePaused;
 
@@ -27,8 +30,16 @@ namespace KillSkill.Modules
 
         private BattleResultData result;
 
+        protected override Task OnInitialized()
+        {
+            CoroutineUtility.Start(Start());
+            return base.OnInitialized();
+        }
+
         private IEnumerator Start()
         {
+            InitializeBattle();
+            
             player.onDeath += OnPlayerDeath;
             enemy.onDeath += OnEnemyDeath;
             
@@ -43,6 +54,21 @@ namespace KillSkill.Modules
             countdown.Count(0);
             
             SetBattlePause(false);
+        }
+
+        private void InitializeBattle()
+        {
+            var skillsSession = Session.GetData<SkillsSessionData>();
+            player = battleFactory.CreatePlayer(skillsSession);
+
+            var battleSession = Session.GetData<BattleSessionData>();
+            var data = battleSession.StartData;
+            enemy = battleFactory.CreateNpc(data.enemyData);
+
+            level = battleFactory.CreateLevel(data.levelId);
+
+            player.Position = level.PlayerSpawnPoint.position;
+            enemy.Position = level.EnemySpawnPoint.position;
         }
 
         private void OnEnemyDeath(ICharacter character)
@@ -62,6 +88,7 @@ namespace KillSkill.Modules
             isBattlePaused = pause;
             player.SetBattlePaused(pause);
             enemy.SetBattlePaused(pause);
+            GlobalEvents.Fire(new BattlePauseEvent(pause));
         }
 
         public void OnAnyDeath()
@@ -76,7 +103,7 @@ namespace KillSkill.Modules
 
             var state = new BattleResultState(hasPlayerWon, player.Resources.Current, enemy.Resources.Current, battleTimeSeconds);
             
-            var data = battleSession.GetEnemy();
+            var data = battleSession.StartData.enemyData;
             var rewards = CalculateReward(data, state);
 
             result = new(hasPlayerWon, rewards);
@@ -86,7 +113,7 @@ namespace KillSkill.Modules
             foreach (var resource in rewards)
                 resourcesSession.AddResource(resource.resourceId, resource.resourceAmount);
 
-            StartCoroutine(EndingSequence());
+            CoroutineUtility.Start(EndingSequence());
         }
 
         private List<BattleReward> CalculateReward(IEnemyData data, BattleResultState state)
