@@ -1,5 +1,5 @@
 ﻿using System;
-using Arr.SDS;
+using Arr.ScriptableDatabases;
 using UnityEngine;
 
 namespace KillSkill.Database

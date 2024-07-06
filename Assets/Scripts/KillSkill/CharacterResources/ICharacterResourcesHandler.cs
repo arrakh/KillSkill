@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Arr;
+using Arr.Utils;
 using CharacterResources;
 
 namespace KillSkill.CharacterResources

@@ -1,5 +1,6 @@
 ﻿using System;
 using Arr;
+using Arr.Utils;
 using KillSkill.CharacterResources;
 using KillSkill.CharacterResources.Implementations;
 using KillSkill.Skills;
