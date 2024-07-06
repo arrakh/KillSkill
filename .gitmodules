@@ -1,0 +1,18 @@
+[submodule "Assets\\Scripts\\Arr\\EventsSystem"]
+	path = Assets\\Scripts\\Arr\\EventsSystem
+	url = git@github.com:arrakh/arr-events-system.git
+[submodule "Assets\\Scripts\\Arr\\ViewModuleSystem"]
+	path = Assets\\Scripts\\Arr\\ViewModuleSystem
+	url = git@github.com:arrakh/arr-view-modules.git
+[submodule "Assets\\Scripts\\Arr\\ModulesSystem"]
+	path = Assets\\Scripts\\Arr\\ModulesSystem
+	url = git@github.com:arrakh/arr-modules.git
+[submodule "Assets\\Scripts\\Arr\\ScriptableDatabases"]
+	path = Assets\\Scripts\\Arr\\ScriptableDatabases
+	url = git@github.com:arrakh/arr-scriptable-databases.git
+[submodule "Assets\\Scripts\\Arr\\ModulesLoader"]
+	path = Assets\\Scripts\\Arr\\ModulesLoader
+	url = git@github.com:arrakh/arr-unity-modules-loader.git
+[submodule "Assets\\Scripts\\Arr\\UnityUtils"]
+	path = Assets\\Scripts\\Arr\\UnityUtils
+	url = git@github.com:arrakh/arr-unity-utils.git
