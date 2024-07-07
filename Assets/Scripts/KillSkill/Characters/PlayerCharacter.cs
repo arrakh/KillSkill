@@ -45,7 +45,7 @@ namespace KillSkill.Characters
                 if (Input.GetKeyDown(key))
                 {
                     OnSkillIndexPressed?.Invoke(i);
-                    Skills.Execute(i, target);
+                    Skills.Execute(i, Target);
                 }
             }
         }

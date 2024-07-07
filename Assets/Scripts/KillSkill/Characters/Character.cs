@@ -4,6 +4,7 @@ using Arr.Utils;
 using KillSkill.CharacterResources;
 using KillSkill.CharacterResources.Implementations;
 using KillSkill.Skills;
+using KillSkill.UI.Game;
 using StatusEffects;
 using UnityEngine;
 using VisualEffects;
@@ -12,10 +13,9 @@ namespace KillSkill.Characters
 {
     public class Character : MonoBehaviour, ICharacter
     {
-        [SerializeField] protected float hp, maxHp; //todo: TEMP, SHOULD BE DATA DRIVEN
         [SerializeField] private CharacterAnimator animator;
         [SerializeField] protected bool battlePause = false;
-        [SerializeField] protected Character target;
+        [SerializeField] protected CharacterResourcesDisplay resourcesDisplay;
         
         protected StatusEffectsHandler statusEffects;
         protected CharacterResourcesHandler resources;
@@ -63,7 +63,6 @@ namespace KillSkill.Characters
 
         public virtual void Initialize(ICharacterData characterData, ICharacterFactory factory, IVisualEffectsHandler vfx)
         {
-            Target = target;
             isAlive = true;
             statusEffects = new(this);
             resources = new();
@@ -71,10 +70,11 @@ namespace KillSkill.Characters
             characterFactory = factory;
             visualEffects = vfx;
 
-            hp = maxHp = characterData.Health;
-            resources.Assign(new Health(this, hp, maxHp));
+            resources.Assign(new Health(this, characterData.Health, characterData.Health));
             
             skillHandler.InitializeSkills();
+            
+            resourcesDisplay.Initialize(this);
             
             animator.Initialize(characterData);
             
@@ -113,8 +113,8 @@ namespace KillSkill.Characters
         private void OnDeathInternal()
         {
             Debug.Log("DEATH INTERNAL");
-            OnDeath();
             onDeath?.Invoke(this);
+            OnDeath();
         }
 
         protected virtual void OnDeath(){}

@@ -9,7 +9,7 @@ namespace KillSkill.Characters.Implementations
             Skills = skills;
         }
 
-        public string Id => "player";
+        public string Id => "mockup-player";
         public float Health => 400;
         public Skill[] Skills { get; private set;  }
     }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7694ded4a014b07aa238a5c1db1a2da, type: 3}
+  m_Name: Master
+  m_EditorClassIdentifier: 
+  entries:
+  - id: camera-controller
+    prefab: {fileID: 6769183563139195976, guid: 132a3061bd624754584de0a807de139d, type: 3}
+  - id: unity-event-system
+    prefab: {fileID: 5527522831593466129, guid: ab8439d69cec86c48bff8b9958b08232, type: 3}
+  - id: global-volume
+    prefab: {fileID: 5415059737411066741, guid: 71c43abc564c0da45b39e92b7d9b6b4c, type: 3}

@@ -4,7 +4,7 @@ using UI.Tooltips;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace KillSkill.Modules
+namespace KillSkill.UI
 {
     public class TooltipView : View
     {

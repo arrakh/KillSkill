@@ -15,7 +15,6 @@ namespace KillSkill.ModuleLoaders
             new SessionDataModule(),
         };
 
-        [RuntimeInitializeOnLoadMethod]
         public static void Start()
         {
             _handler = new ModulesHandler(_modules, GlobalEvents.Instance);

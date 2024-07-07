@@ -24,7 +24,7 @@ namespace KillSkill.Modules.Battle
 
         public PlayerCharacter CreatePlayer(SkillsSessionData skillsSession)
         {
-            var prefab = PrefabRegistry.Get("npc");
+            var prefab = PrefabRegistry.Get("player");
 
             var character = Object.Instantiate(prefab).GetComponent<PlayerCharacter>();
             character.Initialize(skillsSession, this, effectController);

@@ -7,6 +7,7 @@ using Arr.ModulesSystem;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Events;
 using KillSkill.Utility;
+using UnityEngine;
 
 namespace DefaultNamespace.SessionData
 {
@@ -15,7 +16,7 @@ namespace DefaultNamespace.SessionData
     {
         private Dictionary<Type, ISessionData> sessionData = new();
 
-        protected override async Task OnLoad()
+        protected override async Task OnInitialize()
         {
             var dataTypes = ReflectionUtility.GetAll<ISessionData>();
 

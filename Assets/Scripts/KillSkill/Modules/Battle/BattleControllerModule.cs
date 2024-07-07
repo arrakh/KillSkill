@@ -9,8 +9,8 @@ using KillSkill.Characters;
 using KillSkill.Modules.Battle.Events;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
-using KillSkill.UI.Game.Events;
-using KillSkill.UI.Game.Modules;
+using KillSkill.UI.Battle.Events;
+using KillSkill.UI.Battle.Modules;
 using SessionData.Implementations;
 using UnityEngine;
 
@@ -21,6 +21,7 @@ namespace KillSkill.Modules.Battle
         [InjectModule] private ResultViewModule resultView;
         [InjectModule] private CountdownViewModule countdown;
         [InjectModule] private BattleFactoryModule battleFactory;
+        [InjectModule] private CameraControlModule cameraControl;
         private Character player, enemy;
         private BattleLevel level;
 
@@ -30,10 +31,10 @@ namespace KillSkill.Modules.Battle
 
         private BattleResultData result;
 
-        protected override Task OnInitialized()
+        protected override Task OnLoad()
         {
             CoroutineUtility.Start(Start());
-            return base.OnInitialized();
+            return base.OnLoad();
         }
 
         private IEnumerator Start()
@@ -68,7 +69,16 @@ namespace KillSkill.Modules.Battle
             level = battleFactory.CreateLevel(data.levelId);
 
             player.Position = level.PlayerSpawnPoint.position;
+            player.SetTarget(enemy);
+            
             enemy.Position = level.EnemySpawnPoint.position;
+            enemy.SetTarget(player);
+
+            var cam = cameraControl.Controller;
+            cam.AddTargetToGroup(player.transform);
+            cam.AddTargetToGroup(enemy.transform);
+            
+            GlobalEvents.Fire(new BattleInitializedEvent(player, enemy, level));
         }
 
         private void OnEnemyDeath(ICharacter character)

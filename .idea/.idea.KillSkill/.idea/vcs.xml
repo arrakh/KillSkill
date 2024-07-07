@@ -2,5 +2,11 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Assets/Scripts/Arr/EventsSystem" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Assets/Scripts/Arr/ModulesLoader" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Assets/Scripts/Arr/ModulesSystem" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Assets/Scripts/Arr/ScriptableDatabases" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Assets/Scripts/Arr/UnityUtils" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Assets/Scripts/Arr/ViewModuleSystem" vcs="Git" />
   </component>
 </project>

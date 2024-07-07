@@ -31,5 +31,10 @@ namespace KillSkill.Characters
             if (battlePause) return;
             if (hasAi) aiTree.Tick();
         }
+
+        protected override void OnDeath()
+        {
+            Destroy(gameObject);
+        }
     }
 }
