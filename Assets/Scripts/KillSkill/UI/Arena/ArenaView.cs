@@ -21,23 +21,28 @@ namespace KillSkill.UI.Arena
 
         private BattleSessionData battleSession;
         
-        public void Display(BattleSessionData session)
+        public void Display(BattleSessionData session, MilestonesSessionData milestones)
         {
             battleSession = session;
             var allMonsters = ReflectionUtility.GetAll<IEnemyData>();
 
             CleanObjects();
 
-            var list = new List<IEnemyData>();
+            var list = new List<(ICataloguedEnemy, IEnemyData)>();
             
             foreach (var monster in allMonsters)
             {
+                if (!typeof(ICataloguedEnemy).IsAssignableFrom(monster)) continue;
                 var instance = Activator.CreateInstance(monster);
-                if (instance is IEnemyData enemyData) list.Add(enemyData);
+                if (instance is IEnemyData enemyData && instance is ICataloguedEnemy catalogued) 
+                    list.Add((catalogued, enemyData));
             }
 
-            foreach (var enemy in list.OrderBy(x => x.CatalogOrder))
+            foreach (var enemyPair in list.OrderBy(x => x.Item1.CatalogOrder))
             {
+                var (catalogue, enemy) = enemyPair;
+                if (!milestones.HasAll(catalogue.RequiredMilestones?.ToArray())) continue;
+                
                 var obj = Instantiate(elementPrefab, elementParent);
                 var element = obj.GetComponent<ArenaCatalogElement>();
                 

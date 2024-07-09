@@ -12,11 +12,13 @@ namespace KillSkill.Characters.Implementations.EnemyData
 {
     public class FlyingEye : IEnemyData
     {
-        public string Id => "flying-eye";
+        public const string ID = "flying-eye";
+
+        public string Id => ID;
         public float Health => 20;
         public string DisplayName => "Flying Eye";
-        public int CatalogOrder => 3;
         public IResourceReward[] Rewards { get; }
+
 
         public Skill[] Skills => new Skill[]
         {

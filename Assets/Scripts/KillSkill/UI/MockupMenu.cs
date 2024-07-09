@@ -14,7 +14,7 @@ namespace KillSkill.UI
 {
     //todo: SHOULD BE SEPARATE MODULES
     public class MockupMenu : MonoBehaviour, 
-        IEventListener<SkillsUpdatedEvent>,
+        IEventListener<SessionUpdatedEvent<SkillsSessionData>>,
         IEventListener<EquipSkillEvent>,
         IEventListener<UnequipSkillEvent>,
         IEventListener<PurchaseSkillEvent>,
@@ -30,23 +30,25 @@ namespace KillSkill.UI
         private ResourcesSessionData resourcesSession;
         private SkillsSessionData skillsSession;
         private BattleSessionData battleSession;
+        private MilestonesSessionData milestonesSession;
         
         private void Start()
         {
             resourcesSession = Session.GetData<ResourcesSessionData>();
             skillsSession = Session.GetData<SkillsSessionData>();
             battleSession = Session.GetData<BattleSessionData>();
+            milestonesSession = Session.GetData<MilestonesSessionData>();
             
             skillsManager.Display(resourcesSession, skillsSession);
             
             navigationView.AddSection(skillsManager);
             navigationView.AddSection(arenaView);
             navigationView.Select(skillsManager);
-            arenaView.Display(battleSession);
+            arenaView.Display(battleSession, milestonesSession);
             GlobalEvents.Instance.RegisterMultiple(this);
         }
 
-        public void OnEvent(SkillsUpdatedEvent data)
+        public void OnEvent(SessionUpdatedEvent<SkillsSessionData> data)
         {
             skillsManager.Display(resourcesSession, skillsSession);
         }

@@ -15,15 +15,5 @@ namespace KillSkill.SessionData.Implementations
         public void SetLevel(string levelId) => currentLevelId = levelId;
 
         public BattleStartData StartData => new (currentEnemy, currentLevelId);
-        
-        public void OnLoad()
-        {
-            
-        }
-
-        public void OnUnload()
-        {
-            
-        }
     }
 }

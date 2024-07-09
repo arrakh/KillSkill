@@ -6,6 +6,7 @@ using Arr.ModulesSystem;
 using Arr.UnityUtils;
 using KillSkill.Battle;
 using KillSkill.Characters;
+using KillSkill.Constants;
 using KillSkill.Modules.Battle.Events;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
@@ -122,6 +123,9 @@ namespace KillSkill.Modules.Battle
             
             foreach (var resource in rewards)
                 resourcesSession.AddResource(resource.resourceId, resource.resourceAmount);
+            
+            var milestonesSession = Session.GetData<MilestonesSessionData>();
+            milestonesSession.TryAdd(Milestones.HasDefeated(data.Id));
 
             CoroutineUtility.Start(EndingSequence());
         }

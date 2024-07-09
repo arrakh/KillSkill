@@ -2,7 +2,5 @@
 {
     public interface ISessionData
     {
-        public void OnLoad();
-        public void OnUnload();
     }
 }

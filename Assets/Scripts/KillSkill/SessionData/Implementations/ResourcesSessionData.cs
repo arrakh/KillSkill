@@ -24,7 +24,7 @@ namespace SessionData.Implementations
             if (resources.TryGetValue(id, out var existing)) finalAmount = existing + amount;
             if (finalAmount < 0) finalAmount = 0;
             resources[id] = finalAmount;
-            GlobalEvents.Fire(new ResourcesUpdatedEvent(this));
+            GlobalEvents.Fire(new SessionUpdatedEvent<ResourcesSessionData>(this));
         }
 
         public void RemoveResources(IReadOnlyDictionary<string, double> toRemove)
@@ -38,7 +38,7 @@ namespace SessionData.Implementations
                 resources[id] = finalAmount;
             }
             
-            GlobalEvents.Fire(new ResourcesUpdatedEvent(this));
+            GlobalEvents.Fire(new SessionUpdatedEvent<ResourcesSessionData>(this));
         }
 
         public bool CanAfford(IReadOnlyDictionary<string, double> cost)
@@ -50,16 +50,6 @@ namespace SessionData.Implementations
             }
 
             return true;
-        }
-
-        public void OnLoad()
-        {
-            
-        }
-
-        public void OnUnload()
-        {
-            
         }
     }
 }

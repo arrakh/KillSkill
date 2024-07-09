@@ -15,7 +15,7 @@ using UnityEngine.Events;
 
 namespace KillSkill.SessionData.Implementations
 {
-    public class SkillsSessionData : ISessionData
+    public class SkillsSessionData : ISessionData, ILoadableSessionData
     {
         //todo: move default loadout to config
         private List<Type> loadout = new()
@@ -58,7 +58,7 @@ namespace KillSkill.SessionData.Implementations
             }
 
             ownedSkills.Add(skillType);
-            GlobalEvents.Fire(new SkillsUpdatedEvent(this));
+            GlobalEvents.Fire(new SessionUpdatedEvent<SkillsSessionData>(this));
             return true;
         }
 
@@ -80,7 +80,7 @@ namespace KillSkill.SessionData.Implementations
             var type = skill.GetType();
             loadout[finalIndex] = type;
             loadoutByType.Add(type);
-            GlobalEvents.Fire(new SkillsUpdatedEvent(this));
+            GlobalEvents.Fire(new SessionUpdatedEvent<SkillsSessionData>(this));
         }
 
         public void Unequip(Skill skill)
@@ -98,7 +98,7 @@ namespace KillSkill.SessionData.Implementations
             if (skill == null) return;
             loadoutByType.Remove(skill);
             loadout[skillIndex] = null;
-            GlobalEvents.Fire(new SkillsUpdatedEvent(this));
+            GlobalEvents.Fire(new SessionUpdatedEvent<SkillsSessionData>(this));
         }
 
         private int GetSkillIndex(Type skillType)
@@ -117,14 +117,14 @@ namespace KillSkill.SessionData.Implementations
         {
             for (int i = 0; i < count; i++)
                 loadout.Add(null);
-            GlobalEvents.Fire(new SkillsUpdatedEvent(this));
+            GlobalEvents.Fire(new SessionUpdatedEvent<SkillsSessionData>(this));
         }
 
         public void RemoveSlot(int count)
         {
             for (int i = 0; i < count; i++)
                 loadout.RemoveAt(loadout.Count - 1);
-            GlobalEvents.Fire(new SkillsUpdatedEvent(this));
+            GlobalEvents.Fire(new SessionUpdatedEvent<SkillsSessionData>(this));
         }
 
         private int GetFirstUnoccupiedIndex()

@@ -19,12 +19,15 @@ using UnityEngine;
 
 namespace KillSkill.Characters.Implementations.EnemyData
 {
-    public class Executioner : IEnemyData
+    public class Executioner : IEnemyData, ICataloguedEnemy
     {
-        public string Id => "executioner";
+        public const string ID = "executioner";
+        
+        public string Id => ID;
 
         public string DisplayName => "Executioner";
         public int CatalogOrder => 1;
+        public IEnumerable<string> RequiredMilestones => new [] { Milestones.HasDefeated(FlyingEye.ID)};
         public float Health => 800f;
 
         public IResourceReward[] Rewards => new IResourceReward[]

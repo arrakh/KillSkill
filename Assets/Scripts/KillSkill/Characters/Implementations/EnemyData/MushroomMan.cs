@@ -12,12 +12,14 @@ using Skills;
 
 namespace KillSkill.Characters.Implementations.EnemyData
 {
-    public class MushroomMan : IEnemyData
+    public class MushroomMan : IEnemyData, ICataloguedEnemy
     {
         public string Id => "mushroom-man";
 
         public string DisplayName => "Mushroom Man";
         public int CatalogOrder => 0;
+        public IEnumerable<string> RequiredMilestones => new List<string>();
+
         public float Health => 250f;
 
         public IResourceReward[] Rewards => new IResourceReward[]

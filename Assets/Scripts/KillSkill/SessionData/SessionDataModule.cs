@@ -24,7 +24,7 @@ namespace DefaultNamespace.SessionData
             {
                 var instance = Activator.CreateInstance(type) as ISessionData;
                 if (instance == null) throw new Exception($"Trying to initialize {type} but instance is null");
-                instance.OnLoad();
+                if (instance is ILoadableSessionData loadable) loadable.OnLoad();
                 GlobalEvents.Instance.RegisterMultiple(instance);
                 sessionData[type] = instance;
             }
@@ -34,8 +34,8 @@ namespace DefaultNamespace.SessionData
         {
             foreach (var (_, data) in sessionData)
             {
+                if (data is ILoadableSessionData loadable) loadable.OnUnload();
                 GlobalEvents.Instance.UnregisterMultiple(data);
-                data.OnUnload();
             }
             
             sessionData.Clear();
