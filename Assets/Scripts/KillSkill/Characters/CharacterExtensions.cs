@@ -3,11 +3,14 @@ using DG.Tweening;
 using KillSkill.CharacterResources.Implementations;
 using UnityEngine;
 using VisualEffects.EffectComponents;
+using Random = System.Random;
 
 namespace KillSkill.Characters
 {
     public static class CharacterExtensions
     {
+        private static Random _rng = new();
+        
         public static void AnimateMoveTowards(this ICharacter character, ICharacter target, float time, Ease ease, float distanceModifier = 1f, Action onComplete = null)
         {
             var cPos = character.Animator.Visual.position;
@@ -18,6 +21,11 @@ namespace KillSkill.Characters
             Tween forward = character.Animator.Visual.DOMoveX(cPos.x + realDistance, time).SetEase(ease);
             if (onComplete != null) forward.OnComplete(() => { onComplete(); }); 
             character.Animator.AddMovementTweens(forward);
+        }
+
+        public static double RollForDamage(this ICharacter character, double minDamage, double maxDamage)
+        {
+            return _rng.NextDouble() * (maxDamage - minDamage) + minDamage;
         }
         
         public static bool TryDamage(this ICharacter character, ICharacter damager, double damage)
