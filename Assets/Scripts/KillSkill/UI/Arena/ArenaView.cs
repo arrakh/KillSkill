@@ -55,7 +55,7 @@ namespace KillSkill.UI.Arena
         {
             battleSession.SetBattle(element.Data);
 
-            SceneManager.LoadScene("Game");
+            //todo: FIRE AN EVENT TO MOVE TO BATTLE
         }
 
         private void CleanObjects()

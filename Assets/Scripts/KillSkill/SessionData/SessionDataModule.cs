@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Arr.EventsSystem;
 using Arr.ModulesSystem;
-using KillSkill.SessionData;
 using KillSkill.SessionData.Events;
 using KillSkill.Utility;
-using UnityEngine;
 
-namespace DefaultNamespace.SessionData
+namespace KillSkill.SessionData
 {
-    public class SessionDataModule : BaseModule, 
+    public class SessionDataModule : BaseModule, IOrderedModule,
         IQueryProvider<ISessionData, QueryDataEvent>
     {
+        public int Order => int.MinValue;
+        
         private Dictionary<Type, ISessionData> sessionData = new();
 
         protected override async Task OnInitialize()
@@ -46,5 +45,6 @@ namespace DefaultNamespace.SessionData
             if (sessionData.TryGetValue(data.type, out var d)) return d;
             return null;
         }
+
     }
 }

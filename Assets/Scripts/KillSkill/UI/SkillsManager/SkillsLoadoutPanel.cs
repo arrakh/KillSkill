@@ -10,7 +10,6 @@ using UnityEngine;
 
 namespace KillSkill.UI.SkillsManager
 {
-    //todo: Separate some of this to SkillsManagerViewModule
     public class SkillsLoadoutPanel : MonoBehaviour
     {
         [SerializeField] private GameObject buySlot;

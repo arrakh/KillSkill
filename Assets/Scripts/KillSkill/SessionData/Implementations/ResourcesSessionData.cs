@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Arr.EventsSystem;
-using DefaultNamespace.SessionData;
 using KillSkill.Constants;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Events;
