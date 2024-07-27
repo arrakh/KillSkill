@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arr.EventsSystem;
 using Arr.ViewModuleSystem;
 using KillSkill.Characters;
+using KillSkill.Modules.Loaders.Events;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
 using KillSkill.UI.Navigation;
@@ -55,7 +57,7 @@ namespace KillSkill.UI.Arena
         {
             battleSession.SetBattle(element.Data);
 
-            //todo: FIRE AN EVENT TO MOVE TO BATTLE
+            GlobalEvents.Fire(new SwitchContextEvent(SwitchContextEvent.Type.Battle));
         }
 
         private void CleanObjects()

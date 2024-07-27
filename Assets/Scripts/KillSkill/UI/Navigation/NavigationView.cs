@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arr.EventsSystem;
 using Arr.ViewModuleSystem;
+using KillSkill.Modules.Loaders.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +27,7 @@ namespace KillSkill.UI.Navigation
 
         private void OnQuit()
         {
-            Application.Quit();
+            GlobalEvents.Fire(new QuitLobbyEvent());
         }
 
         public void AddSection(INavigateSection section)
