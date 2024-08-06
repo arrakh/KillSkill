@@ -1,6 +1,8 @@
-﻿using Arr.ViewModuleSystem;
+﻿using Arr.EventsSystem;
+using Arr.ViewModuleSystem;
 using DG.Tweening;
 using KillSkill.Battle;
+using KillSkill.Modules.Loaders.Events;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,12 +29,12 @@ namespace KillSkill.UI.Battle.GameResult
 
         private void OnExit()
         {
-            SceneManager.LoadScene("Menu");
+            GlobalEvents.Fire(new SwitchContextEvent(SwitchContextEvent.Type.Lobby));
         }
 
         private void OnRetry()
         {
-            SceneManager.LoadScene("Game");
+            GlobalEvents.Fire(new SwitchContextEvent(SwitchContextEvent.Type.Battle));
         }
 
         public void Display(BattleResultData result)

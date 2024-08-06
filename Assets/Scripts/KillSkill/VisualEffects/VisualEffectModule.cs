@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Arr.ModulesSystem;
 using UnityEngine;
 using VisualEffects;
@@ -22,6 +23,14 @@ namespace KillSkill.VisualEffects
             obj.SetPosition(position);
 
             return obj;
+        }
+
+        protected override Task OnUnload()
+        {
+            foreach (var (key, value) in unityEffects)
+                value.Dispose();
+            
+            return base.OnUnload();
         }
     }
 }

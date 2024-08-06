@@ -38,6 +38,14 @@ namespace KillSkill.Modules.Battle
             return base.OnLoad();
         }
 
+        protected override Task OnUnload()
+        {
+            if (player != null) Object.Destroy(player.gameObject);
+            if (enemy != null) Object.Destroy(enemy.gameObject);
+            Object.Destroy(level.gameObject);
+            return base.OnUnload();
+        }
+
         private IEnumerator Start()
         {
             InitializeBattle();
