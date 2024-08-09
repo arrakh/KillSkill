@@ -6,23 +6,24 @@ using KillSkill.Network;
 using KillSkill.Network.Messages;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace KillSkill.Modules.Network
 {
     public class NetworkPartyModule : BaseModule,
-        IEventListener<HostJoinedEvent>,
+        IEventListener<HostJoinedEvent>, 
+        IEventListener<HostStartedEvent>, 
+        IEventListener<ClientDisconnectedEvent>,
         IEventListener<NetMessageEvent<InformLobbyUserNetMessage>>,
         IEventListener<NetMessageEvent<InformPartyNetMessage>>
     {
         private NetworkPartySessionData partySessionData;
-        
-        protected override async Task OnLoad()
+
+        protected override async Task OnInitialize()
         {
-            await base.OnLoad();
+            await base.OnInitialize();
             partySessionData = Session.GetData<NetworkPartySessionData>();
-            partySessionData.Add(LobbyUser.GetLocal());
-            Debug.Log("[NPM] ADDED LOCAL TO PARTY");
         }
 
         public void OnEvent(HostJoinedEvent data)
@@ -45,6 +46,27 @@ namespace KillSkill.Modules.Network
             if (Net.IsServer()) return;
             Debug.Log("[NPM] GOT INFORM PARTY, WILL SET PARTY");
             partySessionData.Set(data.message.LatestParty);
+        }
+
+        public void OnEvent(ClientDisconnectedEvent data)
+        {
+            if (data.isLocal) return;
+            
+            Debug.Log($"[NPM] CLIENT {data.clientId} HAS DISCONNECTED, WILL UPDATE PARTY, IS IT SERVER? {Net.IsServer()} || {NetworkManager.Singleton.IsServer}");
+            
+            if (!Net.IsServer()) return; //shouldn't happen anyway
+            
+            partySessionData.Remove(data.clientId);
+            Net.Server.Broadcast(partySessionData.GetInformPartyNetMessage());
+        }
+
+        public void OnEvent(HostStartedEvent data)
+        {
+            if (!Net.IsServer()) return; //shouldn't happen anyway
+            
+            partySessionData.Clear();
+            partySessionData.Add(LobbyUser.GetLocal());
+            Debug.Log("[NPM] HOST STARTED, ADDED LOCAL TO PARTY");
         }
     }
 }

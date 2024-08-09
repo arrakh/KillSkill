@@ -1,6 +1,8 @@
-﻿namespace KillSkill.Modules.Network.Events
+﻿using UnityEngine;
+
+namespace KillSkill.Modules.Network.Events
 {
-    public struct IsServerQuery
+    public class IsServerQuery
     {
         public bool isServer;
 

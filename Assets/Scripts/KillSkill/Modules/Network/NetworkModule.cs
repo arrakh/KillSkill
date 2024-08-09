@@ -52,8 +52,17 @@ namespace KillSkill.Modules.Network
             RegisterMessages();
 
             networkManager.OnServerStopped += OnServerStopped;
-            networkManager.OnClientConnectedCallback += OnClientConnected;
+            networkManager.OnConnectionEvent += OnConnectionEvent;
             networkManager.OnTransportFailure += () => { Debug.Log("[NM] TRANSPORT FAILURE!"); };
+        }
+
+        private void OnConnectionEvent(NetworkManager manager, ConnectionEventData eventData)
+        {
+            switch (eventData.EventType)
+            {
+                case ConnectionEvent.ClientConnected: OnClientConnected(eventData.ClientId); break;
+                case ConnectionEvent.ClientDisconnected: OnClientDisconnected(eventData.ClientId); break;
+            }
         }
 
         private void OnServerStopped(bool obj)
@@ -117,6 +126,16 @@ namespace KillSkill.Modules.Network
             else networkManager.StartHost();
         }
 
+        protected override async Task OnUnload()
+        {
+            Debug.Log("[NM] UNLOAD, SHUTTING DOWN NETWORK");
+            
+            networkManager?.Shutdown();
+
+            await base.OnUnload();
+        }
+
+
         private void OnClientConnected(ulong id)
         {
             Debug.Log($"[NM] A CLIENT HAS CONNECTED WITH ID {id}, LOCAL IS {networkManager.LocalClientId}");
@@ -132,7 +151,17 @@ namespace KillSkill.Modules.Network
             if (isServer) GlobalEvents.Fire(new HostStartedEvent());
             else GlobalEvents.Fire(new HostJoinedEvent());
         }
+        
+        private void OnClientDisconnected(ulong id)
+        {
+            Debug.Log($"[NM] A CLIENT HAS DISCONNECTED WITH ID {id}, LOCAL IS {networkManager.LocalClientId}");
 
+            bool isLocal = id.Equals(networkManager.LocalClientId);
+            GlobalEvents.Fire(new ClientDisconnectedEvent(id, isLocal));
+
+            if (isLocal) networkManager.StartHost();
+        }
+        
         public void OnEvent(StartJoinEvent data)
         {
             JoinAsync(data).CatchExceptions();

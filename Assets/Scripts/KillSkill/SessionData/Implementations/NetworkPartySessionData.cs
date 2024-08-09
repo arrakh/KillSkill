@@ -22,11 +22,19 @@ namespace KillSkill.SessionData.Implementations
             GlobalEvents.Fire(new SessionUpdatedEvent<NetworkPartySessionData>(this));
         }
 
+        public void Remove(ulong id)
+        {
+            party.Remove(id);
+            GlobalEvents.Fire(new SessionUpdatedEvent<NetworkPartySessionData>(this));
+        }
+
         public void Set(Dictionary<ulong, LobbyUser> newParty)
         {
             party = newParty;
             GlobalEvents.Fire(new SessionUpdatedEvent<NetworkPartySessionData>(this));
         }
+
+        public void Clear() => party.Clear();
 
         public InformPartyNetMessage GetInformPartyNetMessage() => new (party);
 

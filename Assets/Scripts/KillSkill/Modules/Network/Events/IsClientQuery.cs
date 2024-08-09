@@ -1,6 +1,6 @@
 ﻿namespace KillSkill.Modules.Network.Events
 {
-    public struct IsClientQuery
+    public class IsClientQuery
     {
         public bool isClient;
 

@@ -113,8 +113,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: -200, y: -300}
+  m_AnchoredPosition: {x: 0, y: -10}
+  m_SizeDelta: {x: -200, y: -220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &956383709033030242
 MonoBehaviour:
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6556028144886832046}
   m_HandleRect: {fileID: 1435748292911126996}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1735,7 +1735,6 @@ MonoBehaviour:
   loadingGroup: {fileID: 2913008092326703596}
   errorText: {fileID: 5627528448181292369}
   ipInputField: {fileID: 3974108458023316903}
-  hostButton: {fileID: 0}
   joinButton: {fileID: 5333645177136455058}
   partyPanel: {fileID: 956383709033030242}
 --- !u!1 &7081535623655143516
@@ -2019,7 +2018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 66.5}
+  m_AnchoredPosition: {x: 0, y: 12}
   m_SizeDelta: {x: 800, y: 80}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &8561732421588290446
