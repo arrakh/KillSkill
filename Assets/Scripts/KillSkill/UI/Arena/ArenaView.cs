@@ -14,7 +14,7 @@ using UnityEngine.SceneManagement;
 
 namespace KillSkill.UI.Arena
 {
-    public class ArenaView : View, INavigateSection
+    public class ArenaView : View
     {
         [SerializeField] private GameObject elementPrefab;
         [SerializeField] private RectTransform elementParent;
@@ -26,7 +26,7 @@ namespace KillSkill.UI.Arena
         public void Display(BattleSessionData session, MilestonesSessionData milestones)
         {
             battleSession = session;
-            var allMonsters = ReflectionUtility.GetAll<IEnemyData>();
+            var allMonsters = ReflectionCache.GetAll<IEnemyData>();
 
             CleanObjects();
 
@@ -66,14 +66,6 @@ namespace KillSkill.UI.Arena
                 Destroy(element.gameObject);
             
             spawnedElements.Clear();
-        }
-
-        //todo: Should sit in the view module
-        int INavigateSection.Order => 0;
-        string INavigateSection.Name => "Arena";
-        void INavigateSection.OnNavigate(bool selected)
-        {
-            gameObject.SetActive(selected);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using KillSkill.Characters;
+using KillSkill.Utility;
 using Skills;
 using StatusEffects;
 
@@ -17,7 +18,7 @@ namespace KillSkill.Skills
             for (var index = 0; index < skills.Length; index++)
             {
                 var skill = skills[index];
-                if (skill == null) continue;
+                if (skill.IsEmpty()) continue;
 
                 var type = skill.GetType();
                 skillIndexes[type] = index;
@@ -69,7 +70,7 @@ namespace KillSkill.Skills
         {
             if (index < 0 || index >= skills.Length) return false;
             var skill = skills[index];
-            if (skill == null) return false;
+            if (skill.IsEmpty()) return false;
             return CanCast(skill);
         }
 
@@ -77,7 +78,7 @@ namespace KillSkill.Skills
         {
             if (!skillIndexes.TryGetValue(typeof(T), out var index)) return false;
             var skill = skills[index];
-            if (skill == null) return false;
+            if (skill.IsEmpty()) return false;
             return CanCast(skill);
         }
 

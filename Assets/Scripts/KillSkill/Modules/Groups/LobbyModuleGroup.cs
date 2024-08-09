@@ -9,7 +9,8 @@ namespace KillSkill.Modules.Groups
         {
              new ArenaViewModule(),
              new SkillsManagerViewModule(),
-             new NavigationViewModule()
+             new MultiplayerViewModule(),
+             new NavigationViewModule(),
         };
     }
 }

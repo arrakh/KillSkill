@@ -5,6 +5,7 @@ using KillSkill.SessionData.Events;
 using KillSkill.SessionData.Implementations;
 using KillSkill.Skills;
 using KillSkill.UI.SkillsManager.Events;
+using KillSkill.Utility;
 using Skills;
 using TMPro;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace KillSkill.UI.SkillsManager
 
         public void UpdateDisplay(SkillsSessionData skillsSession)
         {
-            if (skill == null) return;
+            if (skill.IsEmpty()) return;
             Display(skill, skillsSession);
         }
 

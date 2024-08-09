@@ -1,5 +1,6 @@
 ﻿using System;
 using KillSkill.Skills;
+using KillSkill.Utility;
 using Skills;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +29,7 @@ namespace KillSkill.UI
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(OnButtonClicked);
             
-            if (skill == null)
+            if (skill.IsEmpty())
             {
                 DisplayEmpty();
                 return;

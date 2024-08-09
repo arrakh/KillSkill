@@ -4,6 +4,7 @@ using KillSkill.Characters.Implementations;
 using KillSkill.SessionData.Implementations;
 using KillSkill.SettingsData;
 using KillSkill.Skills;
+using KillSkill.Utility;
 using UnityEngine;
 using UnityEngine.Events;
 using VisualEffects;
@@ -23,7 +24,7 @@ namespace KillSkill.Characters
             for (var i = 0; i < loadout.Length; i++)
             {
                 var skill = loadout[i];
-                if (skill == null) skills[i] = null;
+                if (skill.IsEmpty()) skills[i] = null;
                 else
                 {
                     var instance = Activator.CreateInstance(skill) as Skill;
