@@ -33,11 +33,15 @@ namespace KillSkill.Modules.Network
         private NetworkIdSessionData networkId;
         //private MessageSizeCache sizeCache = new();
 
+        private NetworkEventQueue networkEventQueue;
+
         private TypeMapper<INetCodeMessage> messageTypeMapper;
         private Dictionary<Type, Action<ulong, FastBufferReader>> readHandlers = new();
 
         private TaskCompletionSource<bool> shutdownTcs = new();
 
+        private bool isServerStopping = false;
+        
         protected override async Task OnInitialize()
         {
             messageTypeMapper = new TypeMapper<INetCodeMessage>();
@@ -52,9 +56,10 @@ namespace KillSkill.Modules.Network
             RegisterMessages();
 
             networkManager.OnServerStopped += OnServerStopped;
-            networkManager.OnConnectionEvent += OnConnectionEvent;
-            networkManager.OnTransportFailure += () => { Debug.Log("[NM] TRANSPORT FAILURE!"); };
+
+            networkEventQueue = new(networkManager, OnConnectionEvent);
         }
+
 
         private void OnConnectionEvent(NetworkManager manager, ConnectionEventData eventData)
         {
@@ -65,9 +70,11 @@ namespace KillSkill.Modules.Network
             }
         }
 
-        private void OnServerStopped(bool obj)
+        private void OnServerStopped(bool isHost)
         {
-            shutdownTcs.SetResult(obj);
+            Debug.Log("[NM] SERVER STOPPED");
+            isServerStopping = false;
+            shutdownTcs?.SetResult(isHost);
         }
 
         private void RegisterMessages()
@@ -130,6 +137,7 @@ namespace KillSkill.Modules.Network
         {
             Debug.Log("[NM] UNLOAD, SHUTTING DOWN NETWORK");
             
+            networkEventQueue?.Dispose();
             networkManager?.Shutdown();
 
             await base.OnUnload();
@@ -143,8 +151,9 @@ namespace KillSkill.Modules.Network
             if (id != 0 && !id.Equals(networkManager.LocalClientId)) return;
             
             var isServer = networkManager.IsServer;
-            Debug.Log($"[NM] {(isServer ? "SERVER " : "")}CLIENT CONNECTED WITH ID {networkManager.LocalClientId}");
             networkId.SetClientId(networkManager.LocalClientId);
+
+            Debug.Log($"[NM] {(isServer ? "SERVER " : "")}CLIENT IS CONNECTED WITH ID {networkId.ClientId}");
 
             networkManager.CustomMessagingManager.OnUnnamedMessage += OnUnnamedMessage;
             
@@ -154,9 +163,11 @@ namespace KillSkill.Modules.Network
         
         private void OnClientDisconnected(ulong id)
         {
-            Debug.Log($"[NM] A CLIENT HAS DISCONNECTED WITH ID {id}, LOCAL IS {networkManager.LocalClientId}");
+            Debug.Log($"[NM] ON CLIENT DISCONNECTED, IS SERVER {networkManager.IsServer}, IS SHUTTING DOWN {networkManager.ShutdownInProgress}");
+            if (networkManager.IsServer && networkManager.ShutdownInProgress) return;
+            Debug.Log($"[NM] A CLIENT HAS DISCONNECTED WITH ID {id}, LOCAL IS {networkId.ClientId}");
 
-            bool isLocal = id.Equals(networkManager.LocalClientId);
+            bool isLocal = id.Equals(networkId.ClientId);
             GlobalEvents.Fire(new ClientDisconnectedEvent(id, isLocal));
 
             if (isLocal) networkManager.StartHost();
@@ -202,7 +213,7 @@ namespace KillSkill.Modules.Network
             writer.WriteValueSafe(index);
             data.message.Serialize(writer);
             
-            Debug.Log($"[NM] WILL SEND MESSAGE TYPE {type.Name} TO CLIENT {data.clientId}, LOCAL IS {networkManager.LocalClientId}");
+            Debug.Log($"[NM] WILL SEND MESSAGE TYPE {type.Name} TO CLIENT {data.clientId}, LOCAL IS {networkId.ClientId}");
                 
             networkManager.CustomMessagingManager.SendUnnamedMessage(data.clientId, writer, 
                 NetworkDelivery.ReliableFragmentedSequenced);
