@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Arr.EventsSystem;
 using Arr.ModulesSystem;
+using KillSkill.Modules.VisualEffects.Events;
 using UnityEngine;
 using VisualEffects;
 
-namespace KillSkill.VisualEffects
+namespace KillSkill.Modules.VisualEffects
 {
-    public class VisualEffectModule : BaseModule, IVisualEffectsHandler
+    public class VisualEffectModule : BaseModule, IVisualEffectsHandler,
+        IQueryProvider<VisualEffectsHandlerQuery>
     {
         private Dictionary<string, UnityEffectPool> unityEffects = new();
 
@@ -32,5 +35,7 @@ namespace KillSkill.VisualEffects
             
             return base.OnUnload();
         }
+
+        public VisualEffectsHandlerQuery OnQuery() => new (this);
     }
 }

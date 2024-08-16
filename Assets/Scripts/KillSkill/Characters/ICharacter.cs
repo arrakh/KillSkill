@@ -6,6 +6,7 @@ using CharacterResources;
 using DefaultNamespace;
 using KillSkill.CharacterResources;
 using KillSkill.CharacterResources.Implementations;
+using KillSkill.Minions;
 using KillSkill.Skills;
 using Skills;
 using StatusEffects;
@@ -33,7 +34,7 @@ namespace KillSkill.Characters
         public ICharacterSkillHandler Skills { get; }
         
         public IVisualEffectsHandler VisualEffects { get; }
-        public ICharacterFactory CharacterFactory { get; }
+        public ICharacterMinionHandler Minions { get; }
 
         public PersistentEventTemplate<ICharacter> OnInitialize { get; }
         
@@ -42,9 +43,6 @@ namespace KillSkill.Characters
         public GameObject GameObject { get; }
         
         public Type MainResource { get; }
-
-        public void Initialize(ICharacterData characterData, ICharacterFactory factory,
-            IVisualEffectsHandler vfx);
 
         public void SetBattlePaused(bool paused);
 

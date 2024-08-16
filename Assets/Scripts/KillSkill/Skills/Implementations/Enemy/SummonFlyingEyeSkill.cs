@@ -1,5 +1,6 @@
 ﻿using KillSkill.Characters;
 using KillSkill.Characters.Implementations.EnemyData;
+using KillSkill.Minions;
 using StatusEffects;
 using UnityEngine;
 
@@ -11,13 +12,13 @@ namespace KillSkill.Skills.Implementations.Enemy
 
         protected override float CooldownTime => 10f;
 
-        private ICharacterFactory factory;
+        private ICharacterMinionHandler minionHandler;
         private ICharacter casterChar;
         private ICharacter targetChar;
 
         public override void Execute(ICharacter caster, ICharacter target)
         {
-            factory = caster.CharacterFactory;
+            minionHandler = caster.Minions;
             casterChar = caster;
             targetChar = target;
             caster.StatusEffects.Add(new CastingStatusEffect(CAST_DURATION, OnCast));
@@ -25,8 +26,8 @@ namespace KillSkill.Skills.Implementations.Enemy
 
         private void OnCast()
         {
-            var character = factory.CreateNpc(new FlyingEye());
-            character.Position = GetRandomPosition(casterChar.Position);
+            var position = GetRandomPosition(casterChar.Position);
+            var character = minionHandler.Add<FlyingEye>(position);
             character.SetTarget(targetChar);
         }
 

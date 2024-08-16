@@ -1,33 +1,41 @@
 ﻿using System;
 using Arr;
+using Arr.EventsSystem;
 using Arr.Utils;
 using KillSkill.CharacterResources;
 using KillSkill.CharacterResources.Implementations;
+using KillSkill.Minions;
+using KillSkill.Modules.Battle.Events;
+using KillSkill.Modules.VisualEffects;
 using KillSkill.Skills;
+using KillSkill.StatusEffects;
 using KillSkill.UI.Game;
 using StatusEffects;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VisualEffects;
 
 namespace KillSkill.Characters
 {
-    public class Character : MonoBehaviour, ICharacter
+    public class Character : NetworkBehaviour, ICharacter
     {
         [SerializeField] private CharacterAnimator animator;
         [SerializeField] protected bool battlePause = false;
         [SerializeField] protected CharacterResourcesDisplay resourcesDisplay;
-        
-        protected StatusEffectsHandler statusEffects;
-        protected CharacterResourcesHandler resources;
-        protected CharacterSkillHandler skillHandler;
+
+        [SerializeField] private StatusEffectsHandler statusEffects;
+        [SerializeField] private CharacterResourcesHandler resources;
+        [SerializeField] private CharacterSkillHandler skillHandler;
+        [SerializeField] private CharacterMinionHandler minionsHandler;
 
         private ICharacterFactory characterFactory;
         private IVisualEffectsHandler visualEffects;
         private PersistentEventTemplate<ICharacter> onInitialize = new();
 
-        protected bool isAlive = true;
+        protected NetworkVariable<bool> isAlive;
 
-        public bool IsAlive => isAlive;
+        public bool IsAlive => isAlive.Value;
 
         public int Uid => gameObject.GetInstanceID();
 
@@ -43,6 +51,7 @@ namespace KillSkill.Characters
         public ICharacterSkillHandler Skills => skillHandler;
         
         public IVisualEffectsHandler VisualEffects => visualEffects;
+        public ICharacterMinionHandler Minions => minionsHandler;
         public ICharacterFactory CharacterFactory => characterFactory;
         
         public PersistentEventTemplate<ICharacter> OnInitialize => onInitialize;
@@ -61,15 +70,26 @@ namespace KillSkill.Characters
         public GameObject GameObject => gameObject;
         public virtual Type MainResource => typeof(Health);
 
-        public virtual void Initialize(ICharacterData characterData, ICharacterFactory factory, IVisualEffectsHandler vfx)
+        public void ServerInitialize(CharacterData characterData, ICharacterFactory factory)
         {
-            isAlive = true;
-            statusEffects = new(this);
-            resources = new();
-            skillHandler = new CharacterSkillHandler(characterData.Skills, statusEffects, this);
             characterFactory = factory;
-            visualEffects = vfx;
+            minionsHandler.Initialize(factory, this);
+            
+            ClientInitializeRpc(characterData);
+        }
 
+        [Rpc(SendTo.Everyone)]
+        private void ClientInitializeRpc(CharacterData characterData)
+        {
+            Debug.Log($"TEST CLIENT CHARACTER DATA ID {characterData.Id}");
+            
+            visualEffects = Vfx.GetHandler();
+
+            isAlive.Value = true;
+            statusEffects.Initialize(this);
+
+            skillHandler.Initialize(characterData.SkillTypes, this);
+            
             resources.Assign(new Health(this, characterData.Health, characterData.Health));
             
             skillHandler.InitializeSkills();
@@ -81,7 +101,11 @@ namespace KillSkill.Characters
             animator.PlayFlipBook("idle");
             
             onInitialize.Invoke(this);
+
+            OnClientInitialized();
         }
+
+        protected virtual void OnClientInitialized(){}
 
         public void SetBattlePaused(bool paused) => battlePause = paused;
 
@@ -89,11 +113,18 @@ namespace KillSkill.Characters
 
         private void Update()
         {
-            if (battlePause || !isAlive) return;
+            if (battlePause || !IsAlive) return;
+
+            if (!IsOwner)
+            {
+                OnUpdate();
+                return;
+            }
+            
             var time = Time.deltaTime;
-            statusEffects.Update(time);
-            skillHandler.Update(time);
-            resources.Update(time);
+            statusEffects.UpdateHandler(time);
+            skillHandler.UpdateHandler(time);
+            resources.UpdateHandler(time);
             
             OnUpdate();
         }
@@ -102,7 +133,14 @@ namespace KillSkill.Characters
 
         public void Kill()
         {
-            isAlive = false;
+            if (!IsOwner) return;
+            KillRpc();
+        }
+
+        [Rpc(SendTo.Everyone)]
+        private void KillRpc()
+        {
+            isAlive.Value = false;
             Debug.Log("KILL");
 
             if (animator.HasFlipBook("death")) animator.PlayFlipBook("death", 1f, null, false);

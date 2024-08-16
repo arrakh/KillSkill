@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using KillSkill.Characters;
-using KillSkill.StatusEffects;
-using UnityEngine;
+using StatusEffects;
+using Unity.Netcode;
 
-namespace StatusEffects
+namespace KillSkill.StatusEffects
 {
-    public class StatusEffectsHandler : IStatusEffectsHandler
+    public class StatusEffectsHandler : NetworkBehaviour, IStatusEffectsHandler
     {
 
         public event StatusEffectEvent OnAdded;
@@ -18,12 +17,12 @@ namespace StatusEffects
         private Dictionary<Type, IStatusEffect> statusEffects = new();
         private ICharacter character;
 
-        public StatusEffectsHandler(ICharacter character)
+        public void Initialize(ICharacter owner)
         {
-            this.character = character;
+            this.character = owner;
         }
 
-        public void Update(float deltaTime)
+        public void UpdateHandler(float deltaTime)
         {
             foreach (var statusEffect in statusEffects.Values.ToList())
             {

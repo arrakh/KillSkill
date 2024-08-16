@@ -4,6 +4,7 @@ using Arr.ModulesSystem;
 using KillSkill.Modules.Network.Events;
 using KillSkill.Network;
 using KillSkill.Network.Messages;
+using KillSkill.Network.Messages.Lobby;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
 using Unity.Netcode;

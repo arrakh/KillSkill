@@ -1,7 +1,7 @@
 ﻿using KillSkill.Utility;
 using Unity.Netcode;
 
-namespace KillSkill.Network.Messages
+namespace KillSkill.Network.Messages.Lobby
 {
     public class InformLobbyUserNetMessage : INetCodeMessage
     {

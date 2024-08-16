@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
@@ -15,11 +16,12 @@ using KillSkill.Skills.Implementations.HeavyKnight;
 using KillSkill.StatusEffects.Implementations;
 using KillSkill.Utility.BehaviourTree;
 using StatusEffects;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace KillSkill.Characters.Implementations.EnemyData
 {
-    public class Executioner : IEnemyData, ICataloguedEnemy
+    public class Executioner : INpcDefinition, ICataloguedEnemy
     {
         public const string ID = "executioner";
         
@@ -38,14 +40,14 @@ namespace KillSkill.Characters.Implementations.EnemyData
             new TimeRangeWinReward(GameResources.MEDALS, 69, 0, 10, "Wow, you beat this guy within 10 seconds? That's crazy"),
         };
 
-        public Skill[] Skills => new Skill[]
+        public Type[] SkillTypes => new Type[]
         {
-            new SlamSkill(),
-            new SmashSkill(),
-            new PowerChargeSkill(),
-            new SpinAttackSkill(),
-            new CarefulParrySkill(),
-            new SummonFlyingEyeSkill()
+            typeof(SlamSkill),
+            typeof(SmashSkill),
+            typeof(PowerChargeSkill),
+            typeof(SpinAttackSkill),
+            typeof(CarefulParrySkill),
+            typeof(SummonFlyingEyeSkill)
         };
 
         public BehaviorTreeBuilder OnBuildBehaviourTree(ICharacter character, BehaviorTreeBuilder builder)

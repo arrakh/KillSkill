@@ -4,12 +4,12 @@ namespace KillSkill.Battle
 {
     public readonly struct BattleStartData
     {
-        public readonly IEnemyData enemyData;
+        public readonly INpcDefinition npcDefinition;
         public readonly string levelId;
 
-        public BattleStartData(IEnemyData enemyData, string levelId)
+        public BattleStartData(INpcDefinition npcDefinition, string levelId)
         {
-            this.enemyData = enemyData;
+            this.npcDefinition = npcDefinition;
             this.levelId = levelId;
         }
     }

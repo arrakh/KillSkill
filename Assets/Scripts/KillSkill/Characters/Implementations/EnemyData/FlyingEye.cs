@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
 using FlipBooks;
@@ -6,11 +7,12 @@ using KillSkill.Database;
 using KillSkill.Skills;
 using KillSkill.Skills.Implementations.Fighter;
 using KillSkill.Utility.BehaviourTree;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace KillSkill.Characters.Implementations.EnemyData
 {
-    public class FlyingEye : IEnemyData
+    public class FlyingEye : INpcDefinition
     {
         public const string ID = "flying-eye";
 
@@ -20,9 +22,9 @@ namespace KillSkill.Characters.Implementations.EnemyData
         public IResourceReward[] Rewards { get; }
 
 
-        public Skill[] Skills => new Skill[]
+        public Type[] SkillTypes => new Type[]
         {
-            new SlashSkill()
+            typeof(SlashSkill)
         };
         
         public BehaviorTreeBuilder OnBuildBehaviourTree(ICharacter character, BehaviorTreeBuilder builder)

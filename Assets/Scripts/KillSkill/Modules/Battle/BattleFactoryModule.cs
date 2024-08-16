@@ -1,33 +1,50 @@
-﻿using Arr.ModulesSystem;
+﻿using System;
+using Arr.ModulesSystem;
 using Arr.ScriptableDatabases;
+using Arr.Utils;
 using KillSkill.Battle;
 using KillSkill.Characters;
+using KillSkill.Network;
 using KillSkill.SessionData.Implementations;
-using KillSkill.VisualEffects;
+using Unity.Netcode;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace KillSkill.Modules.Battle
 {
     public class BattleFactoryModule : BaseModule, ICharacterFactory
     {
-        [InjectModule] private VisualEffectModule effectController;
 
-        public NpcCharacter CreateNpc(ICharacterData data)
+        public NpcCharacter CreateNpc(INpcDefinition definition)
         {
+            Debug.Log($"[BFM] WILL BE SPAWNING {definition.Id}".LogColor("cyan"));
             var prefab = PrefabRegistry.Get("npc");
-
-            var character = Object.Instantiate(prefab).GetComponent<NpcCharacter>();
-            character.Initialize(data, this, effectController);
-
+            var obj = Object.Instantiate(prefab);
+            var netObj = obj.GetComponent<NetworkObject>();
+            netObj.Spawn();
+            
+            var character = obj.GetComponent<NpcCharacter>();
+            character.ServerInitialize(definition, this);
             return character;
         }
 
-        public PlayerCharacter CreatePlayer(SkillsSessionData skillsSession)
+        public NpcCharacter CreateNpc<T>() where T : INpcDefinition
+        {
+            //todo: better implementation of this. shouldn't create an instance of a definition everytime...
+            var definition = Activator.CreateInstance<T>();
+            return CreateNpc(definition);
+        }
+
+        public PlayerCharacter CreatePlayer(SkillsSessionData skillsSession, ulong clientId)
         {
             var prefab = PrefabRegistry.Get("player");
+            var obj = Object.Instantiate(prefab);
 
-            var character = Object.Instantiate(prefab).GetComponent<PlayerCharacter>();
-            character.Initialize(skillsSession, this, effectController);
+            var netObj = obj.GetComponent<NetworkObject>();
+            netObj.SpawnWithOwnership(clientId);
+
+            var character = obj.GetComponent<PlayerCharacter>();
+            character.ServerInitialize(skillsSession, this);
 
             return character;
         }
@@ -35,7 +52,11 @@ namespace KillSkill.Modules.Battle
         public BattleLevel CreateLevel(string id)
         {
             var prefab = PrefabRegistry.Get($"level-{id}");
-            var level = Object.Instantiate(prefab).GetComponent<BattleLevel>();
+            var obj = Object.Instantiate(prefab);
+
+            var netObj = obj.GetComponent<NetworkObject>();
+            netObj.Spawn();
+            var level = obj.GetComponent<BattleLevel>();
             return level;
         }
     }

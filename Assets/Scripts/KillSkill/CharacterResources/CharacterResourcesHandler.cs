@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Arr;
 using CharacterResources;
+using Unity.Netcode;
 
 namespace KillSkill.CharacterResources
 {
-    public partial class CharacterResourcesHandler : IDisposable, ICharacterResourcesHandler
+    public partial class CharacterResourcesHandler : NetworkBehaviour, IDisposable, ICharacterResourcesHandler
     {
         private Dictionary<Type, ICharacterResource> resources = new();
 
@@ -16,7 +17,7 @@ namespace KillSkill.CharacterResources
         public IReadOnlyDictionary<Type, ICharacterResource> Current => resources;
 
 
-        public void Update(float deltaTime)
+        public void UpdateHandler(float deltaTime)
         {
             foreach (var resource in updatableResources.Values.ToList())
                 resource.OnUpdate(deltaTime);

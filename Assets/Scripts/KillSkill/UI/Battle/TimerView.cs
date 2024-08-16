@@ -13,7 +13,7 @@ namespace KillSkill.UI.Game
         [SerializeField] private TextMeshProUGUI timerText;
 
         private float currentSeconds = 0;
-        private bool pause = false;
+        private bool pause = true;
 
         public float CurrentSeconds => currentSeconds;
 

@@ -1,5 +1,6 @@
 ﻿using Arr.ModulesSystem;
 using KillSkill.Modules.Battle;
+using KillSkill.Modules.Network;
 using KillSkill.UI.Battle.Modules;
 
 namespace KillSkill.Modules.Groups
@@ -16,7 +17,10 @@ namespace KillSkill.Modules.Groups
             new ResultViewModule(),
             new PauseViewModule(),
             new TimerViewModule(),
-            new GameSkillIndicatorsViewModule()
+            new GameSkillIndicatorsViewModule(),
+            
+            //MUST BE AT THE END
+            new CommitModule()
         };
     }
 }

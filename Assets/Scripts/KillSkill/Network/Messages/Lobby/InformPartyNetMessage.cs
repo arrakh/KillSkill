@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using KillSkill.SessionData.Implementations;
 using KillSkill.Utility;
 using Unity.Netcode;
 
-namespace KillSkill.Network.Messages
+namespace KillSkill.Network.Messages.Lobby
 {
     public class InformPartyNetMessage : INetCodeMessage
     {

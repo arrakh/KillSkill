@@ -4,20 +4,21 @@ using KillSkill.Characters;
 using KillSkill.Utility;
 using Skills;
 using StatusEffects;
+using Unity.Netcode;
 
 namespace KillSkill.Skills
 {
-    public partial class CharacterSkillHandler : IDisposable, ICharacterSkillHandler
+    public partial class CharacterSkillHandler : NetworkBehaviour, IDisposable, ICharacterSkillHandler
     {
-        public CharacterSkillHandler(Skill[] skills, IStatusEffectsHandler statusEffects, ICharacter character)
+        public void Initialize(Type[] ownerSkills, ICharacter owner)
         {
-            this.skills = skills;
-            this.statusEffects = statusEffects;
-            this.character = character;
+            skills = GenerateSkills(ownerSkills);
+            statusEffects = owner.StatusEffects;
+            character = owner;
             
-            for (var index = 0; index < skills.Length; index++)
+            for (var index = 0; index < ownerSkills.Length; index++)
             {
-                var skill = skills[index];
+                var skill = ownerSkills[index];
                 if (skill.IsEmpty()) continue;
 
                 var type = skill.GetType();
@@ -25,6 +26,24 @@ namespace KillSkill.Skills
 
                 DetectAndRegisterOnExecutedCallbacks(type);
             }
+        }
+
+        private Skill[] GenerateSkills(Type[] ownerSkills)
+        {
+            var activatedSkills = new Skill[ownerSkills.Length];
+            
+            for (var i = 0; i < ownerSkills.Length; i++)
+            {
+                var skill = ownerSkills[i];
+                if (skill.IsEmpty()) activatedSkills[i] = null;
+                else
+                {
+                    var instance = Activator.CreateInstance(skill) as Skill;
+                    activatedSkills[i] = instance;
+                }
+            }
+
+            return activatedSkills;
         }
 
         public event Action<Skill> OnAnySkillExecuted; 
@@ -47,7 +66,7 @@ namespace KillSkill.Skills
                 if (skill != null) skill.OnInitialize(character);
         }
 
-        public void Update(float deltaTime)
+        public void UpdateHandler(float deltaTime)
         {
             globalCd.Update(deltaTime);
 

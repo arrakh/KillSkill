@@ -1,6 +1,8 @@
 ﻿using Arr.EventsSystem;
 using Arr.ViewModuleSystem;
 using KillSkill.Modules.Battle.Events;
+using KillSkill.Modules.Network.Events;
+using KillSkill.Network.Messages.Battle;
 using KillSkill.UI.Battle.Events;
 using KillSkill.UI.Game;
 

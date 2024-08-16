@@ -4,6 +4,7 @@ using Arr.EventsSystem;
 using KillSkill.Modules.Network.Events;
 using KillSkill.Network;
 using KillSkill.Network.Messages;
+using KillSkill.Network.Messages.Lobby;
 using KillSkill.SessionData.Events;
 using Unity.Netcode;
 using UnityEngine;
@@ -33,6 +34,8 @@ namespace KillSkill.SessionData.Implementations
             party = newParty;
             GlobalEvents.Fire(new SessionUpdatedEvent<NetworkPartySessionData>(this));
         }
+
+        public bool TryGet(ulong clientId, out LobbyUser user) => party.TryGetValue(clientId, out user);
 
         public void Clear() => party.Clear();
 

@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using KillSkill.Characters;
+using Unity.Netcode;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace KillSkill.Minions
 {
-    public class CharacterMinionHandler : ICharacterMinionHandler
+    public class CharacterMinionHandler : NetworkBehaviour, ICharacterMinionHandler
     {
         private ICharacterFactory characterFactory;
         private ICharacter character;
@@ -25,10 +29,10 @@ namespace KillSkill.Minions
                 minion.Kill();
             minions.Clear();
         }
-        
-        public ICharacter Add(Vector3 position, ICharacterData data, bool parentToOwner = false)
+
+        public ICharacter Add<T>(Vector3 position, bool parentToOwner = false) where T : INpcDefinition
         {
-            var minion = characterFactory.CreateNpc(data);
+            var minion = characterFactory.CreateNpc<T>();
             
             //should be impossible
             if (minions.Remove(minion.Uid, out var existing)) Object.Destroy(existing.GameObject);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Trees;
 using FlipBooks;
 using KillSkill.Characters.Implementations.ResourceRewards;
@@ -9,10 +10,11 @@ using KillSkill.Skills.Implementations.Enemy.Mushroom;
 using KillSkill.Skills.Implementations.Fighter;
 using KillSkill.Utility.BehaviourTree;
 using Skills;
+using Unity.Netcode;
 
 namespace KillSkill.Characters.Implementations.EnemyData
 {
-    public class MushroomMan : IEnemyData, ICataloguedEnemy
+    public class MushroomMan : INpcDefinition, ICataloguedEnemy
     {
         public string Id => "mushroom-man";
 
@@ -32,10 +34,10 @@ namespace KillSkill.Characters.Implementations.EnemyData
             new TimeRangeWinReward(GameResources.MEDALS, amount: 1, 20),
         };
 
-        public Skill[] Skills => new Skill[]
+        public Type[] SkillTypes => new Type[]
         {
-            new SlashSkill(),
-            new SporePopSkill(),
+            typeof(SlashSkill),
+            typeof(SporePopSkill),
         };
 
         public BehaviorTreeBuilder OnBuildBehaviourTree(ICharacter character, BehaviorTreeBuilder builder)

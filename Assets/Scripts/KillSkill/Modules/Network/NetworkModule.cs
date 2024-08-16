@@ -97,7 +97,7 @@ namespace KillSkill.Modules.Network
             var eventType = typeof(NetMessageEvent<>).MakeGenericType(type);
             var netEvent = Activator.CreateInstance(eventType, senderId, instance);
             
-            Debug.Log($"[NM] WILL FIRE UNSAFE WITH TYPE {eventType.Name}");
+            Debug.Log($"[NM] WILL FIRE UNSAFE WITH MESSAGE {type.Name}");
             
             GlobalEvents.FireUnsafe(eventType, netEvent);
         }

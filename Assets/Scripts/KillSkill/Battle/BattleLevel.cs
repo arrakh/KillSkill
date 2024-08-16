@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 namespace KillSkill.Battle
 {
-    public class BattleLevel : MonoBehaviour
+    public class BattleLevel : NetworkBehaviour
     {
-        [SerializeField] private Transform playerSpawnPoint, enemySpawnPoint;
+        [SerializeField] private Transform[] playerSpawnPoints;
+        [SerializeField] private Transform enemySpawnPoint;
 
-        public Transform PlayerSpawnPoint => playerSpawnPoint;
+        public Transform[] PlayerSpawnPoints => playerSpawnPoints;
         public Transform EnemySpawnPoint => enemySpawnPoint;
     }
 }
