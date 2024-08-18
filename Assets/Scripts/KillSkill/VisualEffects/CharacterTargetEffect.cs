@@ -1,25 +1,33 @@
-﻿using System;
-using AllIn1SpriteShader;
+﻿using KillSkill.Characters;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace VFX
+namespace KillSkill.VisualEffects
 {
     public class CharacterTargetEffect : MonoBehaviour
     {
+        [SerializeField] private Character owner;
         [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private Image mainBarGlow;
+        [SerializeField] private Sprite redGlow, greenGlow, yellowGlow;
+        private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
-        public void SetHighlight(bool on)
-        {
-            return;
-            if (on) spriteRenderer.material.EnableKeyword("HOLOGRAM_ON");
-            else spriteRenderer.material.DisableKeyword("HOLOGRAM_ON");
-        }
+        public bool IsLockedOn => isLockedOn;
+        public bool IsHighlighted => isHighlighted;
+        private bool isHighlighted = false;
+        private bool isLockedOn = false;
 
-        public void SetLockOn(bool on)
+        public void SetStatus(bool lockedOn, bool highlighted )
         {
-            return;
-            if (on) spriteRenderer.material.EnableKeyword("TWISTUV_ON");
-            else spriteRenderer.material.DisableKeyword("TWISTUV_ON");
+            isLockedOn = lockedOn;
+            isHighlighted = highlighted;
+
+            var characterColor = owner.IsEnemy ? Color.red : Color.green;
+            var outlineColor = isHighlighted ? Color.yellow : isLockedOn ? characterColor : Color.black;
+            spriteRenderer.material.SetColor(OutlineColor, outlineColor);
+    
+            mainBarGlow.gameObject.SetActive(lockedOn);
+            if (lockedOn) mainBarGlow.sprite = owner.IsEnemy ? redGlow : greenGlow;
         }
     }
 }

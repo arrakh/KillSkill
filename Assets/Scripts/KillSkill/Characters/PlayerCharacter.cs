@@ -7,20 +7,22 @@ using KillSkill.SessionData.Implementations;
 using KillSkill.SettingsData;
 using KillSkill.Skills;
 using KillSkill.Utility;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using VisualEffects;
 
 namespace KillSkill.Characters
 {
     public class PlayerCharacter : Character
     {
-        public UnityEvent<int> OnSkillIndexPressed;
+        public UnityEvent<int> OnLocalSkillIndexPressed;
 
-        public void ServerInitialize(SkillsSessionData skillsSession, ICharacterFactory characterFactory)
+        public void ServerInitialize(uint characterId, SkillsSessionData skillsSession, ICharacterFactory factory)
         {
             var data = new CharacterData("mockup-player", 400, skillsSession.Loadout.ToArray());
-            ServerInitialize(data, characterFactory);
+            ServerInitialize(characterId, false, data, factory);
         }
 
         protected override void OnClientInitialized()
@@ -40,7 +42,8 @@ namespace KillSkill.Characters
                 if (key == KeyCode.None) continue;
                 if (Input.GetKeyDown(key))
                 {
-                    OnSkillIndexPressed?.Invoke(i);
+                    Debug.Log($"WILL EXECUTE IN SERVER SKILL INDEX {i}");
+                    OnLocalSkillIndexPressed?.Invoke(i);
                     Skills.Execute(i, Target);
                 }
             }

@@ -10,8 +10,10 @@ namespace KillSkill.Modules.Groups
         public override IModule[] Modules => new IModule[]
         {
             new BattleControllerModule(),
-            new BattleFactoryModule(),
+            new BattleRegistryModule(),
             new PostProcessModule(),
+            
+            new CharacterTargetingModule(),
 
             new CountdownViewModule(),
             new ResultViewModule(),

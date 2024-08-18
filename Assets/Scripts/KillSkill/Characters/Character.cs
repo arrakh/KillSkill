@@ -21,7 +21,7 @@ namespace KillSkill.Characters
     public class Character : NetworkBehaviour, ICharacter
     {
         [SerializeField] private CharacterAnimator animator;
-        [SerializeField] protected bool battlePause = false;
+        [SerializeField] protected NetworkVariable<bool> battlePause = new ();
         [SerializeField] protected CharacterResourcesDisplay resourcesDisplay;
 
         [SerializeField] private StatusEffectsHandler statusEffects;
@@ -29,15 +29,22 @@ namespace KillSkill.Characters
         [SerializeField] private CharacterSkillHandler skillHandler;
         [SerializeField] private CharacterMinionHandler minionsHandler;
 
-        private ICharacterFactory characterFactory;
+        private ICharacterRegistry characterRegistry;
         private IVisualEffectsHandler visualEffects;
         private PersistentEventTemplate<ICharacter> onInitialize = new();
+        private PersistentEventTemplate<ICharacter> onTargetUpdated = new();
 
-        protected NetworkVariable<bool> isAlive;
+        private uint characterId;
+
+        private bool isEnemy = false;
+
+        protected NetworkVariable<bool> isAlive = new();
 
         public bool IsAlive => isAlive.Value;
 
-        public int Uid => gameObject.GetInstanceID();
+        public uint Id => characterId;
+
+        public bool IsEnemy => isEnemy;
 
         public event Action<ICharacter> onDeath;
         
@@ -52,9 +59,10 @@ namespace KillSkill.Characters
         
         public IVisualEffectsHandler VisualEffects => visualEffects;
         public ICharacterMinionHandler Minions => minionsHandler;
-        public ICharacterFactory CharacterFactory => characterFactory;
+        public ICharacterRegistry Registry => characterRegistry;
         
         public PersistentEventTemplate<ICharacter> OnInitialize => onInitialize;
+        public PersistentEventTemplate<ICharacter> OnTargetUpdated => onTargetUpdated;
 
         public Vector3 Position
         {
@@ -70,22 +78,27 @@ namespace KillSkill.Characters
         public GameObject GameObject => gameObject;
         public virtual Type MainResource => typeof(Health);
 
-        public void ServerInitialize(CharacterData characterData, ICharacterFactory factory)
+        public void ServerInitialize(uint id, bool enemy, CharacterData characterData, ICharacterFactory factory)
         {
-            characterFactory = factory;
             minionsHandler.Initialize(factory, this);
-            
-            ClientInitializeRpc(characterData);
+            isAlive.Value = true;
+
+            ClientInitializeRpc(id, enemy, characterData);
         }
 
         [Rpc(SendTo.Everyone)]
-        private void ClientInitializeRpc(CharacterData characterData)
+        private void ClientInitializeRpc(uint id, bool enemy, CharacterData characterData)
         {
+            characterId = id;
+            characterRegistry = ICharacterRegistry.GetHandle();
+            isEnemy = enemy;
+
+            characterRegistry.TryRegister(id, this);
+
             Debug.Log($"TEST CLIENT CHARACTER DATA ID {characterData.Id}");
             
             visualEffects = Vfx.GetHandler();
 
-            isAlive.Value = true;
             statusEffects.Initialize(this);
 
             skillHandler.Initialize(characterData.SkillTypes, this);
@@ -107,19 +120,30 @@ namespace KillSkill.Characters
 
         protected virtual void OnClientInitialized(){}
 
-        public void SetBattlePaused(bool paused) => battlePause = paused;
+        public void SetBattlePaused(bool paused) => battlePause.Value = paused;
 
-        public void SetTarget(ICharacter newTarget) => Target = newTarget;
+        public void SetTarget(ICharacter newTarget)
+        {
+            ServerSetTargetRPC(newTarget.Id);
+        }
+
+        [Rpc(SendTo.Server)]
+        private void ServerSetTargetRPC(uint newTargetId)
+        {
+            ClientSetTargetRpc(newTargetId);
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void ClientSetTargetRpc(uint newTargetId)
+        {
+            if (!Registry.TryGet(newTargetId, out var newTarget)) return;
+            Target = newTarget;
+            onTargetUpdated?.Invoke(Target);
+        }
 
         private void Update()
         {
-            if (battlePause || !IsAlive) return;
-
-            if (!IsOwner)
-            {
-                OnUpdate();
-                return;
-            }
+            if (battlePause.Value || !IsAlive) return;
             
             var time = Time.deltaTime;
             statusEffects.UpdateHandler(time);

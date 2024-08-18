@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arr;
+using Arr.EventsSystem;
 using CharacterResources;
 using Unity.Netcode;
 
@@ -32,6 +33,8 @@ namespace KillSkill.CharacterResources
             recentlyUnassigned.Remove(type);
 
             resources[type] = newResource;
+            
+            GlobalEvents.RegisterMultipleUnsafe(newResource);
 
             if (newResource is IUpdatableCharacterResource updatable) 
                 updatableResources[type] = updatable;
@@ -45,8 +48,12 @@ namespace KillSkill.CharacterResources
         public void Unassign<T>() where T : ICharacterResource
         {
             var type = typeof(T);
-            bool success = resources.Remove(type);
-            if (!success) return;
+            
+            if (!resources.TryGetValue(type, out var instance)) return;
+            GlobalEvents.UnregisterMultipleUnsafe(instance);
+
+            resources.Remove(type);
+            
             recentlyUnassigned.Add(type);
             onAnyResourceUnassigned.Invoke(type);
             updatableResources.Remove(type);

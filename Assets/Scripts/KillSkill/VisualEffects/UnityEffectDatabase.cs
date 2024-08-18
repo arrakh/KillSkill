@@ -10,6 +10,7 @@ namespace VisualEffects
         public string id;
         public GameObject prefab;
         public int initialSize;
+        public int maxSize;
         public float timeoutDuration;
         public string Key => id;
     }

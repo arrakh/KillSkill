@@ -30,7 +30,7 @@ namespace KillSkill.Modules.Battle
     {
         [InjectModule] private ResultViewModule resultView;
         [InjectModule] private CountdownViewModule countdown;
-        [InjectModule] private BattleFactoryModule battleFactory;
+        [InjectModule] private BattleRegistryModule battleRegistry;
         [InjectModule] private CameraControlModule cameraControl;
         [InjectModule] private CommitModule commitModule;
 
@@ -89,9 +89,9 @@ namespace KillSkill.Modules.Battle
             
             var battleSession = Session.GetData<BattleSessionData>();
             var data = battleSession.StartData;
-            enemy = battleFactory.CreateNpc(data.npcDefinition);
+            enemy = battleRegistry.CreateNpc(data.npcDefinition);
 
-            level = battleFactory.CreateLevel(data.levelId);
+            level = battleRegistry.CreateLevel(data.levelId);
             
             enemy.Position = level.EnemySpawnPoint.position;
             enemy.onDeath += OnEnemyDeath;
@@ -112,7 +112,7 @@ namespace KillSkill.Modules.Battle
 
                 Debug.Log($"[BCM] SPAWNING ID {id}".LogColor("red"));
                 
-                var player = battleFactory.CreatePlayer(user.Skills, id);
+                var player = battleRegistry.CreatePlayer(user.Skills, id);
                 
                 player.Position = level.PlayerSpawnPoints[i].position;
                 player.SetTarget(enemy);
@@ -149,7 +149,7 @@ namespace KillSkill.Modules.Battle
                 player.SetBattlePaused(pause);
             
             enemy.SetBattlePaused(pause);
-            GlobalEvents.Fire(new BattlePauseEvent(pause));
+            Net.Server.Broadcast(new BattlePauseMessage(pause));
         }
 
         public void OnEndGame()

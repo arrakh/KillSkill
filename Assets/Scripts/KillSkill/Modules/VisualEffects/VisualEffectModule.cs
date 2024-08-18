@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Arr.EventsSystem;
 using Arr.ModulesSystem;
 using KillSkill.Modules.VisualEffects.Events;
+using KillSkill.VisualEffects;
 using UnityEngine;
 using VisualEffects;
 

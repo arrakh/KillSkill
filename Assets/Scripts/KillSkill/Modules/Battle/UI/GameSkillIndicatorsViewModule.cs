@@ -23,7 +23,7 @@ namespace KillSkill.UI.Battle.Modules
             view.Display(character);
             if (character is not PlayerCharacter pc)
                 throw new Exception("Initialized character is NOT player character?");
-            pc.OnSkillIndexPressed.AddListener(view.AnimateSkill);
+            pc.OnLocalSkillIndexPressed.AddListener(view.AnimateSkill);
         }
     }
 }

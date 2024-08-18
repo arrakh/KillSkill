@@ -11,13 +11,13 @@ namespace KillSkill.Minions
 {
     public class CharacterMinionHandler : NetworkBehaviour, ICharacterMinionHandler
     {
-        private ICharacterFactory characterFactory;
+        private ICharacterFactory factory;
         private ICharacter character;
-        private Dictionary<int, ICharacter> minions = new();
+        private Dictionary<uint, ICharacter> minions = new();
 
-        public void Initialize(ICharacterFactory factory, ICharacter ownerChar)
+        public void Initialize(ICharacterFactory registry, ICharacter ownerChar)
         {
-            characterFactory = factory;
+            factory = registry;
             character = ownerChar;
             character.onDeath += OnCharacterDeath;
         }
@@ -32,16 +32,16 @@ namespace KillSkill.Minions
 
         public ICharacter Add<T>(Vector3 position, bool parentToOwner = false) where T : INpcDefinition
         {
-            var minion = characterFactory.CreateNpc<T>();
+            var minion = factory.CreateNpc<T>();
             
             //should be impossible
-            if (minions.Remove(minion.Uid, out var existing)) Object.Destroy(existing.GameObject);
+            if (minions.Remove(minion.Id, out var existing)) Object.Destroy(existing.GameObject);
             
             if (parentToOwner) minion.GameObject.transform.SetParent(character.GameObject.transform);
 
             minion.GameObject.transform.position = position;
 
-            minions[minion.Uid] = minion;
+            minions[minion.Id] = minion;
 
             minion.onDeath += OnMinionDeath;
 
@@ -51,7 +51,7 @@ namespace KillSkill.Minions
         private void OnMinionDeath(ICharacter minion)
         {
             minion.onDeath -= OnMinionDeath;
-            minions.Remove(minion.Uid);
+            minions.Remove(minion.Id);
         }
 
         public ICollection<ICharacter> GetAll() => minions.Values;

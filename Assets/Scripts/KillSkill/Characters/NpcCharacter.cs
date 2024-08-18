@@ -1,5 +1,7 @@
 ﻿using CleverCrow.Fluid.BTs.Trees;
+using KillSkill.Network;
 using KillSkill.Skills;
+using Unity.Netcode;
 using UnityEngine;
 using VisualEffects;
 
@@ -9,26 +11,42 @@ namespace KillSkill.Characters
     {
         [SerializeField] private BehaviorTree aiTree;
 
-        public void ServerInitialize(INpcDefinition definition, ICharacterFactory factory)
+        private INpcDefinition npcDefinition;
+
+        private bool treeInitialized = false;
+        
+        public void ServerInitialize(uint characterId, bool isEnemy, INpcDefinition definition, ICharacterFactory factory)
         {
             var characterData = new CharacterData(definition.Id, definition.Health, definition.SkillTypes);
+
+            npcDefinition = definition;
             
-            var builder = definition.OnBuildBehaviourTree(this, new BehaviorTreeBuilder(gameObject));
-            aiTree = builder.Build();
+            base.ServerInitialize(characterId, isEnemy, characterData, factory);
             
-            ServerInitialize(characterData, factory);
         }
+
+        protected override void OnClientInitialized()
+        {
+            base.OnClientInitialized();
+            var builder = npcDefinition.OnBuildBehaviourTree(this, new BehaviorTreeBuilder(gameObject));
+            aiTree = builder.Build();
+            Debug.Log("NPC INITIALIZED");
+            treeInitialized = true;
+        }
+
 
         protected override void OnUpdate()
         {
             base.OnUpdate();
             if (!IsServer) return;
-            if (battlePause) return;
+            if (!treeInitialized) return;
             aiTree.Tick();
         }
 
         protected override void OnDeath()
         {
+            if (!Net.IsServer()) return;
+            GetComponent<NetworkObject>().Despawn();
             Destroy(gameObject);
         }
     }

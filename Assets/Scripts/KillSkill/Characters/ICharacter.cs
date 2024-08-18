@@ -20,7 +20,7 @@ namespace KillSkill.Characters
     {
         public bool IsAlive { get; }
 
-        public int Uid { get; }
+        public uint Id { get; }
 
         public event Action<ICharacter> onDeath;
 
@@ -35,8 +35,10 @@ namespace KillSkill.Characters
         
         public IVisualEffectsHandler VisualEffects { get; }
         public ICharacterMinionHandler Minions { get; }
+        public ICharacterRegistry Registry { get; }
 
         public PersistentEventTemplate<ICharacter> OnInitialize { get; }
+        public PersistentEventTemplate<ICharacter> OnTargetUpdated { get; }
         
         public Vector3 Position { get; set; }
         
