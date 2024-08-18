@@ -1,4 +1,5 @@
-﻿using KillSkill.Characters;
+﻿using DG.Tweening;
+using KillSkill.Characters;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,8 @@ namespace KillSkill.VisualEffects
         private bool isHighlighted = false;
         private bool isLockedOn = false;
 
+        private Tween glowScaleTween;
+
         public void SetStatus(bool lockedOn, bool highlighted )
         {
             isLockedOn = lockedOn;
@@ -27,7 +30,19 @@ namespace KillSkill.VisualEffects
             spriteRenderer.material.SetColor(OutlineColor, outlineColor);
     
             mainBarGlow.gameObject.SetActive(lockedOn);
-            if (lockedOn) mainBarGlow.sprite = owner.IsEnemy ? redGlow : greenGlow;
+            
+            if (lockedOn)
+            {
+                mainBarGlow.sprite = owner.IsEnemy ? redGlow : greenGlow;
+            }
+        }
+
+        public void AnimateGlow()
+        {
+            if (glowScaleTween != null) DOTween.Kill(glowScaleTween);
+            
+            mainBarGlow.transform.localScale = new Vector3(1.1f, 1.5f, 1f);
+            glowScaleTween = mainBarGlow.transform.DOScale(1f, 0.33f).SetEase(Ease.OutCirc);
         }
     }
 }

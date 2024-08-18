@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Arr.ModulesSystem;
 using Arr.ScriptableDatabases;
@@ -60,6 +61,12 @@ namespace KillSkill.Modules.Battle
             //todo: better implementation of this. shouldn't create an instance of a definition everytime...
             var definition = Activator.CreateInstance<T>();
             return CreateNpc(definition, isEnemy);
+        }
+
+        public ICharacter[] GetAll(Func<ICharacter, bool> filter = null)
+        {
+            return filter == null ? characterRegistry.Values.ToArray() 
+                : characterRegistry.Values.Where(filter).ToArray();
         }
 
         public bool TryGet(uint characterId, out ICharacter character)

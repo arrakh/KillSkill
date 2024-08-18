@@ -19,6 +19,7 @@ namespace KillSkill.Characters
     public interface ICharacter 
     {
         public bool IsAlive { get; }
+        public bool IsEnemy { get; }
 
         public uint Id { get; }
 

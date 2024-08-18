@@ -124,7 +124,7 @@ namespace KillSkill.Characters
 
         public void SetTarget(ICharacter newTarget)
         {
-            ServerSetTargetRPC(newTarget.Id);
+            ServerSetTargetRPC(newTarget?.Id ?? uint.MaxValue);
         }
 
         [Rpc(SendTo.Server)]
@@ -136,6 +136,13 @@ namespace KillSkill.Characters
         [Rpc(SendTo.ClientsAndHost)]
         private void ClientSetTargetRpc(uint newTargetId)
         {
+            if (newTargetId.Equals(uint.MaxValue))
+            {
+                Target = null;
+                onTargetUpdated?.Invoke(null);
+                return;
+            }
+            
             if (!Registry.TryGet(newTargetId, out var newTarget)) return;
             Target = newTarget;
             onTargetUpdated?.Invoke(Target);

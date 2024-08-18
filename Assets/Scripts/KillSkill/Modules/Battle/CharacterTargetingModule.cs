@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Arr.EventsSystem;
 using Arr.ModulesSystem;
 using Arr.Utils;
@@ -47,11 +48,49 @@ namespace KillSkill.Modules.Battle
             if (lastHighlight == null) return;
             if (lastTarget == lastHighlight) return;
             if (lastTargetEffect) lastTargetEffect.SetStatus(false, lastTargetEffect.IsHighlighted);
-            lastTarget = lastHighlight;
-            lastTargetEffect = lastHighlightEffect;
-            lastTargetEffect.SetStatus(true, lastTargetEffect.IsHighlighted);
+            
+            SetTarget(lastHighlight);
+        }
 
-            localCharacter.SetTarget(lastTarget);
+        private void SetTarget(ICharacter newTarget)
+        {
+            if (newTarget == lastTarget) return;
+            
+            if (lastTarget != null)
+            {
+                lastTargetEffect.SetStatus(false, lastTargetEffect.IsHighlighted);
+                lastTarget.onDeath -= OnTargetDeath;
+            }
+            
+            if (newTarget == null)
+            {
+                lastTarget = null;
+                lastTargetEffect = null;
+                localCharacter.SetTarget(null);
+                return;
+            }
+
+            lastTarget = newTarget;
+            lastTarget.onDeath += OnTargetDeath;
+
+            lastTargetEffect = newTarget.GameObject.GetComponent<CharacterTargetEffect>();
+            lastTargetEffect.SetStatus(true, lastTargetEffect.IsHighlighted);
+            lastTargetEffect.AnimateGlow();
+
+            localCharacter.SetTarget(lastTarget); 
+        }
+
+        private void OnTargetDeath(ICharacter character)
+        {
+            var enemies = localCharacter.Registry.GetAll(x => x.IsAlive && x.IsEnemy);
+            if (enemies.Length == 0)
+            {
+                SetTarget(null);
+                return;
+            }
+
+            var randomEnemy = enemies.OrderBy(x => Random.Range(0, enemies.Length)).First();
+            SetTarget(randomEnemy);
         }
 
         private void DetectHighlight()
@@ -92,12 +131,7 @@ namespace KillSkill.Modules.Battle
 
         private void OnLocalTargetUpdated(ICharacter target)
         {
-            if (target == lastTarget) return;
-            if (lastTarget != null) lastTargetEffect.SetStatus(false, lastTargetEffect.IsHighlighted);
-            if (!target.GameObject.TryGetComponent(out lastTargetEffect)) return;
-
-            lastTarget = target;
-            lastTargetEffect.SetStatus(true, lastTargetEffect.IsHighlighted);
+            SetTarget(target);
         }
     }
 }
