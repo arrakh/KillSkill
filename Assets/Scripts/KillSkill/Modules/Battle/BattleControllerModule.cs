@@ -26,7 +26,8 @@ using Object = UnityEngine.Object;
 namespace KillSkill.Modules.Battle
 {
     public class BattleControllerModule : BaseModule,
-        IEventListener<NetMessageEvent<BattleStartMessage>>
+        IEventListener<NetMessageEvent<BattleStartNetMessage>>,
+        IEventListener<NetMessageEvent<BattleEndNetMessage>>
     {
         [InjectModule] private ResultViewModule resultView;
         [InjectModule] private CountdownViewModule countdown;
@@ -39,13 +40,11 @@ namespace KillSkill.Modules.Battle
         private Character enemy;
         private BattleLevel level;
 
-        private TaskCompletionSource<BattleStartMessage> battleStartTsc = new();
+        private TaskCompletionSource<BattleStartNetMessage> battleStartTsc = new();
 
         private bool hasPlayerWon, isBattlePaused;
 
         public bool IsBattlePaused => isBattlePaused;
-
-        private BattleResultData result;
 
         protected override Task OnLoad()
         {
@@ -85,7 +84,8 @@ namespace KillSkill.Modules.Battle
         {
             var committedClients = await commitModule.CommittedClientsTsc.Task;
             
-            Debug.Log($"[BCM] INITIALIZING SERVER WITH {committedClients.Length} COMMITTED CLIENT IDS: {String.Join(", ", committedClients)}".LogColor("yellow"));
+            Debug.Log($"[BCM] INITIALIZING SERVER WITH {committedClients.Length} COMMITTED CLIENT IDS: " +
+                      $"{String.Join(", ", committedClients)}".LogColor("yellow"));
             
             var battleSession = Session.GetData<BattleSessionData>();
             var data = battleSession.StartData;
@@ -94,7 +94,7 @@ namespace KillSkill.Modules.Battle
             level = battleRegistry.CreateLevel(data.levelId);
             
             enemy.Position = level.EnemySpawnPoint.position;
-            enemy.onDeath += OnEnemyDeath;
+            enemy.onDeath += ServerOnEnemyDeath;
             
             var cam = cameraControl.Controller;
             cam.AddTargetToGroup(enemy.transform);
@@ -124,20 +124,20 @@ namespace KillSkill.Modules.Battle
             }
             
             enemy.SetTarget(players.First().Value);
-            Net.Server.Broadcast(new BattleStartMessage());
+            Net.Server.Broadcast(new BattleStartNetMessage());
         }
 
-        private void OnEnemyDeath(ICharacter character)
+        private void ServerOnEnemyDeath(ICharacter character)
         {
-            enemy.onDeath -= OnEnemyDeath;
-            OnEndGame();
+            enemy.onDeath -= ServerOnEnemyDeath;
+            ServerOnEndGame();
         }
 
         private void OnPlayerDeath(ICharacter character)
         {
             character.onDeath -= OnPlayerDeath;
             alivePlayers.Remove(character);
-            if (alivePlayers.Count == 0) OnEndGame();
+            if (alivePlayers.Count == 0) ServerOnEndGame();
         }
 
         public void SetBattlePause(bool pause)
@@ -149,10 +149,10 @@ namespace KillSkill.Modules.Battle
                 player.SetBattlePaused(pause);
             
             enemy.SetBattlePaused(pause);
-            Net.Server.Broadcast(new BattlePauseMessage(pause));
+            Net.Server.Broadcast(new BattlePauseNetMessage(pause));
         }
 
-        public void OnEndGame()
+        public void ServerOnEndGame()
         {
             SetBattlePause(true);
 
@@ -161,24 +161,24 @@ namespace KillSkill.Modules.Battle
             var battleSession = Session.GetData<BattleSessionData>();
 
             var battleTimeSeconds = GlobalEvents.Query<BattleTimerQuery>().timeInSeconds;
+
+            var characters = new List<ICharacter>();
+            characters.AddRange(players.Cast<ICharacter>());
+            characters.Add(enemy);
             
-            //HACKY HACK
-            var state = new BattleResultState(hasPlayerWon, players.First().Value.Resources.Current, enemy.Resources.Current, battleTimeSeconds);
+            var state = new BattleResultState(hasPlayerWon, battleTimeSeconds, characters);
             
             var data = battleSession.StartData.npcDefinition;
             var rewards = CalculateReward(data, state);
 
-            result = new(hasPlayerWon, rewards);
+            var milestones = new string[]
+            {
+                Milestones.HasDefeated(data.Id)
+            };
 
-            var resourcesSession = Session.GetData<ResourcesSessionData>();
-            
-            foreach (var resource in rewards)
-                resourcesSession.AddResource(resource.resourceId, resource.resourceAmount);
-            
-            var milestonesSession = Session.GetData<MilestonesSessionData>();
-            milestonesSession.TryAdd(Milestones.HasDefeated(data.Id));
+            var result = new BattleResultData(hasPlayerWon, rewards, milestones);
 
-            CoroutineUtility.Start(EndingSequence());
+            Net.Server.Broadcast(new BattleEndNetMessage());
         }
 
         private List<BattleReward> CalculateReward(INpcDefinition data, BattleResultState state)
@@ -193,7 +193,22 @@ namespace KillSkill.Modules.Battle
             return list;
         }
 
-        private IEnumerator EndingSequence()
+        private void ClientOnEndGame(BattleResultData data)
+        {
+            var resourcesSession = Session.GetData<ResourcesSessionData>();
+            
+            foreach (var resource in data.Rewards)
+                resourcesSession.AddResource(resource.ResourceId, resource.ResourceAmount);
+            
+            var milestonesSession = Session.GetData<MilestonesSessionData>();
+
+            foreach (var milestone in data.Milestones)
+                milestonesSession.TryAdd(milestone);
+
+            CoroutineUtility.Start(EndingSequence(data));
+        }
+
+        private IEnumerator EndingSequence(BattleResultData data)
         {
             Time.timeScale = 0.2f;
 
@@ -209,13 +224,19 @@ namespace KillSkill.Modules.Battle
             }
             Time.timeScale = 1f;
             
-            resultView.Display(result);
+            resultView.Display(data);
         }
 
-        public void OnEvent(NetMessageEvent<BattleStartMessage> data)
+        public void OnEvent(NetMessageEvent<BattleStartNetMessage> data)
         {
             Debug.Log("[BCM] GOT BATTLE START MESSAGE");
             battleStartTsc.SetResult(data.message);
+        }
+
+        public void OnEvent(NetMessageEvent<BattleEndNetMessage> data)
+        {
+            Debug.Log("[BCM] GOT BATTLE END MESSAGE");
+            ClientOnEndGame(data.message.Result);
         }
     }
 }

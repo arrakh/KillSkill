@@ -10,7 +10,7 @@ namespace KillSkill.UI.Battle.Modules
 {
     public class TimerViewModule : ViewModule<TimerView>, 
         IQueryProvider<BattleTimerQuery>,
-        IEventListener<NetMessageEvent<BattlePauseMessage>>
+        IEventListener<NetMessageEvent<BattlePauseNetMessage>>
     {
         
         
@@ -20,7 +20,7 @@ namespace KillSkill.UI.Battle.Modules
             return new BattleTimerQuery() {timeInSeconds = view.CurrentSeconds};
         }
 
-        public void OnEvent(NetMessageEvent<BattlePauseMessage> message)
+        public void OnEvent(NetMessageEvent<BattlePauseNetMessage> message)
         {
             view.SetPause(message.message.IsPaused);
         }

@@ -2,7 +2,7 @@
 
 namespace KillSkill.Network.Messages.Battle
 {
-    public class BattleStartMessage : INetCodeMessage
+    public class BattleStartNetMessage : INetCodeMessage
     {
         public void Serialize(FastBufferWriter writer)
         {

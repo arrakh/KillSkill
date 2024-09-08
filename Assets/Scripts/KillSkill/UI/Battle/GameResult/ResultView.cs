@@ -42,14 +42,14 @@ namespace KillSkill.UI.Battle.GameResult
         {
             InAnimation();
 
-            resultText.text = result.playerWon ? "Victory" : "Defeat";
+            resultText.text = result.PlayerWon ? "Victory" : "Defeat";
 
-            foreach (var reward in result.rewards)
+            foreach (var reward in result.Rewards)
             {
                 var element = Instantiate(rewardPrefab, rewardParent)
                     .GetComponent<GameResultRewardElement>();
                     
-                element.Display(reward.resultText, reward.resourceId, reward.resourceAmount);
+                element.Display(reward.ResultText, reward.ResourceId, reward.ResourceAmount);
             }
         }
 

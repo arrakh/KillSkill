@@ -2,17 +2,17 @@
 
 namespace KillSkill.Network.Messages.Battle
 {
-    public class BattlePauseMessage : INetCodeMessage
+    public class BattlePauseNetMessage : INetCodeMessage
     {
         private bool isPaused;
 
-        public BattlePauseMessage()
+        public BattlePauseNetMessage()
         {
         }
 
         public bool IsPaused => isPaused;
 
-        public BattlePauseMessage(bool isPaused)
+        public BattlePauseNetMessage(bool isPaused)
         {
             this.isPaused = isPaused;
         }

@@ -17,7 +17,7 @@ namespace KillSkill.Modules.Groups
 
             new CountdownViewModule(),
             new ResultViewModule(),
-            new PauseViewModule(),
+            //new PauseViewModule(),
             new TimerViewModule(),
             new GameSkillIndicatorsViewModule(),
             
