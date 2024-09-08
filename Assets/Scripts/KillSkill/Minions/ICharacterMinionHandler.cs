@@ -6,8 +6,8 @@ namespace KillSkill.Minions
 {
     public interface ICharacterMinionHandler
     {
-        public void Initialize(ICharacterFactory factory, ICharacter owner);
-        public ICharacter Add(Vector3 position, ICharacterData data, bool parentToOwner = false);
+        public void Initialize(ICharacterFactory registry, ICharacter owner);
+        public ICharacter Add<T>(Vector3 position, bool parentToOwner = false) where T : INpcDefinition;
         public ICollection<ICharacter> GetAll();
         public ICharacter GetRandom();
     }

@@ -6,6 +6,7 @@ using CharacterResources;
 using DefaultNamespace;
 using KillSkill.CharacterResources;
 using KillSkill.CharacterResources.Implementations;
+using KillSkill.Minions;
 using KillSkill.Skills;
 using Skills;
 using StatusEffects;
@@ -18,8 +19,9 @@ namespace KillSkill.Characters
     public interface ICharacter 
     {
         public bool IsAlive { get; }
+        public bool IsEnemy { get; }
 
-        public int Uid { get; }
+        public uint Id { get; }
 
         public event Action<ICharacter> onDeath;
 
@@ -33,18 +35,17 @@ namespace KillSkill.Characters
         public ICharacterSkillHandler Skills { get; }
         
         public IVisualEffectsHandler VisualEffects { get; }
-        public ICharacterFactory CharacterFactory { get; }
+        public ICharacterMinionHandler Minions { get; }
+        public ICharacterRegistry Registry { get; }
 
         public PersistentEventTemplate<ICharacter> OnInitialize { get; }
+        public PersistentEventTemplate<ICharacter> OnTargetUpdated { get; }
         
         public Vector3 Position { get; set; }
         
         public GameObject GameObject { get; }
         
         public Type MainResource { get; }
-
-        public void Initialize(ICharacterData characterData, ICharacterFactory factory,
-            IVisualEffectsHandler vfx);
 
         public void SetBattlePaused(bool paused);
 

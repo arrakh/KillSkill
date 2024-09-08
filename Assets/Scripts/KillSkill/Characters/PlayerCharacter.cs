@@ -1,41 +1,39 @@
 ﻿using System;
 using System.Linq;
+using Arr.EventsSystem;
 using KillSkill.Characters.Implementations;
+using KillSkill.Modules.Battle.Events;
 using KillSkill.SessionData.Implementations;
 using KillSkill.SettingsData;
 using KillSkill.Skills;
+using KillSkill.Utility;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using VisualEffects;
 
 namespace KillSkill.Characters
 {
     public class PlayerCharacter : Character
     {
-        public UnityEvent<int> OnSkillIndexPressed;
+        public UnityEvent<int> OnLocalSkillIndexPressed;
 
-        public void Initialize(SkillsSessionData skillsSession, ICharacterFactory characterFactory, 
-            IVisualEffectsHandler visualEffectsHandler)
+        public void ServerInitialize(uint characterId, SkillsSessionData skillsSession, ICharacterFactory factory)
         {
-            var loadout = skillsSession.Loadout.ToArray();
-            var skills = new Skill[loadout.Length];
-            
-            for (var i = 0; i < loadout.Length; i++)
-            {
-                var skill = loadout[i];
-                if (skill == null) skills[i] = null;
-                else
-                {
-                    var instance = Activator.CreateInstance(skill) as Skill;
-                    skills[i] = instance;
-                }
-            }
+            var data = new CharacterData("mockup-player", 400, skillsSession.Loadout.ToArray());
+            ServerInitialize(characterId, false, data, factory);
+        }
 
-            Initialize(new PlayerData(skills), characterFactory, visualEffectsHandler);
+        protected override void OnClientInitialized()
+        {
+            if (IsOwner) GlobalEvents.Fire(new LocalPlayerInitializedEvent(this));
         }
 
         protected override void OnUpdate()
         {
+            if (!IsOwner) return;
+            
             var arr = Skills.GetAll();
             for (var i = 0; i < arr.Length; i++)
             {
@@ -44,7 +42,8 @@ namespace KillSkill.Characters
                 if (key == KeyCode.None) continue;
                 if (Input.GetKeyDown(key))
                 {
-                    OnSkillIndexPressed?.Invoke(i);
+                    Debug.Log($"WILL EXECUTE IN SERVER SKILL INDEX {i}");
+                    OnLocalSkillIndexPressed?.Invoke(i);
                     Skills.Execute(i, Target);
                 }
             }

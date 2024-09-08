@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace KillSkill.UI.SkillsManager
 {
-    public class SkillsManagerView : View, INavigateSection
+    public class SkillsManagerView : View
     {
         [SerializeField] private SkillsCatalogPanel catalogPanel;
         [SerializeField] private ResourcesPanel resourcesPanel;
@@ -39,16 +39,7 @@ namespace KillSkill.UI.SkillsManager
             resourcesPanel.AnimateCannotBuy();
         }
 
-        //todo: Should sit in the view module
         public Skill GetCurrentlyDisplayed() => skillPreviewPanel.CurrentSkill;
-        
-        //todo: Should sit in the view module
-        int INavigateSection.Order => 1;
-        string INavigateSection.Name => "Skills";
-        void INavigateSection.OnNavigate(bool selected)
-        {
-            gameObject.SetActive(selected);
-        }
 
         public void DisplayPurchaseSlot(SkillsSessionData skillSession)
         {

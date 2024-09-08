@@ -17,14 +17,13 @@ namespace KillSkill.SessionData
 
         protected override async Task OnInitialize()
         {
-            var dataTypes = ReflectionUtility.GetAll<ISessionData>();
+            var dataTypes = ReflectionCache.GetAll<ISessionData>();
 
             foreach (var type in dataTypes)
             {
                 var instance = Activator.CreateInstance(type) as ISessionData;
                 if (instance == null) throw new Exception($"Trying to initialize {type} but instance is null");
                 if (instance is ILoadableSessionData loadable) loadable.OnLoad();
-                GlobalEvents.Instance.RegisterMultiple(instance);
                 sessionData[type] = instance;
             }
         }
@@ -34,7 +33,6 @@ namespace KillSkill.SessionData
             foreach (var (_, data) in sessionData)
             {
                 if (data is ILoadableSessionData loadable) loadable.OnUnload();
-                GlobalEvents.Instance.UnregisterMultiple(data);
             }
             
             sessionData.Clear();

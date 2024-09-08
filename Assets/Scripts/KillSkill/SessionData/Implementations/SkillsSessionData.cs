@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arr.EventsSystem;
 using KillSkill.Constants;
+using KillSkill.Network;
 using KillSkill.SessionData.Events;
 using KillSkill.Skills;
 using KillSkill.Skills.Implementations;
-using KillSkill.Skills.Implementations.Enemy.Executioner;
 using KillSkill.Skills.Implementations.Fighter;
-using KillSkill.Skills.Implementations.HeavyKnight;
-using SessionData.Implementations;
-using Skills;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
+using KillSkill.Utility;
 
 namespace KillSkill.SessionData.Implementations
 {
-    public class SkillsSessionData : ISessionData, ILoadableSessionData
+    public class SkillsSessionData : ISessionData, ILoadableSessionData, INetCodeSerializable
     {
         //todo: move default loadout to config
         private List<Type> loadout = new()
@@ -23,7 +22,7 @@ namespace KillSkill.SessionData.Implementations
             typeof(SlashSkill),
             typeof(VigorSkill),
             typeof(VampiricSkill),
-            null
+            typeof(EmptySkill)
         };
         
         private HashSet<Type> loadoutByType = new();
@@ -65,7 +64,7 @@ namespace KillSkill.SessionData.Implementations
         public bool HasEmptySlot()
         {
             foreach (var skill in loadout)
-                if (skill == null) return true;
+                if (skill.IsEmpty()) return true;
 
             return false;
         }
@@ -95,7 +94,7 @@ namespace KillSkill.SessionData.Implementations
                 throw new Exception($"Cannot unequip index {skillIndex}, loadout only has {loadout.Count} slots!");
             
             var skill = loadout[skillIndex];
-            if (skill == null) return;
+            if (skill.IsEmpty()) return;
             loadoutByType.Remove(skill);
             loadout[skillIndex] = null;
             GlobalEvents.Fire(new SessionUpdatedEvent<SkillsSessionData>(this));
@@ -106,7 +105,7 @@ namespace KillSkill.SessionData.Implementations
             for (int i = 0; i < loadout.Count; i++)
             {
                 var skill = loadout[i];
-                if (skill == null) continue;
+                if (skill.IsEmpty()) continue;
                 if (skill == skillType) return i;
             }
 
@@ -132,7 +131,7 @@ namespace KillSkill.SessionData.Implementations
             for (var index = 0; index < loadout.Count; index++)
             {
                 var skill = loadout[index];
-                if (skill == null) return index;
+                if (skill.IsEmpty()) return index;
             }
 
             return loadout.Count - 1;
@@ -141,9 +140,15 @@ namespace KillSkill.SessionData.Implementations
 
         public void OnLoad()
         {
+            SkillTypeMapper.Initialize();
+            Initialize();
+        }
+
+        private void Initialize()
+        {
             foreach (var skill in loadout)
             {
-                if (skill == null) continue;
+                if (skill.IsEmpty()) continue;
                 loadoutByType.Add(skill);
             }
         }
@@ -165,6 +170,24 @@ namespace KillSkill.SessionData.Implementations
                 > 12 => new Dictionary<string, double>(){{GameResources.COINS, 500}, {GameResources.MEDALS, 7}},
                 _ => new Dictionary<string, double>(){{GameResources.COINS, 999999999}}
             };
+        }
+
+        public void Serialize(FastBufferWriter writer)
+        {
+            var serializedLoadout = SkillTypeMapper.ToIdArray(loadout.ToArray());
+            var serializedOwnedSkills = SkillTypeMapper.ToIdArray(ownedSkills.ToArray());
+            
+            writer.WriteValueSafe(serializedLoadout);
+            writer.WriteValueSafe(serializedOwnedSkills);
+        }
+
+        public void Deserialize(FastBufferReader reader)
+        {
+            reader.ReadValueSafe(out uint[] serializedLoadout);
+            reader.ReadValueSafe(out uint[] serializedOwnedSkills);
+            
+            loadout = SkillTypeMapper.ToTypeArray(serializedLoadout).ToList();
+            ownedSkills = SkillTypeMapper.ToTypeArray(serializedOwnedSkills).ToHashSet();
         }
     }
 }

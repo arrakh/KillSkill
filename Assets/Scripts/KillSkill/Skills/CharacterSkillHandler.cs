@@ -1,29 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using Arr.Utils;
 using KillSkill.Characters;
+using KillSkill.Utility;
 using Skills;
 using StatusEffects;
+using Unity.Netcode;
+using UnityEngine;
 
 namespace KillSkill.Skills
 {
-    public partial class CharacterSkillHandler : IDisposable, ICharacterSkillHandler
+    public partial class CharacterSkillHandler : NetworkBehaviour, IDisposable, ICharacterSkillHandler
     {
-        public CharacterSkillHandler(Skill[] skills, IStatusEffectsHandler statusEffects, ICharacter character)
+        public void Initialize(Type[] ownerSkills, ICharacter owner)
         {
-            this.skills = skills;
-            this.statusEffects = statusEffects;
-            this.character = character;
+            skills = GenerateSkills(ownerSkills);
+            statusEffects = owner.StatusEffects;
+            character = owner;
             
-            for (var index = 0; index < skills.Length; index++)
+            for (var index = 0; index < ownerSkills.Length; index++)
             {
-                var skill = skills[index];
-                if (skill == null) continue;
+                var skill = ownerSkills[index];
+                if (skill.IsEmpty()) continue;
 
-                var type = skill.GetType();
-                skillIndexes[type] = index;
+                skillIndexes[skill] = index;
 
-                DetectAndRegisterOnExecutedCallbacks(type);
+                DetectAndRegisterOnExecutedCallbacks(skill);
             }
+        }
+
+        private Skill[] GenerateSkills(Type[] ownerSkills)
+        {
+            var activatedSkills = new Skill[ownerSkills.Length];
+            
+            for (var i = 0; i < ownerSkills.Length; i++)
+            {
+                var skill = ownerSkills[i];
+                if (skill.IsEmpty()) activatedSkills[i] = null;
+                else
+                {
+                    var instance = Activator.CreateInstance(skill) as Skill;
+                    activatedSkills[i] = instance;
+                }
+            }
+
+            return activatedSkills;
         }
 
         public event Action<Skill> OnAnySkillExecuted; 
@@ -46,7 +67,7 @@ namespace KillSkill.Skills
                 if (skill != null) skill.OnInitialize(character);
         }
 
-        public void Update(float deltaTime)
+        public void UpdateHandler(float deltaTime)
         {
             globalCd.Update(deltaTime);
 
@@ -69,7 +90,7 @@ namespace KillSkill.Skills
         {
             if (index < 0 || index >= skills.Length) return false;
             var skill = skills[index];
-            if (skill == null) return false;
+            if (skill.IsEmpty()) return false;
             return CanCast(skill);
         }
 
@@ -77,7 +98,7 @@ namespace KillSkill.Skills
         {
             if (!skillIndexes.TryGetValue(typeof(T), out var index)) return false;
             var skill = skills[index];
-            if (skill == null) return false;
+            if (skill.IsEmpty()) return false;
             return CanCast(skill);
         }
 
@@ -113,12 +134,46 @@ namespace KillSkill.Skills
 
         public void Execute(int index, ICharacter target)
         {
+            ServerExecuteRPC(index, target.Id);
+        }
+
+        [Rpc(SendTo.Server)]
+        private void ServerExecuteRPC(int index, uint targetId)
+        {
+            if (!character.Registry.TryGet(targetId, out var target))
+            {
+                Debug.LogError($"CHARACTER ID {character.Id} TRIES TO EXECUTE BUT CANT FIND TARGET ID {targetId} IN SERVER");
+                return;
+            }
+            
+            ServerExecute(index, target);
+        }
+
+        public void ServerExecute(int index, ICharacter target)
+        {
             if (index >= skills.Length)
                 throw new Exception($"Trying to execute Skill index {index} but there are only {skills.Length} skills!");
             
             var skill = skills[index];
-            if (!skill.CanExecute(character)) return;
             
+            Debug.Log($"[CSH-S] Character id {character.Id} executing {skill.Metadata.name}, Can Execute? {skill.CanExecute(character)}".LogColor("red"));
+            
+            if (!skill.CanExecute(character)) return;
+
+            ClientsExecuteRPC(index, target.Id);
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void ClientsExecuteRPC(int index, uint targetId)
+        {
+            if (!character.Registry.TryGet(targetId, out var target))
+            {
+                Debug.LogError($"CHARACTER ID {character.Id} TRIES TO EXECUTE BUT CANT FIND TARGET ID {targetId} IN CLIENT");
+                return;
+            }
+            
+            var skill = skills[index];
+
             skill.Execute(character, target);
             skill.TriggerCooldown();
             

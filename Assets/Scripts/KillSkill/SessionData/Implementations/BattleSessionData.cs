@@ -8,10 +8,10 @@ namespace KillSkill.SessionData.Implementations
 {
     public class BattleSessionData : ISessionData
     {
-        private IEnemyData currentEnemy = new Executioner();
+        private INpcDefinition currentEnemy = new Executioner();
         private string currentLevelId = "forest";
         
-        public void SetBattle(IEnemyData enemy) => currentEnemy = enemy;
+        public void SetBattle(INpcDefinition enemy) => currentEnemy = enemy;
         public void SetLevel(string levelId) => currentLevelId = levelId;
 
         public BattleStartData StartData => new (currentEnemy, currentLevelId);

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arr;
+using Arr.EventsSystem;
 using CharacterResources;
+using Unity.Netcode;
 
 namespace KillSkill.CharacterResources
 {
-    public partial class CharacterResourcesHandler : IDisposable, ICharacterResourcesHandler
+    public partial class CharacterResourcesHandler : NetworkBehaviour, IDisposable, ICharacterResourcesHandler
     {
         private Dictionary<Type, ICharacterResource> resources = new();
 
@@ -16,7 +18,7 @@ namespace KillSkill.CharacterResources
         public IReadOnlyDictionary<Type, ICharacterResource> Current => resources;
 
 
-        public void Update(float deltaTime)
+        public void UpdateHandler(float deltaTime)
         {
             foreach (var resource in updatableResources.Values.ToList())
                 resource.OnUpdate(deltaTime);
@@ -31,6 +33,8 @@ namespace KillSkill.CharacterResources
             recentlyUnassigned.Remove(type);
 
             resources[type] = newResource;
+            
+            GlobalEvents.RegisterMultipleUnsafe(newResource);
 
             if (newResource is IUpdatableCharacterResource updatable) 
                 updatableResources[type] = updatable;
@@ -44,8 +48,12 @@ namespace KillSkill.CharacterResources
         public void Unassign<T>() where T : ICharacterResource
         {
             var type = typeof(T);
-            bool success = resources.Remove(type);
-            if (!success) return;
+            
+            if (!resources.TryGetValue(type, out var instance)) return;
+            GlobalEvents.UnregisterMultipleUnsafe(instance);
+
+            resources.Remove(type);
+            
             recentlyUnassigned.Add(type);
             onAnyResourceUnassigned.Invoke(type);
             updatableResources.Remove(type);

@@ -6,6 +6,7 @@ using KillSkill.SessionData.Implementations;
 using KillSkill.SettingsData;
 using KillSkill.Skills;
 using KillSkill.UI.SkillsManager.Events;
+using KillSkill.Utility;
 using UnityEngine;
 
 namespace KillSkill.UI.SkillsManager
@@ -63,13 +64,13 @@ namespace KillSkill.UI.SkillsManager
                 display.Display(skill, OnClicked);
                 display.SetSlotIndex(i); 
                 
-                if (skill == null) display.SetIsLocked(false);
+                if (skill.IsEmpty()) display.SetIsLocked(false);
                 else display.SetIsLocked(!skillsSession.Owns(skill));
                 
                 spawnedElements.Add(display);
             }
             
-            buySlot.transform.SetAsLastSibling();
+            if (buySlot) buySlot.transform.SetAsLastSibling();
         }
 
         private void CleanObjects()
@@ -82,7 +83,7 @@ namespace KillSkill.UI.SkillsManager
 
         private void OnClicked(SkillDisplay display)
         {
-            if (display.Skill == null) return;
+            if (display.Skill.IsEmpty()) return;
             GlobalEvents.Fire(new DisplaySkillEvent(){skill = display.Skill});
         }
     }

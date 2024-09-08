@@ -19,3 +19,5 @@ MonoBehaviour:
     prefab: {fileID: 5527522831593466129, guid: ab8439d69cec86c48bff8b9958b08232, type: 3}
   - id: global-volume
     prefab: {fileID: 5415059737411066741, guid: 71c43abc564c0da45b39e92b7d9b6b4c, type: 3}
+  - id: network-manager
+    prefab: {fileID: 5161113765952662272, guid: c392d4ddc8745194e9fd2c6e288311a5, type: 3}

@@ -8,11 +8,11 @@ namespace KillSkill.Utility
 {
     public static class ReflectionUtility
     {
-        public static IEnumerable<Type> GetAll<T>()
+        public static IEnumerable<Type> GetAll<T>(bool includeSelf = false)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(T).IsAssignableFrom(type) && type != typeof(T));
+                .Where(type => typeof(T).IsAssignableFrom(type) && (includeSelf || type != typeof(T)));
         }
     }
 }

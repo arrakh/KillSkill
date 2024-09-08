@@ -4,7 +4,6 @@ using KillSkill.Modules.Battle;
 using KillSkill.Modules.Groups;
 using KillSkill.UI;
 using KillSkill.UI.Battle.Modules;
-using KillSkill.VisualEffects;
 
 namespace KillSkill.Modules.Loaders
 {

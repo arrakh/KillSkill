@@ -4,7 +4,10 @@ using System.Linq;
 using Arr.EventsSystem;
 using Arr.ViewModuleSystem;
 using KillSkill.Characters;
+using KillSkill.Modules.Loaders;
 using KillSkill.Modules.Loaders.Events;
+using KillSkill.Network;
+using KillSkill.Network.Messages;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Implementations;
 using KillSkill.UI.Navigation;
@@ -14,7 +17,7 @@ using UnityEngine.SceneManagement;
 
 namespace KillSkill.UI.Arena
 {
-    public class ArenaView : View, INavigateSection
+    public class ArenaView : View
     {
         [SerializeField] private GameObject elementPrefab;
         [SerializeField] private RectTransform elementParent;
@@ -26,17 +29,17 @@ namespace KillSkill.UI.Arena
         public void Display(BattleSessionData session, MilestonesSessionData milestones)
         {
             battleSession = session;
-            var allMonsters = ReflectionUtility.GetAll<IEnemyData>();
+            var allMonsters = ReflectionCache.GetAll<INpcDefinition>();
 
             CleanObjects();
 
-            var list = new List<(ICataloguedEnemy, IEnemyData)>();
+            var list = new List<(ICataloguedEnemy, INpcDefinition)>();
             
             foreach (var monster in allMonsters)
             {
                 if (!typeof(ICataloguedEnemy).IsAssignableFrom(monster)) continue;
                 var instance = Activator.CreateInstance(monster);
-                if (instance is IEnemyData enemyData && instance is ICataloguedEnemy catalogued) 
+                if (instance is INpcDefinition enemyData && instance is ICataloguedEnemy catalogued) 
                     list.Add((catalogued, enemyData));
             }
 
@@ -55,9 +58,11 @@ namespace KillSkill.UI.Arena
 
         private void OnElementClicked(ArenaCatalogElement element)
         {
+            if (!Net.IsServer()) return;
+            
             battleSession.SetBattle(element.Data);
 
-            GlobalEvents.Fire(new SwitchContextEvent(SwitchContextEvent.Type.Battle));
+            Net.Server.Broadcast(new SwitchContextMessage(ContextType.Battle));
         }
 
         private void CleanObjects()
@@ -66,14 +71,6 @@ namespace KillSkill.UI.Arena
                 Destroy(element.gameObject);
             
             spawnedElements.Clear();
-        }
-
-        //todo: Should sit in the view module
-        int INavigateSection.Order => 0;
-        string INavigateSection.Name => "Arena";
-        void INavigateSection.OnNavigate(bool selected)
-        {
-            gameObject.SetActive(selected);
         }
     }
 }

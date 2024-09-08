@@ -1,5 +1,6 @@
 ﻿using Arr.ModulesSystem;
 using KillSkill.Modules.Battle;
+using KillSkill.Modules.Network;
 using KillSkill.UI.Battle.Modules;
 
 namespace KillSkill.Modules.Groups
@@ -9,14 +10,19 @@ namespace KillSkill.Modules.Groups
         public override IModule[] Modules => new IModule[]
         {
             new BattleControllerModule(),
-            new BattleFactoryModule(),
+            new BattleRegistryModule(),
             new PostProcessModule(),
+            
+            new CharacterTargetingModule(),
 
             new CountdownViewModule(),
             new ResultViewModule(),
-            new PauseViewModule(),
+            //new PauseViewModule(),
             new TimerViewModule(),
-            new GameSkillIndicatorsViewModule()
+            new GameSkillIndicatorsViewModule(),
+            
+            //MUST BE AT THE END
+            new CommitModule()
         };
     }
 }

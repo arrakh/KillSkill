@@ -1,6 +1,7 @@
 ﻿using KillSkill.Characters;
 using KillSkill.SettingsData;
 using KillSkill.Skills;
+using KillSkill.Utility;
 using Skills;
 using StatusEffects;
 using TMPro;
@@ -27,7 +28,7 @@ namespace KillSkill.UI.Game
         
         private void Update()
         {
-            if (skill == null) return;
+            if (skill.IsEmpty()) return;
             
             bool preventedCasting = character.StatusEffects.Has<IPreventSkillExecution>();
             lockedGroup.SetActive(preventedCasting);
@@ -54,10 +55,10 @@ namespace KillSkill.UI.Game
                 return;
             }
 
-            if (skill == null || newSkill != skill) OnNewSkill(newSkill);
+            if (skill.IsEmpty() || newSkill != skill) OnNewSkill(newSkill);
             skill = newSkill;
 
-            if (skill == null || skill.Metadata.isEmpty)
+            if (skill.IsEmpty() || skill.Metadata.isEmpty)
             {
                 DisplayEmpty();
                 return;

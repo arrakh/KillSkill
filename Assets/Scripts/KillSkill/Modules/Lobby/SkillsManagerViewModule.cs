@@ -4,6 +4,7 @@ using Arr.ViewModuleSystem;
 using KillSkill.SessionData;
 using KillSkill.SessionData.Events;
 using KillSkill.SessionData.Implementations;
+using KillSkill.UI.Navigation;
 using KillSkill.UI.SkillsManager;
 using KillSkill.UI.SkillsManager.Events;
 using SessionData.Implementations;
@@ -11,7 +12,7 @@ using UnityEngine;
 
 namespace KillSkill.Modules.Lobby
 {
-    public class SkillsManagerViewModule : ViewModule<SkillsManagerView>,
+    public class SkillsManagerViewModule : ViewModule<SkillsManagerView>, INavigateSection,
         
         IEventListener<SessionUpdatedEvent<SkillsSessionData>>,
         IEventListener<DisplaySkillEvent>,
@@ -33,7 +34,7 @@ namespace KillSkill.Modules.Lobby
             
             view.Display(resourcesSession, skillsSession);
             
-            GlobalEvents.Fire(new AddNavigationEvent(view, true));
+            GlobalEvents.Fire(new AddNavigationEvent(this, true));
         }
         
         public void OnEvent(SessionUpdatedEvent<SkillsSessionData> data)
@@ -88,6 +89,14 @@ namespace KillSkill.Modules.Lobby
             resourcesSession.RemoveResources(cost);
             skillsSession.AddSlot(1);
             view.DisplayPurchaseSlot(skillsSession);
+        }
+        
+        int INavigateSection.Order => 1;
+        string INavigateSection.Name => "Skills";
+        void INavigateSection.OnNavigate(bool selected)
+        {
+            if (selected) view.Open();
+            else view.Close();
         }
     }
 }

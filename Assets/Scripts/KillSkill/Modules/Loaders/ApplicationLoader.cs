@@ -6,13 +6,16 @@ using Arr.ModulesSystem;
 using Arr.Utils;
 using KillSkill.Modules.Groups;
 using KillSkill.Modules.Loaders.Events;
+using KillSkill.Modules.Network.Events;
+using KillSkill.Network.Messages;
 using UnityEngine;
 
 namespace KillSkill.Modules.Loaders
 {
     public class ApplicationLoader : MonoBehaviour, IExternalModulesProvider, 
         IEventListener<SwitchContextEvent>,
-        IEventListener<QuitLobbyEvent>
+        IEventListener<QuitLobbyEvent>,
+        IEventListener<NetMessageEvent<SwitchContextMessage>>
     {
         private ModulesHandler masterModulesHandler, lobbyModulesHandler, battleModulesHandler;
         private ModulesHandler currentContext, nextContext;
@@ -37,6 +40,8 @@ namespace KillSkill.Modules.Loaders
             await currentContext.Start();
 
             changeContext = new();
+            
+            
 
             while (!stopAppToken.IsCancellationRequested)
             {
@@ -55,20 +60,24 @@ namespace KillSkill.Modules.Loaders
             Application.Quit();
         }
 
-        public void OnEvent(SwitchContextEvent data)
+        public void SwitchContext(ContextType type)
         {
-            switch (data.contextType)
+            switch (type)
             {
-                case SwitchContextEvent.Type.Lobby:
+                case ContextType.Lobby:
                     changeContext.SetResult(lobbyModulesHandler);
                     break;
-                case SwitchContextEvent.Type.Battle:
+                case ContextType.Battle:
                     changeContext.SetResult(battleModulesHandler);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        public void OnEvent(SwitchContextEvent data) => SwitchContext(data.contextType);
+
+        public void OnEvent(NetMessageEvent<SwitchContextMessage> data) => SwitchContext(data.message.Type);
 
         private void OnDestroy()
         {

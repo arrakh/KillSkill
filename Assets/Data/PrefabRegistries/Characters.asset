@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entries:
   - id: npc
-    prefab: {fileID: 8051572969413281472, guid: ef2c58d516e807345ba14a48e5ed1c67, type: 3}
+    prefab: {fileID: 4080437289218307651, guid: 41acc42f77cfba145a1a8304524318e0, type: 3}
   - id: player
-    prefab: {fileID: 4185548951748613002, guid: 21f1c9152b8cf0e459be525efc312d42, type: 3}
+    prefab: {fileID: 3634486548405998240, guid: 5f4e9342d2b10634a93fa6b2b1bf7e88, type: 3}

@@ -2,16 +2,10 @@
 {
     public struct SwitchContextEvent
     {
-        public enum Type
-        {
-            None,
-            Lobby,
-            Battle
-        }
 
-        public Type contextType;
+        public ContextType contextType;
 
-        public SwitchContextEvent(Type contextType)
+        public SwitchContextEvent(ContextType contextType)
         {
             this.contextType = contextType;
         }

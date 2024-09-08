@@ -14,17 +14,17 @@ namespace KillSkill.UI.Arena
         [SerializeField] private Button button;
 
 
-        public IEnemyData Data => data;
+        public INpcDefinition Data => data;
         
-        private IEnemyData data;
+        private INpcDefinition data;
         private Action<ArenaCatalogElement> onButtonClick;
 
-        public void Display(IEnemyData enemyData, Action<ArenaCatalogElement> onClick)
+        public void Display(INpcDefinition inpcDefinition, Action<ArenaCatalogElement> onClick)
         {
-            data = enemyData;
+            data = inpcDefinition;
             onButtonClick = onClick;
 
-            var flipbook = CharacterFlipBooksDatabase.Get(enemyData.Id);
+            var flipbook = CharacterFlipBooksDatabase.Get(inpcDefinition.Id);
             enemyIcon.sprite = flipbook.Default.GetFrame(0);
             enemyText.text = data.DisplayName;
         }

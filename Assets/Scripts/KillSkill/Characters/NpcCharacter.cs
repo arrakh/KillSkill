@@ -1,5 +1,7 @@
 ﻿using CleverCrow.Fluid.BTs.Trees;
+using KillSkill.Network;
 using KillSkill.Skills;
+using Unity.Netcode;
 using UnityEngine;
 using VisualEffects;
 
@@ -9,31 +11,42 @@ namespace KillSkill.Characters
     {
         [SerializeField] private BehaviorTree aiTree;
 
-        private bool hasAi = false;
+        private INpcDefinition npcDefinition;
 
-        public override void Initialize(ICharacterData characterData, ICharacterFactory factory, IVisualEffectsHandler vfx)
+        private bool treeInitialized = false;
+        
+        public void ServerInitialize(uint characterId, bool isEnemy, INpcDefinition definition, ICharacterFactory factory)
         {
-            base.Initialize(characterData, factory, vfx);
-            if (characterData is not IBehaviourTreeData btData)
-            {
-                hasAi = false;
-                return;
-            }
+            var characterData = new CharacterData(definition.Id, definition.Health, definition.SkillTypes);
 
-            hasAi = true;
-            var builder = btData.OnBuildBehaviourTree(this, new BehaviorTreeBuilder(gameObject));
-            aiTree = builder.Build();
+            npcDefinition = definition;
+            
+            base.ServerInitialize(characterId, isEnemy, characterData, factory);
+            
         }
+
+        protected override void OnClientInitialized()
+        {
+            base.OnClientInitialized();
+            var builder = npcDefinition.OnBuildBehaviourTree(this, new BehaviorTreeBuilder(gameObject));
+            aiTree = builder.Build();
+            Debug.Log("NPC INITIALIZED");
+            treeInitialized = true;
+        }
+
 
         protected override void OnUpdate()
         {
             base.OnUpdate();
-            if (battlePause) return;
-            if (hasAi) aiTree.Tick();
+            if (!IsServer) return;
+            if (!treeInitialized) return;
+            aiTree.Tick();
         }
 
         protected override void OnDeath()
         {
+            if (!Net.IsServer()) return;
+            GetComponent<NetworkObject>().Despawn();
             Destroy(gameObject);
         }
     }

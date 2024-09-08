@@ -20,7 +20,7 @@ namespace KillSkill.Characters
         private List<Tween> movementTweens = new();
         private Vector3 originalPosition;
 
-        public void Initialize(ICharacterData characterData)
+        public void Initialize(CharacterData characterData)
         {
             originalPosition = visualTransform.position;
             var flipBookData = CharacterFlipBooksDatabase.Get(characterData.Id);

@@ -22,7 +22,7 @@ namespace KillSkill.UI.SkillsManager
         {
             CleanElements();
             
-            var allSkills = ReflectionUtility.GetAll<Skill>();
+            var allSkills = ReflectionCache.GetAll<Skill>();
 
             var skillsToSpawn = new List<Skill>();
             
