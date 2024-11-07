@@ -11,11 +11,11 @@ namespace KillSkill.VisualEffects
         private ObjectPool<UnityEffect> pool;
         private GameObject poolRoot;
 
-        public UnityEffectPool(string key)
+        public UnityEffectPool(UnityEffectData data)
         {
-            poolRoot = new GameObject($"unity-effect-pool-{key}");
+            poolRoot = new GameObject($"unity-effect-pool-{data.id}");
             
-            data = UnityEffectDatabase.Get(key);
+            this.data = data;
             pool = new ObjectPool<UnityEffect>(Create, Get, Release, Destroy, true, data.initialSize, data.maxSize);
         }
         

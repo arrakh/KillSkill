@@ -18,7 +18,7 @@ namespace KillSkill.Modules.VisualEffects
         {
             if (!unityEffects.TryGetValue(key, out var pool))
             {
-                pool = new UnityEffectPool(key);
+                pool = new UnityEffectPool(UnityEffectDatabase.Get(key));
                 unityEffects[key] = pool;
             }
             

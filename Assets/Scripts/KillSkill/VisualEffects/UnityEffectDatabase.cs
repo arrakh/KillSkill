@@ -18,14 +18,5 @@ namespace VisualEffects
     [CreateAssetMenu(menuName = "Unity Effect Database", fileName = "Unity Effect Database")]
     public class UnityEffectDatabase : PairScriptableDatabase<string, UnityEffectData>
     {
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            /*foreach (var key in _dict)
-            {
-                Debug.Log($"UNITY EFFECT {key.Key}");
-            }*/
-        }
     }
 }
