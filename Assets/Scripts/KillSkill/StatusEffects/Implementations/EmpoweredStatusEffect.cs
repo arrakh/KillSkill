@@ -28,11 +28,11 @@ namespace KillSkill.StatusEffects.Implementations
         
         protected override void OnDuplicateAdded(ICharacter target, IStatusEffect duplicate)
         {
+            base.OnDuplicateAdded(target, duplicate);
+
             if (duplicate is not EmpoweredStatusEffect empower) throw new Exception("Duplicate is not Open Wide?!");
 
             if (empower.multiplier > multiplier) multiplier = empower.multiplier;
-            
-            base.OnDuplicateAdded(target, duplicate);
         }
         
         public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)

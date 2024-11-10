@@ -1,15 +1,13 @@
 ﻿using System;
 using KillSkill.Characters;
 using KillSkill.Database;
-using KillSkill.Skills;
-using KillSkill.StatusEffects;
-using KillSkill.StatusEffects.Implementations;
 using KillSkill.StatusEffects.Implementations.Core;
+using StatusEffects;
 using UnityEngine;
 
-namespace StatusEffects
+namespace KillSkill.StatusEffects.Implementations
 {
-    public class CastingStatusEffect : TimedStatusEffect, IModifyIncomingDamage
+    public class CastingStatusEffect : TimedStatusEffect
     {
         public override StatusEffectDescription Description => new()
         {
@@ -34,11 +32,6 @@ namespace StatusEffects
         public override void OnRemoved(ICharacter target)
         {
             onDoneCharging?.Invoke();
-        }
-
-        public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
-        {
-            
         }
     }
 }

@@ -23,3 +23,13 @@ MonoBehaviour:
     initialSize: 10
     maxSize: 100
     timeoutDuration: 0
+  - id: shield-off
+    prefab: {fileID: 78893887757108202, guid: 79d3e09927d32074a9a0d66114d2656a, type: 3}
+    initialSize: 10
+    maxSize: 100
+    timeoutDuration: 0
+  - id: shield-on
+    prefab: {fileID: 598804161898402219, guid: aa97901f9a63fd14589fd361d1aafc14, type: 3}
+    initialSize: 10
+    maxSize: 100
+    timeoutDuration: 2

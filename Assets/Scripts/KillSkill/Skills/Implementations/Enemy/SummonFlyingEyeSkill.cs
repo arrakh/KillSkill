@@ -1,6 +1,7 @@
 ﻿using KillSkill.Characters;
 using KillSkill.Characters.Implementations.EnemyData;
 using KillSkill.Minions;
+using KillSkill.StatusEffects.Implementations;
 using StatusEffects;
 using UnityEngine;
 

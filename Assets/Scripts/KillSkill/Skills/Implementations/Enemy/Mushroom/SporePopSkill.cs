@@ -1,4 +1,5 @@
 ﻿using KillSkill.Characters;
+using KillSkill.StatusEffects.Implementations;
 using Skills;
 using StatusEffects;
 using UnityEngine;

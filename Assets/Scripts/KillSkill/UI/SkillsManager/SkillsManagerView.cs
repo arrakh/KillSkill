@@ -18,9 +18,9 @@ namespace KillSkill.UI.SkillsManager
 
         private Skill currentlyDisplayedSkill = null;
         
-        public void Display(ResourcesSessionData resources, SkillsSessionData skills)
+        public void Display(ResourcesSessionData resources, SkillsSessionData skills, MilestonesSessionData milestones)
         {
-            catalogPanel.Display(skills);
+            catalogPanel.Display(skills, milestones);
             resourcesPanel.Display(resources.Resources);
             loadoutPanel.Display(skills);
             skillPreviewPanel.UpdateDisplay(skills);

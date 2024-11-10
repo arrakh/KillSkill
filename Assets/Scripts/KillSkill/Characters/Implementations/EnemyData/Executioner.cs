@@ -1,23 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
-using FlipBooks;
 using KillSkill.Characters.Implementations.ResourceRewards;
 using KillSkill.Constants;
-using KillSkill.Database;
-using KillSkill.Skills;
 using KillSkill.Skills.Implementations.Enemy;
 using KillSkill.Skills.Implementations.Enemy.Executioner;
-using KillSkill.Skills.Implementations.Enemy.Mushroom;
-using KillSkill.Skills.Implementations.Fighter;
-using KillSkill.Skills.Implementations.HeavyKnight;
+using KillSkill.Skills.Implementations.Warrior;
 using KillSkill.StatusEffects.Implementations;
 using KillSkill.Utility.BehaviourTree;
-using StatusEffects;
-using Unity.Netcode;
-using UnityEngine;
 
 namespace KillSkill.Characters.Implementations.EnemyData
 {
@@ -42,8 +32,8 @@ namespace KillSkill.Characters.Implementations.EnemyData
 
         public Type[] SkillTypes => new Type[]
         {
-            typeof(SlamSkill),
-            typeof(SmashSkill),
+            typeof(HeavySlamSkill),
+            typeof(HeavySmashSkill),
             typeof(PowerChargeSkill),
             typeof(SpinAttackSkill),
             typeof(CarefulParrySkill),
@@ -70,9 +60,9 @@ namespace KillSkill.Characters.Implementations.EnemyData
             
                         .Sequence("React to Staggered")
                             .Condition(() => character.Target.StatusEffects.Has<StaggeredStatusEffect>())
-                            .ExecuteSkill<SlamSkill>(character)
-                            .WaitForCooldown<SlamSkill>(character)
-                            .ExecuteSkill<SmashSkill>(character)
+                            .ExecuteSkill<HeavySlamSkill>(character)
+                            .WaitForCooldown<HeavySlamSkill>(character)
+                            .ExecuteSkill<HeavySmashSkill>(character)
                             .WaitTime(2f)
                             .ExecuteSkill<PowerChargeSkill>(character)
                             .WaitTime(6f)

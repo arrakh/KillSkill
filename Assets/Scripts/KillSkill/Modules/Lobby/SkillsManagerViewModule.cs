@@ -24,6 +24,7 @@ namespace KillSkill.Modules.Lobby
     {
         private ResourcesSessionData resourcesSession;
         private SkillsSessionData skillsSession;
+        private MilestonesSessionData milestonesSession;
         
         protected override async Task OnLoad()
         {
@@ -31,14 +32,15 @@ namespace KillSkill.Modules.Lobby
 
             resourcesSession = Session.GetData<ResourcesSessionData>();
             skillsSession = Session.GetData<SkillsSessionData>();
+            milestonesSession = Session.GetData<MilestonesSessionData>();
             
-            view.Display(resourcesSession, skillsSession);
+            view.Display(resourcesSession, skillsSession, milestonesSession);
             
             GlobalEvents.Fire(new AddNavigationEvent(this, true));
         }
         
         public void OnEvent(SessionUpdatedEvent<SkillsSessionData> data)
-            => view.Display(resourcesSession, skillsSession);
+            => view.Display(resourcesSession, skillsSession, milestonesSession);
         
         public void OnEvent(PurchaseSkillEvent data)
         {

@@ -6,8 +6,7 @@ using KillSkill.Constants;
 using KillSkill.Network;
 using KillSkill.SessionData.Events;
 using KillSkill.Skills;
-using KillSkill.Skills.Implementations;
-using KillSkill.Skills.Implementations.Fighter;
+using KillSkill.Skills.Implementations.Warrior;
 using Unity.Netcode;
 using UnityEngine;
 using KillSkill.Utility;
@@ -20,8 +19,6 @@ namespace KillSkill.SessionData.Implementations
         private List<Type> loadout = new()
         {
             typeof(SlashSkill),
-            typeof(VigorSkill),
-            typeof(VampiricSkill),
             typeof(EmptySkill)
         };
         
@@ -30,8 +27,6 @@ namespace KillSkill.SessionData.Implementations
         private HashSet<Type> ownedSkills = new()
         {
             typeof(SlashSkill),
-            typeof(VigorSkill),
-            typeof(VampiricSkill)
         };
 
         public IReadOnlyCollection<Type> Loadout => loadout;

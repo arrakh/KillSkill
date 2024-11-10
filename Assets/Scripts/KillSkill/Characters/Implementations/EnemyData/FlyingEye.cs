@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
-using FlipBooks;
-using KillSkill.Database;
-using KillSkill.Skills;
-using KillSkill.Skills.Implementations.Fighter;
+using KillSkill.Skills.Implementations.Warrior;
 using KillSkill.Utility.BehaviourTree;
-using Unity.Netcode;
-using UnityEngine;
 
 namespace KillSkill.Characters.Implementations.EnemyData
 {

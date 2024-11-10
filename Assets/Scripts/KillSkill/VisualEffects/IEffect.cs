@@ -10,5 +10,6 @@ namespace VisualEffects
         public void Unfollow();
         public T GetEffectComponent<T>() where T : IEffectComponent;
         public bool TryGetEffectComponent<T>(out T component) where T : IEffectComponent;
+        public void Stop();
     }
 }

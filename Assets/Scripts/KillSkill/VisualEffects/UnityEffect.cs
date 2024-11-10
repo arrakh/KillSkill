@@ -93,5 +93,11 @@ namespace VisualEffects
             component = t;
             return true;
         }
+
+        public void Stop()
+        {
+            Kill();
+            pool.Return(this);
+        }
     }
 }

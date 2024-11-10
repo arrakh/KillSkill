@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Trees;
-using FlipBooks;
 using KillSkill.Characters.Implementations.ResourceRewards;
 using KillSkill.Constants;
-using KillSkill.Database;
-using KillSkill.Skills;
 using KillSkill.Skills.Implementations.Enemy.Mushroom;
-using KillSkill.Skills.Implementations.Fighter;
+using KillSkill.Skills.Implementations.Warrior;
 using KillSkill.Utility.BehaviourTree;
-using Skills;
-using Unity.Netcode;
 
 namespace KillSkill.Characters.Implementations.EnemyData
 {

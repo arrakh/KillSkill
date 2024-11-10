@@ -18,7 +18,7 @@ namespace KillSkill.UI.SkillsManager
         
         private Dictionary<string /*archetypeId*/, SkillCatalogArchetypeElement> spawnedElements = new();
 
-        public void Display(SkillsSessionData skillsSession)
+        public void Display(SkillsSessionData skillsSession, MilestonesSessionData milestonesSession)
         {
             CleanElements();
             
@@ -31,6 +31,7 @@ namespace KillSkill.UI.SkillsManager
                 var instance = Activator.CreateInstance(skillType);
                 if (instance is not Skill skill) throw new Exception($"Trying to display catalog but Type {skillType} is not a SKILL");
                 if (skill.CatalogEntry.hideInCatalog) continue;
+                if (milestonesSession.HasAll(skill.CatalogEntry.requiredMilestones))
 
                 skillsToSpawn.Add(skill);    
             }
