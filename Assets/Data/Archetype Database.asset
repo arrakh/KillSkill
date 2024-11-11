@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Archetype Database
   m_EditorClassIdentifier: 
   data:
-  - id: archetype-fighter
-    name: Fighter
+  - id: archetype-warrior
+    name: Warrior
     description: Born from the ashes, risen with rage and hatred.
     bannerColor: {r: 0.5019608, g: 0, b: 0, a: 1}
     contentColor: {r: 0.30980393, g: 0.10980393, b: 0.10980393, a: 1}
-  - id: archetype-heavy-knight
-    name: Heavy Knight
-    description: Forged in battle, unyielding as stone.
-    bannerColor: {r: 0.6792453, g: 0.45416746, b: 0.13777146, a: 1}
-    contentColor: {r: 0.3018868, g: 0.14298043, b: 0.09825561, a: 1}
+  - id: archetype-assassin
+    name: Assassin
+    description: In the night, lurking, waiting, blade ready.
+    bannerColor: {r: 0.1372549, g: 0.6784314, b: 0.3231687, a: 1}
+    contentColor: {r: 0.09803922, g: 0.3019608, b: 0.21295553, a: 1}

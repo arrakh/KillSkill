@@ -8,7 +8,7 @@ using KillSkill.Utility;
 
 namespace KillSkill.CharacterResources.Implementations
 {
-    public class Poison : ICharacterResource, IModifyIncomingDamage, IResourceDisplay<ResourceCounterDisplay>
+    public class Poison : ICharacterResource, IStackable, IModifyIncomingDamage, IResourceDisplay<ResourceCounterDisplay>
     {
         [Configurable] private float consumeChancePercent = 20f;
         [Configurable] private float multiplierPerCount = 0.05f;
@@ -34,6 +34,8 @@ namespace KillSkill.CharacterResources.Implementations
 
         public void AddStack(int delta) => stackCount += delta;
         
+        public int Count => stackCount;
+
         public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
             var consumed = UnityEngine.Random.Range(0f, 100f) < consumeChancePercent;

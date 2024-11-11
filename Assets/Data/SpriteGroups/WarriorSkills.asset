@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 787360125ba44eacb63c2c16bb501733, type: 3}
-  m_Name: HeavyKnight
+  m_Name: WarriorSkills
   m_EditorClassIdentifier: 
-  groupId: skills-heavy-knight
+  groupId: skills-warrior
   sprites:
   - id: skill-smash
     sprite: {fileID: 21300000, guid: e050b38ef291a534cbeddc5e3a112941, type: 3}
@@ -24,3 +24,11 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 4fa58c79de9dfc74889a76ccd1e4b55c, type: 3}
   - id: skill-power-burst
     sprite: {fileID: 21300000, guid: 8b53e2c77d6382640a71246eeaba7d1c, type: 3}
+  - id: skill-slash
+    sprite: {fileID: 21300000, guid: 66ccc6676fc4f2a4f9b8bb246f916160, type: 3}
+  - id: skill-quick-block
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-toughen
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-final-strike
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}

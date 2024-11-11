@@ -11,7 +11,7 @@ namespace KillSkill.UI.Battle
         public Sprite icon;
     }
     
-    public class CharacterResourceFillCounter : MonoBehaviour
+    public class CharacterResourceCounter : MonoBehaviour
     {
         [SerializeField] private Image icon;
         [SerializeField] private TextMeshProUGUI valueText;

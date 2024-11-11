@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace KillSkill.CharacterResources.Implementations
 {
-    public class Bleed : ICharacterResource, IModifyIncomingDamage, IResourceDisplay<ResourceCounterDisplay>
+    public class Bleed : ICharacterResource, IStackable, IModifyIncomingDamage, IResourceDisplay<ResourceCounterDisplay>
     {
         [Configurable] private float consumeChancePercent = 30f;
         [Configurable] private float damageOnConsume = 10f;
@@ -35,7 +35,9 @@ namespace KillSkill.CharacterResources.Implementations
         private int stackCount;
         private float damagePerStack = 5f;
 
-        public void AddStack(int delta) => stackCount += delta;
+        public void AddStack(int count) => stackCount += count;
+
+        public int Count => stackCount;
         
         public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {

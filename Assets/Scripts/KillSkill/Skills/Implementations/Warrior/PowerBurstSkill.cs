@@ -25,7 +25,7 @@ namespace KillSkill.Skills.Implementations.Warrior
 
         public override CatalogEntry CatalogEntry => new()
         {
-            order = 5, archetypeId = Archetypes.LEGACY_HEAVY_KNIGHT,
+            order = 5, archetypeId = Archetypes.WARRIOR,
             resourceCosts = new Dictionary<string, double>()
             {
                 {GameResources.COINS, 250},

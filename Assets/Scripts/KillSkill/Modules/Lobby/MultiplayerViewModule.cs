@@ -25,13 +25,14 @@ namespace KillSkill.Modules.Lobby
 
         protected override async Task OnLoad()
         {
-            await base.OnLoad();
-            
             GlobalEvents.Fire(new AddNavigationEvent(this));
 
             idSession = Session.GetData<NetworkIdSessionData>();
-            
+            Debug.Log("MVM LOADED");
+
             view.UpdateParty(Session.GetData<NetworkPartySessionData>(), idSession);
+            
+            await base.OnLoad();
         }
         
         int INavigateSection.Order => 2;
@@ -44,6 +45,7 @@ namespace KillSkill.Modules.Lobby
 
         public void OnEvent(SessionUpdatedEvent<NetworkPartySessionData> data)
         {
+            //idSession = Session.GetData<NetworkIdSessionData>();
             view.UpdateParty(data.session, idSession);
         }
     }

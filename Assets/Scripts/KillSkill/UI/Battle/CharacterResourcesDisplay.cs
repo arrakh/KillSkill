@@ -42,7 +42,7 @@ namespace KillSkill.UI.Battle
         private void DisplayCounter(Type type, IResourceDisplay<ResourceCounterDisplay> counterDisplay)
         {
             var obj = Instantiate(counterPrefab, counterGridParent);
-            var counter = obj.GetComponent<CharacterResourceFillCounter>();
+            var counter = obj.GetComponent<CharacterResourceCounter>();
             counter.Assign(counterDisplay);
             activeCounters[type] = obj;
         }

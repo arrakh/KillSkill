@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 787360125ba44eacb63c2c16bb501733, type: 3}
+  m_Name: AssassinSkills
+  m_EditorClassIdentifier: 
+  groupId: skills-assassin
+  sprites:
+  - id: skill-assassinate
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-barrage-of-strikes
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-bleed-strikes
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-blood-eyes
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-poison-strikes
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-venom-eyes
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-dodge-reflex
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-dual-strikes
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+  - id: skill-sharp-eyes
+    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}

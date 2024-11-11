@@ -21,7 +21,7 @@ namespace Skills
             this.requiredMilestones = requiredMilestones ?? Array.Empty<string>();
         }
 
-        public static CatalogEntry NonPurchasable => new() { hideInCatalog = true };
+        public static CatalogEntry NonPurchasable => new() { hideInCatalog = true, requiredMilestones = Array.Empty<string>()};
         public static CatalogEntry UnlockedFromStart(string archetypeId, int order = int.MinValue) => new ()
         {
             archetypeId = archetypeId, hideInCatalog = false,

@@ -19,7 +19,7 @@ namespace KillSkill.Skills.Implementations.Assassin
         {
             name = "Dodge Reflex",
             description = $"Grants <u>Dodging</u>: {DodgingStatusEffect.StandardDescription(dodgeSuccessChance, dodgeMultiplier)}",
-            icon = SpriteDatabase.Get("skill-dual-strike")
+            icon = SpriteDatabase.Get("skill-dodge-reflex")
         };
         
         public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN);

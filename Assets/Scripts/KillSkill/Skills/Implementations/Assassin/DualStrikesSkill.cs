@@ -8,7 +8,7 @@ using Skills;
 
 namespace KillSkill.Skills.Implementations.Assassin
 {
-    public class DualStrikeSkill : Skill, IGlobalCooldownSkill
+    public class DualStrikesSkill : Skill, IGlobalCooldownSkill
     {
         protected override float CooldownTime => 0.8f;
         private ICharacter casterChar, targetChar;
@@ -18,9 +18,9 @@ namespace KillSkill.Skills.Implementations.Assassin
 
         public override SkillMetadata Metadata => new()
         {
-            name = "Dual Strike",
-            description = $"Strike twice dealing {damage} damage each",
-            icon = SpriteDatabase.Get("skill-dual-strike")
+            name = "Dual Strikes",
+            description = $"Strikes twice dealing {damage} damage each",
+            icon = SpriteDatabase.Get("skill-dual-strikes")
         };
         
         public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN);
@@ -30,14 +30,21 @@ namespace KillSkill.Skills.Implementations.Assassin
             casterChar = caster;
             targetChar = target;
             caster.StatusEffects.Add(new RepeatCastingStatusEffect(castDuration / 2f, 2, OnCastCycle));
+            MoveForward();
         }
 
-        private void OnCastCycle(int obj)
+        private void OnCastCycle(int cycle)
         {
-            casterChar.AnimateMoveTowards(targetChar, castDuration, Ease.OutQuart, 1/8f);
             casterChar.Animator.PlayFlipBook("attack");
 
             targetChar.TryDamage(casterChar, damage.GetRandomRounded());
+            
+            if (cycle == 2) casterChar.Animator.BackToPosition();
+            else MoveForward();
         }
+        
+        private void MoveForward() 
+            => casterChar.AnimateMoveTowards(targetChar, castDuration, Ease.OutQuart, 1/6f);
+
     }
 }

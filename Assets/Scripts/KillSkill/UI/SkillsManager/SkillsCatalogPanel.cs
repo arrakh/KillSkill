@@ -31,7 +31,9 @@ namespace KillSkill.UI.SkillsManager
                 var instance = Activator.CreateInstance(skillType);
                 if (instance is not Skill skill) throw new Exception($"Trying to display catalog but Type {skillType} is not a SKILL");
                 if (skill.CatalogEntry.hideInCatalog) continue;
-                if (milestonesSession.HasAll(skill.CatalogEntry.requiredMilestones))
+
+                var milestones = skill.CatalogEntry.requiredMilestones;
+                if (milestones != null && !milestonesSession.HasAll(milestones)) continue;
 
                 skillsToSpawn.Add(skill);    
             }
