@@ -3,20 +3,17 @@ using CharacterResources;
 using KillSkill.Characters;
 using KillSkill.Database;
 using KillSkill.Skills;
-using KillSkill.UI;
 using KillSkill.UI.Battle;
-using KillSkill.UI.Game;
 using KillSkill.Utility;
-using Random = UnityEngine.Random;
 
 namespace KillSkill.CharacterResources.Implementations
 {
-    public class Bleed : ICharacterResource, IModifyIncomingDamage, IResourceDisplay<ResourceCounterDisplay>
+    public class Poison : ICharacterResource, IModifyIncomingDamage, IResourceDisplay<ResourceCounterDisplay>
     {
-        [Configurable] private float consumeChancePercent = 30f;
-        [Configurable] private float damageOnConsume = 10f;
+        [Configurable] private float consumeChancePercent = 20f;
+        [Configurable] private float multiplierPerCount = 0.05f;
         
-        public Bleed(ICharacter owner, int stackCount)
+        public Poison(ICharacter owner, int stackCount)
         {
             this.owner = owner;
             this.stackCount = stackCount;
@@ -39,12 +36,13 @@ namespace KillSkill.CharacterResources.Implementations
         
         public void ModifyDamage(ICharacter damager, ICharacter target, ref double damage)
         {
-            var consumed = Random.Range(0f, 100f) < consumeChancePercent;
+            var consumed = UnityEngine.Random.Range(0f, 100f) < consumeChancePercent;
             if (!consumed) return;
 
-            if (!target.TryDamage(owner, damageOnConsume)) return;
+            var mult = 1f + multiplierPerCount * stackCount;
+            damage *= mult;
             
-            target.VisualEffects.Spawn("bleed-splat", target.Position);
+            target.VisualEffects.Spawn("poison-splat", target.Position);
             stackCount--;
             DisplayData.value = stackCount;
             OnUpdateDisplay?.Invoke(DisplayData);

@@ -25,11 +25,26 @@ MonoBehaviour:
     timeoutDuration: 0
   - id: shield-off
     prefab: {fileID: 78893887757108202, guid: 79d3e09927d32074a9a0d66114d2656a, type: 3}
-    initialSize: 10
-    maxSize: 100
+    initialSize: 2
+    maxSize: 10
     timeoutDuration: 0
   - id: shield-on
     prefab: {fileID: 598804161898402219, guid: aa97901f9a63fd14589fd361d1aafc14, type: 3}
-    initialSize: 10
-    maxSize: 100
+    initialSize: 2
+    maxSize: 10
     timeoutDuration: 2
+  - id: quick-block
+    prefab: {fileID: 1745768428258300790, guid: 7b2929a34d9ec9b46ba28a22f277acd4, type: 3}
+    initialSize: 2
+    maxSize: 10
+    timeoutDuration: 1
+  - id: bleed-splat
+    prefab: {fileID: 8535027140315678471, guid: 903545f994d520640ad9d8ce34e8cd4c, type: 3}
+    initialSize: 2
+    maxSize: 10
+    timeoutDuration: 1
+  - id: poison-splat
+    prefab: {fileID: 9067312723426285028, guid: 23c042da2a6bf0e4baf3492d51486d82, type: 3}
+    initialSize: 2
+    maxSize: 10
+    timeoutDuration: 1

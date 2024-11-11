@@ -30,7 +30,7 @@ namespace KillSkill.StatusEffects.Implementations
         {
             base.OnDuplicateAdded(target, duplicate);
 
-            if (duplicate is not EmpoweredStatusEffect empower) throw new Exception("Duplicate is not Open Wide?!");
+            if (duplicate is not EmpoweredStatusEffect empower) throw new Exception("Duplicate is not Empowered?!");
 
             if (empower.multiplier > multiplier) multiplier = empower.multiplier;
         }

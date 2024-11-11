@@ -1,11 +1,10 @@
-﻿using CharacterResources;
-using KillSkill.CharacterResources;
+﻿using KillSkill.CharacterResources;
 using KillSkill.Characters;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace KillSkill.UI.Game
+namespace KillSkill.UI.Battle
 {
     public class ResourceBarDisplay
     {

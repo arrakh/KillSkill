@@ -4,6 +4,7 @@ using CharacterResources;
 using KillSkill.Characters;
 using KillSkill.Skills;
 using KillSkill.UI;
+using KillSkill.UI.Battle;
 using KillSkill.UI.Game;
 using StatusEffects;
 using UI;
@@ -66,20 +67,20 @@ namespace KillSkill.CharacterResources.Implementations
         
         public bool TryHeal(ref double delta, ICharacter instigator)
         {
-            foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
-                if(statusEffect is IModifyIncomingHeal modifier)
-                    modifier.ModifyHeal(instigator, character, ref delta);
-            
-            foreach (var resource in character.Resources.GetAll().ToList())
-                if(resource is IModifyIncomingHeal modifier)
-                    modifier.ModifyHeal(instigator, character, ref delta);
-            
             foreach (var statusEffect in instigator.StatusEffects.GetAll().ToList())
                 if(statusEffect is IModifyHealingDealt modifier)
                     modifier.ModifyHeal(instigator, character, ref delta);
             
             foreach (var resource in instigator.Resources.GetAll().ToList())
                 if(resource is IModifyHealingDealt modifier)
+                    modifier.ModifyHeal(instigator, character, ref delta);
+            
+            foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
+                if(statusEffect is IModifyIncomingHeal modifier)
+                    modifier.ModifyHeal(instigator, character, ref delta);
+            
+            foreach (var resource in character.Resources.GetAll().ToList())
+                if(resource is IModifyIncomingHeal modifier)
                     modifier.ModifyHeal(instigator, character, ref delta);
 
             if (delta <= 0) return false;
@@ -93,20 +94,20 @@ namespace KillSkill.CharacterResources.Implementations
 
         public bool TryDamage(ref double delta, ICharacter instigator)
         {
-            foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
-                if (statusEffect is IModifyIncomingDamage modifier)
-                    modifier.ModifyDamage(instigator, character, ref delta);
-            
-            foreach (var resource in character.Resources.GetAll().ToList())
-                if(resource is IModifyIncomingDamage modifier)
-                    modifier.ModifyDamage(instigator, character, ref delta);
-            
             foreach (var statusEffect in instigator.StatusEffects.GetAll().ToList())
                 if (statusEffect is IModifyDamageDealt modifier)
                     modifier.ModifyDamage(instigator, character, ref delta);
             
             foreach (var resource in instigator.Resources.GetAll().ToList())
                 if(resource is IModifyDamageDealt modifier)
+                    modifier.ModifyDamage(instigator, character, ref delta);
+            
+            foreach (var statusEffect in character.StatusEffects.GetAll().ToList())
+                if (statusEffect is IModifyIncomingDamage modifier)
+                    modifier.ModifyDamage(instigator, character, ref delta);
+            
+            foreach (var resource in character.Resources.GetAll().ToList())
+                if(resource is IModifyIncomingDamage modifier)
                     modifier.ModifyDamage(instigator, character, ref delta);
 
             if (delta <= 0) return false;

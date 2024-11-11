@@ -60,8 +60,7 @@ MonoBehaviour:
   - {fileID: 7692002063649172280}
   - {fileID: 33792294130389325}
   counterGridParent: {fileID: 7521408141184697829}
-  fillCounterPrefab: {fileID: 8263952830828601683, guid: d77878aae97bb474a948b6b3657b58a7, type: 3}
-  counterPrefab: {fileID: 0}
+  counterPrefab: {fileID: 8263952830828601683, guid: d77878aae97bb474a948b6b3657b58a7, type: 3}
 --- !u!1 &4793473134862915613
 GameObject:
   m_ObjectHideFlags: 0

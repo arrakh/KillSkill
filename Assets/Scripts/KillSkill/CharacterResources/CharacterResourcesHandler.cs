@@ -13,16 +13,8 @@ namespace KillSkill.CharacterResources
         private Dictionary<Type, ICharacterResource> resources = new();
 
         private HashSet<Type> recentlyUnassigned = new();
-        private Dictionary<Type, IUpdatableCharacterResource> updatableResources = new();
 
         public IReadOnlyDictionary<Type, ICharacterResource> Current => resources;
-
-
-        public void UpdateHandler(float deltaTime)
-        {
-            foreach (var resource in updatableResources.Values.ToList())
-                resource.OnUpdate(deltaTime);
-        }
 
         public void Assign<T>(T newResource, bool overrideExisting = false) where T : ICharacterResource
         {
@@ -35,9 +27,6 @@ namespace KillSkill.CharacterResources
             resources[type] = newResource;
             
             GlobalEvents.RegisterMultipleUnsafe(newResource);
-
-            if (newResource is IUpdatableCharacterResource updatable) 
-                updatableResources[type] = updatable;
             
             onAnyResourceAssigned.Invoke(type, newResource);
             if (!onAssignedObservers.TryGetValue(type, out var delegateObj)) return;
@@ -56,7 +45,6 @@ namespace KillSkill.CharacterResources
             
             recentlyUnassigned.Add(type);
             onAnyResourceUnassigned.Invoke(type);
-            updatableResources.Remove(type);
             if (onUnassignedObservers.TryGetValue(type, out var action)) action.Invoke();
         }
 

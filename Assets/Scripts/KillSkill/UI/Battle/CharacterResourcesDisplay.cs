@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using CharacterResources;
 using KillSkill.CharacterResources;
 using KillSkill.Characters;
+using KillSkill.UI.Game;
+using Unity.VisualScripting;
 using UnityEngine;
 
-namespace KillSkill.UI.Game
+namespace KillSkill.UI.Battle
 {
     public class CharacterResourcesDisplay : MonoBehaviour
     {
         [SerializeField] private CharacterResourceBar mainBar;
         [SerializeField] private List<CharacterResourceBar> bars;
         [SerializeField] private RectTransform counterGridParent;
-        [SerializeField] private GameObject fillCounterPrefab;
         [SerializeField] private GameObject counterPrefab;
 
         private Dictionary<Type, CharacterResourceBar> activeBars = new();
@@ -35,14 +36,14 @@ namespace KillSkill.UI.Game
         private void OnAnyAssigned(Type type, ICharacterResource resource)
         {
             if (resource is IResourceDisplay<ResourceBarDisplay> barDisplay) DisplayBar(type, barDisplay);
-            else if (resource is IResourceDisplay<ResourceFillCounterDisplay> fillCounter) DisplayFillCounter(type, fillCounter);
+            else if (resource is IResourceDisplay<ResourceCounterDisplay> counter) DisplayCounter(type, counter);
         }
 
-        private void DisplayFillCounter(Type type, IResourceDisplay<ResourceFillCounterDisplay> fillCounter)
+        private void DisplayCounter(Type type, IResourceDisplay<ResourceCounterDisplay> counterDisplay)
         {
-            var obj = Instantiate(fillCounterPrefab, counterGridParent);
+            var obj = Instantiate(counterPrefab, counterGridParent);
             var counter = obj.GetComponent<CharacterResourceFillCounter>();
-            counter.Assign(fillCounter);
+            counter.Assign(counterDisplay);
             activeCounters[type] = obj;
         }
 

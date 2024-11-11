@@ -15,6 +15,9 @@ namespace KillSkill.Skills.Implementations.Warrior
 
         [Configurable] private float fortifiedDuration = 5f;
         [Configurable] private float fortifiedMultiplier = 0.8f;
+        [Configurable] private float castDuration = 2f;
+
+        private ICharacter casterChar;
 
         public override SkillMetadata Metadata => new()
         {
@@ -34,7 +37,14 @@ namespace KillSkill.Skills.Implementations.Warrior
 
         public override void Execute(ICharacter caster, ICharacter target)
         {
-            caster.StatusEffects.Add(new FortifiedStatusEffect(fortifiedDuration, fortifiedMultiplier));
+
+            casterChar = caster;
+            caster.StatusEffects.Add(new CastingStatusEffect(castDuration, OnDoneCasting));
+        }
+
+        private void OnDoneCasting()
+        {
+            casterChar.StatusEffects.Add(new FortifiedStatusEffect(fortifiedDuration, fortifiedMultiplier));
         }
     }
 }

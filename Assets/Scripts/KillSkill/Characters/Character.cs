@@ -9,6 +9,7 @@ using KillSkill.Modules.Battle.Events;
 using KillSkill.Modules.VisualEffects;
 using KillSkill.Skills;
 using KillSkill.StatusEffects;
+using KillSkill.UI.Battle;
 using KillSkill.UI.Game;
 using StatusEffects;
 using Unity.Netcode;
@@ -155,7 +156,6 @@ namespace KillSkill.Characters
             var time = Time.deltaTime;
             statusEffects.UpdateHandler(time);
             skillHandler.UpdateHandler(time);
-            resources.UpdateHandler(time);
             
             OnUpdate();
         }
