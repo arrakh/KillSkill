@@ -27,8 +27,8 @@ MonoBehaviour:
   - id: skill-slash
     sprite: {fileID: 21300000, guid: 66ccc6676fc4f2a4f9b8bb246f916160, type: 3}
   - id: skill-quick-block
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: ad4b6830aeca2904bb056d817eb8a793, type: 3}
   - id: skill-toughen
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: bb4794253b4b4f94c99cb65b1cde1e02, type: 3}
   - id: skill-final-strike
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: 03639d17f928bd44d8d96a37950fba3a, type: 3}

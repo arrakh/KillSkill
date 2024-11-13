@@ -105,6 +105,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  randomCircleRange: {x: 0, y: 1}
 --- !u!1 &7396380246131194194
 GameObject:
   m_ObjectHideFlags: 0

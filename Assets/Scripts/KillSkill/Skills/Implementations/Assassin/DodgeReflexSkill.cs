@@ -22,7 +22,7 @@ namespace KillSkill.Skills.Implementations.Assassin
             icon = SpriteDatabase.Get("skill-dodge-reflex")
         };
         
-        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN);
+        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN, 1);
 
         public override void Execute(ICharacter caster, ICharacter target)
         {

@@ -4,6 +4,7 @@ using KillSkill.Database;
 using KillSkill.Skills;
 using KillSkill.StatusEffects.Implementations.Core;
 using StatusEffects;
+using UnityEngine;
 
 namespace KillSkill.StatusEffects.Implementations
 {
@@ -33,6 +34,7 @@ namespace KillSkill.StatusEffects.Implementations
             if (!success) return;
 
             damage *= multiplier;
+            target.ShowFlyingText("Critical", Color.yellow, Vector3.up);
         }
         
         protected override void OnDuplicateAdded(ICharacter target, IStatusEffect duplicate)

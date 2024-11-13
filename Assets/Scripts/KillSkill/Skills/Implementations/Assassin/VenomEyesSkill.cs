@@ -22,7 +22,7 @@ namespace KillSkill.Skills.Implementations.Assassin
             icon = SpriteDatabase.Get("skill-venom-eyes")
         };
         
-        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN);
+        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN, 6);
 
         public override void Execute(ICharacter caster, ICharacter target)
         {

@@ -30,7 +30,7 @@ namespace KillSkill.Skills.Implementations.Assassin
             icon = SpriteDatabase.Get("skill-barrage-of-strikes")
         };
         
-        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN);
+        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN, 7);
 
         public override bool CanExecute(ICharacter caster)
             => base.CanExecute(caster) && GetAttackCount(caster.Target) > 0;

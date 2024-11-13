@@ -9,6 +9,15 @@ namespace KillSkill.Network.Messages.Battle
     {
         private BattleResultData result;
 
+        public BattleEndNetMessage(BattleResultData result)
+        {
+            this.result = result;
+        }
+
+        public BattleEndNetMessage()
+        {
+        }
+
         public BattleResultData Result => result;
         
         public void Serialize(FastBufferWriter writer)

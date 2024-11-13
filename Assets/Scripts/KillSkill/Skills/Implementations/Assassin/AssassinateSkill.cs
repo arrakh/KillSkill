@@ -29,7 +29,7 @@ namespace KillSkill.Skills.Implementations.Assassin
             icon = SpriteDatabase.Get("skill-assassinate")
         };
         
-        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN);
+        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN, 8);
 
         public override void Execute(ICharacter caster, ICharacter target)
         {

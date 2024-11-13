@@ -13,7 +13,7 @@ namespace KillSkill.Skills.Implementations.Assassin
 
         [Configurable] private float critDuration = 6f;
         [Configurable] private float critSuccessChance = 20f;
-        [Configurable] private float critMultiplier = 1.4f;
+        [Configurable] private float critMultiplier = 2f;
 
         public override SkillMetadata Metadata => new()
         {
@@ -22,7 +22,7 @@ namespace KillSkill.Skills.Implementations.Assassin
             icon = SpriteDatabase.Get("skill-sharp-eyes")
         };
         
-        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN);
+        public override CatalogEntry CatalogEntry => CatalogEntry.UnlockedFromStart(Archetypes.ASSASSIN, 2);
 
         public override void Execute(ICharacter caster, ICharacter target)
         {

@@ -163,7 +163,7 @@ namespace KillSkill.Modules.Battle
             var battleTimeSeconds = GlobalEvents.Query<BattleTimerQuery>().timeInSeconds;
 
             var characters = new List<ICharacter>();
-            characters.AddRange(players.Cast<ICharacter>());
+            characters.AddRange(players.Values);
             characters.Add(enemy);
             
             var state = new BattleResultState(hasPlayerWon, battleTimeSeconds, characters);
@@ -178,7 +178,7 @@ namespace KillSkill.Modules.Battle
 
             var result = new BattleResultData(hasPlayerWon, rewards, milestones);
 
-            Net.Server.Broadcast(new BattleEndNetMessage());
+            Net.Server.Broadcast(new BattleEndNetMessage(result));
         }
 
         private List<BattleReward> CalculateReward(INpcDefinition data, BattleResultState state)

@@ -17,7 +17,10 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using Object = UnityEngine.Object;
+
+#if UNITY_EDITOR
 using ParrelSync;
+#endif
 
 namespace KillSkill.Modules.Network
 {
@@ -124,13 +127,16 @@ namespace KillSkill.Modules.Network
 
             networkId = Session.GetData<NetworkIdSessionData>();
 
+#if UNITY_EDITOR
             if (ClonesManager.IsClone())
             {
                 unityTransport.SetConnectionData("127.0.0.1", 30303);
                 networkManager.StartClient();
-            } 
-            
-            else networkManager.StartHost();
+                return;
+            }
+#endif
+
+            networkManager.StartHost();
         }
 
         protected override async Task OnUnload()

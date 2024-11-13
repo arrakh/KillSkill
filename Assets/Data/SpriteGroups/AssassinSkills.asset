@@ -15,20 +15,20 @@ MonoBehaviour:
   groupId: skills-assassin
   sprites:
   - id: skill-assassinate
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: 9324125308c99364e9c611e1edeab3eb, type: 3}
   - id: skill-barrage-of-strikes
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: 6401145895f600c46972d42134a1eb62, type: 3}
   - id: skill-bleed-strikes
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: f3307234226a90d448d48beb9ade5c88, type: 3}
   - id: skill-blood-eyes
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: 21790d1772cc22c4a8ac1ef7e53bb97b, type: 3}
   - id: skill-poison-strikes
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: 116fd96177339334d9740ea479e904ca, type: 3}
   - id: skill-venom-eyes
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: b898b8c101a4e1e4ca9d90d8020c0198, type: 3}
   - id: skill-dodge-reflex
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: 08cd9c5028b264b4f84b727463904186, type: 3}
   - id: skill-dual-strikes
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: 90ea590556152354b856e5b759243cb6, type: 3}
   - id: skill-sharp-eyes
-    sprite: {fileID: 21300028, guid: f85524137d1263e44bdfe94447efb296, type: 3}
+    sprite: {fileID: 21300000, guid: 6651fde29a9fccf4a82767590a03fdf2, type: 3}

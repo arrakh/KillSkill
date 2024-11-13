@@ -12,6 +12,7 @@ namespace VisualEffects.EffectComponents
         [SerializeField] private Vector2 flyDirection;
         [SerializeField] private AnimationCurve flyCurve;
         [SerializeField] private AnimationCurve fadeCurve;
+        [SerializeField] private Vector2 randomCircleRange;
 
         private IEffectPool effectPool;
         private UnityEffect effect;
@@ -26,7 +27,8 @@ namespace VisualEffects.EffectComponents
         {
             flyingText.text = text;
             flyingText.color = color;
-            visualTransform.localPosition = Vector3.zero;
+            var range = Random.Range(randomCircleRange.x, randomCircleRange.y);
+            visualTransform.localPosition = Random.insideUnitCircle * range;
             visualTransform.DOLocalMove(flyDirection, duration).SetEase(flyCurve).OnComplete(OnTweenComplete);
             flyingText.DOFade(0f, duration).SetEase(fadeCurve);
         }
