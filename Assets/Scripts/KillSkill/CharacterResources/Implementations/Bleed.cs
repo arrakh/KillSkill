@@ -7,6 +7,7 @@ using KillSkill.UI;
 using KillSkill.UI.Battle;
 using KillSkill.UI.Game;
 using KillSkill.Utility;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace KillSkill.CharacterResources.Implementations
@@ -54,6 +55,8 @@ namespace KillSkill.CharacterResources.Implementations
                 owner.Resources.Unassign<Bleed>();
                 return;
             }
+            
+            Debug.Log("Soemthing");
             
             DisplayData.value = stackCount;
             OnUpdateDisplay?.Invoke(DisplayData);
