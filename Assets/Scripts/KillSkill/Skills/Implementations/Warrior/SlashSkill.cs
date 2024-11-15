@@ -39,6 +39,7 @@ namespace KillSkill.Skills.Implementations.Warrior
         private void OnDone()
         {
             targetChar.TryDamage(casterChar, damage.GetRandomRounded());
+            
             casterChar.AnimateMoveTowards(targetChar, 0.15f, Ease.OutQuart, 1/5f, casterChar.Animator.BackToPosition);
             casterChar.Animator.PlayFlipBook("idle");
         }

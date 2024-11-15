@@ -48,6 +48,13 @@ namespace KillSkill.CharacterResources.Implementations
             
             target.VisualEffects.Spawn("bleed-splat", target.Position);
             stackCount--;
+
+            if (stackCount <= 0)
+            {
+                owner.Resources.Unassign<Bleed>();
+                return;
+            }
+            
             DisplayData.value = stackCount;
             OnUpdateDisplay?.Invoke(DisplayData);
         }
